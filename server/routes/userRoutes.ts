@@ -1,3 +1,8 @@
+import { getUserDetail } from "../src/controllers/userController";
 import { Router } from "express";
 
 const userRouter = Router();
+
+userRouter.get('/data', getUserDetail);
+
+export{userRouter}
