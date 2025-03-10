@@ -1,4 +1,4 @@
-import { getUserDetail } from "../src/controllers/userController";
+import { getUserDetail } from "../controllers/userController";
 import { Router } from "express";
 
 const userRouter = Router();

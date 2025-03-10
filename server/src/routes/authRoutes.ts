@@ -7,3 +7,5 @@ authRouter.post('/auth/signUp');
 authRouter.post('/auth/login');
 
 authRouter.post('/auth/logout');
+
+export {authRouter}
