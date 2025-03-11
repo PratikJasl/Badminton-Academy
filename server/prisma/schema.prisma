@@ -14,33 +14,61 @@ datasource db {
 }
 
 model User {
-  id                      Int @id @default(autoincrement())
-  fullname                String @unique
+  userId                  Int @id @default(autoincrement())
+  fullName                String @unique
   age                     Int
   gender                  String
-  location                Locations @relation(fields: [locationId], references: [id])
+  location                Location @relation(fields: [locationId], references: [locationId]) //one-to-Many one Location many users
   locationId              Int
-  coachingplan            Coachingplans @relation(fields: [planId], references: [id])
-  planId                  Int
+  coachingPlan            CoachingPlan @relation(fields: [coachingPlanId], references: [coachingPlanId]) //one-to-Many one Plan many Users
+  coachingPlanId          Int
   email                   String
   phone                   String 
   password                String
-  verifyOtp               String @default("")
-  verifyOtpExpiredAt      DateTime @default(now())
+  otpVerificationCode     String @default("")
+  otpVerificationExpiry   DateTime @default(now())
   isVerified              Boolean @default(false)
-  resetOtp                String @default("")
-  resetOtpExpiredAt       DateTime @default(now())
+  otpResetCode            String @default("")
+  otpResetExpiry          DateTime @default(now())
+  joinDate                DateTime   @default(now())
+  membershipStatus        String     @default("active")
+  attendance              Attendance[]
 }
 
-model Locations {
-  id                      Int @id @default(autoincrement())
+model Location {
+  locationId              Int @id @default(autoincrement())
   name                    String
+  users                   User[]
+  coachingSchedule        CoachingSchedule? @relation(fields: [coachingScheduleId], references: [coachingScheduleId]) //one-to-one one Location one Schedule
+  coachingScheduleId      Int? @unique
+}
+
+model CoachingPlan {
+  coachingPlanId          Int @id @default(autoincrement())
+  name                    String
+  price                   Decimal
   users                   User[]
 }
 
-model Coachingplans {
-  id                      Int @id @default(autoincrement())
-  name                    String
-  price                   Int
-  users                   User[]
+model CoachingSchedule {
+  coachingScheduleId      Int @id @default(autoincrement())
+  coachingDays            String[]
+  coachingTime            String
+  location                Location? @relation
+  attendance              Attendance[]
+}
+
+model Attendance {
+  attendanceId            Int @id @default(autoincrement())
+  attendanceStatus        AttendanceStatus
+  attendanceDate          DateTime
+  userId                  Int
+  coachingScheduleId      Int
+  user                    User @relation(fields: [userId], references: [userId])
+  coachingSchedule        CoachingSchedule @relation(fields: [coachingScheduleId], references: [coachingScheduleId])
+}
+
+enum AttendanceStatus {
+  present
+  absent
 }
