@@ -52,7 +52,7 @@ export async function signUp(req: Request, res: Response) {
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
 
-        //Send Acknowledgment Mail
+        //Send Acknowledgment Mail and Response
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
             to: email,
@@ -68,6 +68,7 @@ export async function signUp(req: Request, res: Response) {
 
         res.status(200).json({success: true, message: ERROR_MESSAGES.USER_CREATED});
         return;
+        
     } catch (error) {
         res.status(500).json({ success: "false", message: ERROR_MESSAGES.SERVER_ERROR, detail: error });
         return;
