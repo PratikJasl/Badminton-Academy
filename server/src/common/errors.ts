@@ -3,6 +3,8 @@ export const ERROR_MESSAGES = {
     MISSING_FIELD: (field: string) => `${field} is required.`,
     VALIDATION_FAILED: "Validation Failed",
     SERVER_ERROR: 'Something went wrong, please try again later.',
+    EXISTING_USER: 'User email already exists',
+    USER_CREATED: 'User created successfully',
     INVALID_EMAIL: 'Email format is invalid.',
     USER_ALREADY_EXISTS: 'A user with this email already exists.',
     USER_NOT_FOUND: 'User not found.',
