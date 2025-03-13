@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import transporter from "../config/nodeMailer";
-import { ERROR_MESSAGES } from "../common/errors";
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 
 
 const prisma = new PrismaClient();
@@ -68,7 +68,7 @@ export async function signUp(req: Request, res: Response) {
         }
         await transporter.sendMail(mailOptions);
 
-        res.status(200).json({success: true, message: ERROR_MESSAGES.USER_CREATED});
+        res.status(200).json({success: true, message: SUCCESS_MESSAGES.USER_CREATED});
         return;
         
     } catch (error) {

@@ -8,6 +8,7 @@ const cors_1 = __importDefault(require("cors"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const userRoutes_1 = require("./routes/userRoutes");
 const authRoutes_1 = require("./routes/authRoutes");
+const sessionRoutes_1 = require("./routes/sessionRoutes");
 const port = 3000;
 const app = (0, express_1.default)();
 //Middlewares:
@@ -17,6 +18,7 @@ app.use((0, cors_1.default)({ credentials: true }));
 //Routes:
 app.use('/api', userRoutes_1.userRouter);
 app.use('/api', authRoutes_1.authRouter);
+app.use('/api', sessionRoutes_1.sessionRouter);
 app.listen(port, () => {
     console.log(`Server listening on port: ${port}`);
 });

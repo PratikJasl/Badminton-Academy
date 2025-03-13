@@ -9,18 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateUserData = validateUserData;
-const userSchema_1 = require("../schema/userSchema");
+exports.validateLocationData = validateLocationData;
+const locationSchema_1 = require("../schema/locationSchema");
 const messages_1 = require("../common/messages");
-function validateUserData(req, res, next) {
+function validateLocationData(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { fullName, age, gender, email, phone, password, role, joinDate, primaryLocation, coachingPlan } = req.body;
+        const { name, address } = req.body;
+        console.log(name, address);
         try {
-            if (!fullName || !age || !gender || !email || !phone || !password || !role || !joinDate || !primaryLocation || !coachingPlan) {
+            if (!name || !address) {
                 res.status(400).json({ success: "false", message: messages_1.ERROR_MESSAGES.MISSING_FIELD });
                 return;
             }
-            const { error, value } = yield userSchema_1.userSchema.validateAsync(req.body);
+            const { error, value } = yield locationSchema_1.locationSchema.validateAsync(req.body);
             if (error) {
                 res.status(400).json({ success: "false", message: messages_1.ERROR_MESSAGES.VALIDATION_FAILED, details: error.details });
                 return;

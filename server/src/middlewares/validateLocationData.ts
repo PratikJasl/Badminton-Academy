@@ -1,28 +1,20 @@
 import { Request, Response, NextFunction } from "express";
-import { userSchema } from "../schema/userSchema";
+import { locationSchema } from "../schema/locationSchema";
 import { ERROR_MESSAGES } from "../common/messages";
 
-export async function validateUserData(req: Request, res: Response, next: NextFunction): Promise<void>{
+export async function validateLocationData(req: Request, res: Response, next: NextFunction): Promise<void>{
     const {
-        fullName,
-        age,
-        gender,
-        email,
-        phone,
-        password,
-        role,
-        joinDate,
-        primaryLocation,
-        coachingPlan
+        name,
+        address
     } = req.body;
 
     try {
-        if(!fullName || !age || !gender || !email || !phone || !password || !role || !joinDate || !primaryLocation || !coachingPlan){
+        if(!name || !address){
             res.status(400).json({ success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
-            return
+            return;
         }
 
-        const {error, value} = await userSchema.validateAsync(req.body);
+        const {error, value} = await locationSchema.validateAsync(req.body);
 
         if(error){
             res.status(400).json({success: "false", message: ERROR_MESSAGES.VALIDATION_FAILED, details: error.details});
