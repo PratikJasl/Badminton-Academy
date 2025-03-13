@@ -15,4 +15,5 @@ export const ERROR_MESSAGES = {
     USER_CREATED: 'User created successfully',
     USER_LOGIN: 'User loged in successfully',
     LOCATION_ADDED: "New location added successfully",
+    COACHING_PLAN_ADDED: "New coaching plan added successfully"
   }
