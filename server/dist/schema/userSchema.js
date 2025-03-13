@@ -12,7 +12,7 @@ exports.userSchema = joi_1.default.object({
     gender: joi_1.default.string().valid('male', 'female', 'other').required(),
     email: joi_1.default.string().email().required(),
     phone: joi_1.default.string().min(10).max(15).required(),
-    password: joi_1.default.string().min(4).max(10).required(),
+    password: joi_1.default.string().min(4).max(20).required(),
     role: joi_1.default.string().required(),
     joinDate: joi_1.default.date(),
     primaryLocation: joi_1.default.string(),

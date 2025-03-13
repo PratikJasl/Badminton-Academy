@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 
 export async function signUp(req: Request, res: Response) {
     let {fullName, age, gender, email, phone, password, role, joinDate, primaryLocation, coachingPlan} = req.body;
-
+    console.log(fullName, age, gender, email, phone, password, role, joinDate, primaryLocation, coachingPlan);
     try {
         //Check for existing Users
         let existingUser = await prisma.user.findUnique({
@@ -18,7 +18,7 @@ export async function signUp(req: Request, res: Response) {
                 email: email,
             }
         })
-
+        console.log("Existing User", existingUser);
         if(existingUser){
             res.status(400).json({success: "false", message: ERROR_MESSAGES.EXISTING_USER});
             return;
@@ -26,7 +26,7 @@ export async function signUp(req: Request, res: Response) {
 
         //Hash Password and store the user data
         let hashedPassword = await bcrypt.hash(password, 10);
-
+        console.log("Hashed Password", hashedPassword);
         let newUser = await prisma.user.create({
             data:{
                 fullName: fullName,
@@ -41,9 +41,11 @@ export async function signUp(req: Request, res: Response) {
                 coachingPlan: coachingPlan
             }
         });
+        console.log("New user created");
 
         //Generate JWT token and send it in response cookies.
         let token = jwt.sign({ id: newUser.userId}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
+        console.log("Token", token);
 
         res.cookie('token', token, {
             httpOnly: true,

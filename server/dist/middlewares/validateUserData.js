@@ -17,7 +17,6 @@ function validateUserData(req, res, next) {
         const { fullName, age, gender, email, phone, password, role, joinDate, primaryLocation, coachingPlan } = req.body;
         try {
             if (!fullName || !age || !gender || !email || !phone || !password || !role || !joinDate || !primaryLocation || !coachingPlan) {
-                console.log(errors_1.ERROR_MESSAGES.MISSING_FIELD);
                 res.status(400).json({ success: "false", message: errors_1.ERROR_MESSAGES.MISSING_FIELD });
                 return;
             }

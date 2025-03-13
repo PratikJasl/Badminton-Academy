@@ -24,6 +24,7 @@ const prisma = new client_1.PrismaClient();
 function signUp(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let { fullName, age, gender, email, phone, password, role, joinDate, primaryLocation, coachingPlan } = req.body;
+        console.log(fullName, age, gender, email, phone, password, role, joinDate, primaryLocation, coachingPlan);
         try {
             //Check for existing Users
             let existingUser = yield prisma.user.findUnique({
@@ -31,12 +32,14 @@ function signUp(req, res) {
                     email: email,
                 }
             });
+            console.log("Existing User", existingUser);
             if (existingUser) {
                 res.status(400).json({ success: "false", message: errors_1.ERROR_MESSAGES.EXISTING_USER });
                 return;
             }
             //Hash Password and store the user data
             let hashedPassword = yield bcrypt_1.default.hash(password, 10);
+            console.log("Hashed Password", hashedPassword);
             let newUser = yield prisma.user.create({
                 data: {
                     fullName: fullName,
@@ -51,8 +54,10 @@ function signUp(req, res) {
                     coachingPlan: coachingPlan
                 }
             });
+            console.log("New user created");
             //Generate JWT token and send it in response cookies.
             let token = jsonwebtoken_1.default.sign({ id: newUser.userId }, process.env.JWT_SECRET, { expiresIn: '7d' });
+            console.log("Token", token);
             res.cookie('token', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',

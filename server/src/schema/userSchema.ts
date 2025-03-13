@@ -7,7 +7,7 @@ export const userSchema = Joi.object({
   gender: Joi.string().valid('male', 'female', 'other').required(),
   email: Joi.string().email().required(),
   phone: Joi.string().min(10).max(15).required(),
-  password: Joi.string().min(4).max(10).required(),
+  password: Joi.string().min(4).max(20).required(),
   role: Joi.string().required(),
   joinDate: Joi.date(),
   primaryLocation: Joi.string(),
