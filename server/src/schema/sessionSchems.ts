@@ -8,22 +8,15 @@ export const coachingPlanSchema = Joi.object({
   price: Joi.number().min(1).required(),
 });
 
-export interface coachingPlanSchema {
-    name: string,   
-    description: string,
-    planDuration: string,
-    price: number
-}
-
-
 //Schema for validating Coaching Locations.
 export const locationSchema = Joi.object({
   name: Joi.string().min(3).max(20).required(),
   address: Joi.string().min(5).max(50).required()
 });
 
-export interface locationSchema {
-    name: string,
-    address: string,
-    
-}
+//Schema for validating Coaching Schedule.
+export const coachingSchedule = Joi.object({
+    coachingDays: Joi.array().required(),
+    coachingTime: Joi.string().min(3).max(10).required(),
+    coachingDuration: Joi.string().min(1).max(10).required()
+});
