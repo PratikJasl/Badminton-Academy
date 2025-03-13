@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { locationSchema } from "../schema/locationSchema";
-import { coachingPlanSchema } from "../schema/coachingPlanSchema";
+import { locationSchema, coachingPlanSchema  } from "../schema/sessionSchems";
 import { ERROR_MESSAGES } from "../common/messages";
 
 //Validate the data for the location send from the client.

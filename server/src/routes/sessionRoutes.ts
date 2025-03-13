@@ -8,4 +8,6 @@ sessionRouter.post('/session/add-location',validateLocationData, addLocation);
 
 sessionRouter.post('/session/add-coaching-plan', validateCoachingPlanData, addCoachingPlan);
 
+sessionRouter.post('/session/add-coaching-schedule');
+
 export {sessionRouter}
