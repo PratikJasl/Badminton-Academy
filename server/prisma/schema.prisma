@@ -15,7 +15,7 @@ datasource db {
 
 model User {
   userId                  Int @id @default(autoincrement())
-  fullName                String @unique
+  fullName                String
   age                     Int
   gender                  Gender
   email                   String @unique
