@@ -15,7 +15,7 @@ export const locationSchema = Joi.object({
 });
 
 //Schema for validating Coaching Schedule.
-export const coachingSchedule = Joi.object({
+export const coachingScheduleSchema = Joi.object({
     coachingDays: Joi.array().required(),
     coachingTime: Joi.string().min(3).max(10).required(),
     coachingDuration: Joi.string().min(1).max(10).required()

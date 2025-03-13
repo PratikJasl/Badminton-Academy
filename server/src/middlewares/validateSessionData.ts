@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { locationSchema, coachingPlanSchema  } from "../schema/sessionSchems";
+import { locationSchema, coachingPlanSchema, coachingScheduleSchema  } from "../schema/sessionSchems";
 import { ERROR_MESSAGES } from "../common/messages";
 
 //Validate the data for the location send from the client.
@@ -73,7 +73,7 @@ export async function validateCoachingScheduleData(req: Request, res: Response, 
             return;
         }
 
-        const {error, value} = await coachingPlanSchema.validateAsync(req.body);
+        const {error, value} = await coachingScheduleSchema.validateAsync(req.body);
 
         if(error){
             res.status(400).json({success: "false", message: ERROR_MESSAGES.VALIDATION_FAILED, details: error.details});
