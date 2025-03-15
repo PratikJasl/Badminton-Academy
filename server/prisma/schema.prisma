@@ -34,6 +34,7 @@ model User {
   joinDate                DateTime   @default(now())
   membershipStatus        membershipStatus @default(active)
   attendance              Attendance[]
+  payment                 Payment[]
 }
 
 model Location {
@@ -75,6 +76,15 @@ model Attendance {
   @@unique([userId, coachingScheduleId, attendanceDate])
 }
 
+model Payment {
+  paymentId               Int @id @default(autoincrement())
+  userId                  Int
+  user                    User @relation(fields: [userId], references: [userId])
+  paymentDate             DateTime
+  paymentAmount           Int
+  paymentStatus           paymentStatus @default(pending)
+}
+
 enum AttendanceStatus {
   present
   absent
@@ -95,4 +105,9 @@ enum Gender {
   male
   female
   other
+}
+
+enum paymentStatus {
+  paid
+  pending
 }
