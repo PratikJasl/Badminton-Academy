@@ -59,3 +59,33 @@ export async function addCoachingPlan(req: Request, res: Response){
         return;
     }
 }
+
+//Add a new coaching schedule to the database.
+export async function addCoachingSchedule(req: Request, res: Response){
+    const {
+        coachingDays,
+        coachingTime,
+        coachingDuration
+    } = req.body;
+
+    if(!coachingDays || !coachingTime || !coachingDuration){
+        res.status(400).json({success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
+        return;
+    }
+
+    try {
+        let newCoachingSchedule = await prisma.coachingSchedule.create({
+            data:{
+                coachingDays: coachingDays,
+                coachingTime: coachingTime,
+                coachingDuration: coachingDuration
+            }
+        })
+
+        res.status(200).json({success: "true", message: SUCCESS_MESSAGES.COACHING_PLAN_ADDED, detail: newCoachingSchedule});
+        return;
+        
+    } catch (error) {
+        
+    }
+}

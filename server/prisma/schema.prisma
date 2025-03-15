@@ -23,7 +23,7 @@ model User {
   password                String
   role                    Roles
   locationId              Int 
-  Location         Location @relation(fields: [locationId], references: [locationId]) //one-to-Many, one location many users
+  Location                Location @relation(fields: [locationId], references: [locationId]) //one-to-Many, one location many users
   coachingPlanId          Int
   coachingPlan            CoachingPlan @relation(fields: [coachingPlanId], references: [coachingPlanId]) //one-to-Many, one Plan many Users
   otpVerificationCode     String @default("")
@@ -51,7 +51,6 @@ model CoachingPlan {
   name                    String
   description             String
   planDuration            String
-  planEndDate             DateTime
   price                   Decimal
   users                   User[]
 }
