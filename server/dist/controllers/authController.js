@@ -23,8 +23,8 @@ const messages_1 = require("../common/messages");
 const prisma = new client_1.PrismaClient();
 function signUp(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        let { fullName, age, gender, email, phone, password, role, joinDate, primaryLocation, coachingPlan } = req.body;
-        console.log(fullName, age, gender, email, phone, password, role, joinDate, primaryLocation, coachingPlan);
+        let { fullName, age, gender, email, phone, password, role, joinDate, Location, coachingPlan } = req.body;
+        console.log(fullName, age, gender, email, phone, password, role, joinDate, Location, coachingPlan);
         try {
             //Check for existing Users
             let existingUser = yield prisma.user.findUnique({
@@ -50,7 +50,7 @@ function signUp(req, res) {
                     password: hashedPassword,
                     role: role,
                     joinDate: joinDate,
-                    primaryLocation: primaryLocation,
+                    Location: Location,
                     coachingPlan: coachingPlan
                 }
             });

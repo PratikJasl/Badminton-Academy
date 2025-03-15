@@ -9,6 +9,7 @@ export const ERROR_MESSAGES = {
     USER_NOT_FOUND: 'User not found.',
     INVALID_AGE: 'Age must be greater than 0.',
     INVALID_PASSWORD: 'Password must meet the required criteria.',
+    INVALID_LOCATION_ID: 'Invalid Location ID'
   };
 
   export const SUCCESS_MESSAGES = {

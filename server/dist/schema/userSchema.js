@@ -15,6 +15,6 @@ exports.userSchema = joi_1.default.object({
     password: joi_1.default.string().min(4).max(20).required(),
     role: joi_1.default.string().required(),
     joinDate: joi_1.default.date(),
-    primaryLocation: joi_1.default.string(),
-    coachingPlan: joi_1.default.string()
+    Location: joi_1.default.number(),
+    coachingPlan: joi_1.default.number()
 });

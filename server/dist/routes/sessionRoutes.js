@@ -8,3 +8,4 @@ const sessionRouter = (0, express_1.Router)();
 exports.sessionRouter = sessionRouter;
 sessionRouter.post('/session/add-location', validateSessionData_1.validateLocationData, sessionController_1.addLocation);
 sessionRouter.post('/session/add-coaching-plan', validateSessionData_1.validateCoachingPlanData, sessionController_1.addCoachingPlan);
+sessionRouter.post('/session/add-coaching-schedule', validateSessionData_1.validateCoachingScheduleData, sessionController_1.addCoachingSchedule);

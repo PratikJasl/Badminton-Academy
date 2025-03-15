@@ -12,12 +12,12 @@ export async function validateUserData(req: Request, res: Response, next: NextFu
         password,
         role,
         joinDate,
-        primaryLocation,
+        Location,
         coachingPlan
     } = req.body;
 
     try {
-        if(!fullName || !age || !gender || !email || !phone || !password || !role || !joinDate || !primaryLocation || !coachingPlan){
+        if(!fullName || !age || !gender || !email || !phone || !password || !role || !joinDate || !Location || !coachingPlan){
             res.status(400).json({ success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
             return
         }

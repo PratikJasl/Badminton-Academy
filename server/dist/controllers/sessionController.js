@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addLocation = addLocation;
 exports.addCoachingPlan = addCoachingPlan;
+exports.addCoachingSchedule = addCoachingSchedule;
 const client_1 = require("@prisma/client");
 const messages_1 = require("../common/messages");
 const prisma = new client_1.PrismaClient();
@@ -56,6 +57,31 @@ function addCoachingPlan(req, res) {
                 }
             });
             res.status(200).json({ success: "true", message: messages_1.SUCCESS_MESSAGES.COACHING_PLAN_ADDED, detail: newCoachingPlan });
+            return;
+        }
+        catch (error) {
+            res.status(500).json({ success: "false", message: messages_1.ERROR_MESSAGES.SERVER_ERROR, detail: error });
+            return;
+        }
+    });
+}
+//Add a new coaching schedule to the database.
+function addCoachingSchedule(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { coachingDays, coachingTime, coachingDuration } = req.body;
+        if (!coachingDays || !coachingTime || !coachingDuration) {
+            res.status(400).json({ success: "false", message: messages_1.ERROR_MESSAGES.MISSING_FIELD });
+            return;
+        }
+        try {
+            let newCoachingSchedule = yield prisma.coachingSchedule.create({
+                data: {
+                    coachingDays: coachingDays,
+                    coachingTime: coachingTime,
+                    coachingDuration: coachingDuration
+                }
+            });
+            res.status(200).json({ success: "true", message: messages_1.SUCCESS_MESSAGES.COACHING_PLAN_ADDED, detail: newCoachingSchedule });
             return;
         }
         catch (error) {

@@ -14,7 +14,7 @@ export async function validateLocationData(req: Request, res: Response, next: Ne
             res.status(400).json({ success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
             return;
         }
-
+        //Validate Location data against JOI Schema.
         const {error, value} = await locationSchema.validateAsync(req.body);
 
         if(error){
@@ -81,6 +81,7 @@ export async function validateCoachingScheduleData(req: Request, res: Response, 
         }
 
         next();
+        
     } catch (error) {
         res.status(500).json({success: "false", message: ERROR_MESSAGES.SERVER_ERROR, details: error});
         return;

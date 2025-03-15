@@ -11,8 +11,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateLocationData = validateLocationData;
 exports.validateCoachingPlanData = validateCoachingPlanData;
-const locationSchema_1 = require("../schema/locationSchema");
-const coachingPlanSchema_1 = require("../schema/coachingPlanSchema");
+exports.validateCoachingScheduleData = validateCoachingScheduleData;
+const sessionSchems_1 = require("../schema/sessionSchems");
 const messages_1 = require("../common/messages");
 //Validate the data for the location send from the client.
 function validateLocationData(req, res, next) {
@@ -23,7 +23,7 @@ function validateLocationData(req, res, next) {
                 res.status(400).json({ success: "false", message: messages_1.ERROR_MESSAGES.MISSING_FIELD });
                 return;
             }
-            const { error, value } = yield locationSchema_1.locationSchema.validateAsync(req.body);
+            const { error, value } = yield sessionSchems_1.locationSchema.validateAsync(req.body);
             if (error) {
                 res.status(400).json({ success: "false", message: messages_1.ERROR_MESSAGES.VALIDATION_FAILED, details: error.details });
                 return;
@@ -45,7 +45,29 @@ function validateCoachingPlanData(req, res, next) {
                 res.status(400).json({ success: "false", message: messages_1.ERROR_MESSAGES.MISSING_FIELD });
                 return;
             }
-            const { error, value } = yield coachingPlanSchema_1.coachingPlanSchema.validateAsync(req.body);
+            const { error, value } = yield sessionSchems_1.coachingPlanSchema.validateAsync(req.body);
+            if (error) {
+                res.status(400).json({ success: "false", message: messages_1.ERROR_MESSAGES.VALIDATION_FAILED, details: error.details });
+                return;
+            }
+            next();
+        }
+        catch (error) {
+            res.status(500).json({ success: "false", message: messages_1.ERROR_MESSAGES.SERVER_ERROR, details: error });
+            return;
+        }
+    });
+}
+//Validate the data for the coaching schedule send from the client.
+function validateCoachingScheduleData(req, res, next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { coachingDays, coachingTime, coachingDuration } = req.body;
+        try {
+            if (!coachingDays || !coachingTime || !coachingDuration) {
+                res.status(400).json({ success: "false", message: messages_1.ERROR_MESSAGES.MISSING_FIELD });
+                return;
+            }
+            const { error, value } = yield sessionSchems_1.coachingScheduleSchema.validateAsync(req.body);
             if (error) {
                 res.status(400).json({ success: "false", message: messages_1.ERROR_MESSAGES.VALIDATION_FAILED, details: error.details });
                 return;

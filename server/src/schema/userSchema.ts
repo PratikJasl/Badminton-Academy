@@ -10,8 +10,8 @@ export const userSchema = Joi.object({
   password: Joi.string().min(4).max(20).required(),
   role: Joi.string().required(),
   joinDate: Joi.date(),
-  primaryLocation: Joi.string(),
-  coachingPlan: Joi.string()
+  Location: Joi.number(),
+  coachingPlan: Joi.number()
 });
 
 // Data-Type frat for the incoming Data.

@@ -15,12 +15,12 @@ export async function addLocation(req: Request, res: Response){
     try {
         let newLocation = await prisma.location.create({
             data:{
-                name: name,
-                address: address
+                name: name.trim(),
+                address: address.trim()
             }
         })
 
-        res.status(200).json({success: "true", message: SUCCESS_MESSAGES.LOCATION_ADDED, detail: newLocation});
+        res.status(201).json({success: "true", message: SUCCESS_MESSAGES.LOCATION_ADDED, detail: newLocation});
         return
     } catch (error) {
         res.status(500).json({ success: "false", message: ERROR_MESSAGES.SERVER_ERROR, detail: error });
@@ -44,14 +44,14 @@ export async function addCoachingPlan(req: Request, res: Response){
     try {
         let newCoachingPlan = await prisma.coachingPlan.create({
             data:{
-                name: name,
-                description: description,
-                planDuration: planDuration,
+                name: name.trim(),
+                description: description.trim(),
+                planDuration: planDuration.trim(),
                 price: price
             }
         })
 
-        res.status(200).json({success: "true", message: SUCCESS_MESSAGES.COACHING_PLAN_ADDED, detail: newCoachingPlan});
+        res.status(201).json({success: "true", message: SUCCESS_MESSAGES.COACHING_PLAN_ADDED, detail: newCoachingPlan});
         return;
         
     } catch (error) {
@@ -65,27 +65,42 @@ export async function addCoachingSchedule(req: Request, res: Response){
     const {
         coachingDays,
         coachingTime,
-        coachingDuration
+        coachingDuration,
+        locationId
     } = req.body;
 
-    if(!coachingDays || !coachingTime || !coachingDuration){
+    if(!coachingDays || !coachingTime || !coachingDuration || !locationId){
         res.status(400).json({success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
         return;
     }
 
     try {
+        let location = await prisma.location.findUnique({
+            where: {locationId: locationId}
+        })
+
+        if (!location) {
+            res.status(400).json({ success: "false", message: ERROR_MESSAGES.INVALID_LOCATION_ID});
+            return
+        }
+
+
         let newCoachingSchedule = await prisma.coachingSchedule.create({
             data:{
                 coachingDays: coachingDays,
-                coachingTime: coachingTime,
-                coachingDuration: coachingDuration
+                coachingTime: coachingTime.trim(),
+                coachingDuration: coachingDuration.trim(),
+                location: {
+                    connect: {locationId: locationId}
+                }
             }
         })
 
-        res.status(200).json({success: "true", message: SUCCESS_MESSAGES.COACHING_PLAN_ADDED, detail: newCoachingSchedule});
+        res.status(201).json({success: "true", message: SUCCESS_MESSAGES.COACHING_PLAN_ADDED, detail: newCoachingSchedule});
         return;
         
     } catch (error) {
-        
+        res.status(500).json({ success: "false", message: ERROR_MESSAGES.SERVER_ERROR, detail: error });
+        return;
     }
 }

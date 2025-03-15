@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { addLocation, addCoachingPlan } from "../controllers/sessionController";
-import { validateCoachingPlanData, validateLocationData } from "../middlewares/validateSessionData";
+import { addLocation, addCoachingPlan, addCoachingSchedule } from "../controllers/sessionController";
+import { validateCoachingPlanData, validateCoachingScheduleData, validateLocationData } from "../middlewares/validateSessionData";
 
 const sessionRouter = Router();
 
@@ -8,6 +8,6 @@ sessionRouter.post('/session/add-location',validateLocationData, addLocation);
 
 sessionRouter.post('/session/add-coaching-plan', validateCoachingPlanData, addCoachingPlan);
 
-sessionRouter.post('/session/add-coaching-schedule');
+sessionRouter.post('/session/add-coaching-schedule', validateCoachingScheduleData, addCoachingSchedule);
 
 export {sessionRouter}

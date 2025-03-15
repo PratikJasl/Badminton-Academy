@@ -9,8 +9,8 @@ import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 const prisma = new PrismaClient();
 
 export async function signUp(req: Request, res: Response) {
-    let {fullName, age, gender, email, phone, password, role, joinDate, primaryLocation, coachingPlan} = req.body;
-    console.log(fullName, age, gender, email, phone, password, role, joinDate, primaryLocation, coachingPlan);
+    let {fullName, age, gender, email, phone, password, role, joinDate, Location, coachingPlan} = req.body;
+    console.log(fullName, age, gender, email, phone, password, role, joinDate, Location, coachingPlan);
     try {
         //Check for existing Users
         let existingUser = await prisma.user.findUnique({
@@ -37,7 +37,7 @@ export async function signUp(req: Request, res: Response) {
                 password: hashedPassword,
                 role: role,
                 joinDate: joinDate,
-                primaryLocation: primaryLocation,
+                Location: Location,
                 coachingPlan: coachingPlan
             }
         });

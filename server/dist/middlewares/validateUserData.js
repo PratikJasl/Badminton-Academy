@@ -14,9 +14,9 @@ const userSchema_1 = require("../schema/userSchema");
 const messages_1 = require("../common/messages");
 function validateUserData(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { fullName, age, gender, email, phone, password, role, joinDate, primaryLocation, coachingPlan } = req.body;
+        const { fullName, age, gender, email, phone, password, role, joinDate, Location, coachingPlan } = req.body;
         try {
-            if (!fullName || !age || !gender || !email || !phone || !password || !role || !joinDate || !primaryLocation || !coachingPlan) {
+            if (!fullName || !age || !gender || !email || !phone || !password || !role || !joinDate || !Location || !coachingPlan) {
                 res.status(400).json({ success: "false", message: messages_1.ERROR_MESSAGES.MISSING_FIELD });
                 return;
             }

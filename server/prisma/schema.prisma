@@ -39,16 +39,15 @@ model User {
 
 model Location {
   locationId              Int @id @default(autoincrement())
-  name                    String
+  name                    String @unique
   address                 String
   primaryUsers            User[]
-  coachingSchedule        CoachingSchedule? @relation(fields: [coachingScheduleId], references: [coachingScheduleId]) //one-to-one, one Location one Schedule
-  coachingScheduleId      Int? @unique
+  coachingSchedule        CoachingSchedule? @relation
 }
 
 model CoachingPlan {
   coachingPlanId          Int @id @default(autoincrement())
-  name                    String
+  name                    String @unique
   description             String
   planDuration            String
   price                   Decimal
@@ -60,7 +59,8 @@ model CoachingSchedule {
   coachingDays            String[]
   coachingTime            String
   coachingDuration        String
-  location                Location? @relation
+  location                Location? @relation(fields: [locationId], references: [locationId])
+  locationId              Int @unique
   attendance              Attendance[]
 }
 
