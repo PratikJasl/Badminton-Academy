@@ -13,7 +13,7 @@ export const ERROR_MESSAGES = {
   };
 
   export const SUCCESS_MESSAGES = {
-    USER_CREATED: 'User created successfully',
+    USER_CREATED: 'New user created successfully',
     USER_LOGIN: 'User loged in successfully',
     LOCATION_ADDED: "New location added successfully",
     COACHING_PLAN_ADDED: "New coaching plan added successfully",
