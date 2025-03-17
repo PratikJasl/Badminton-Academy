@@ -1,2 +1,4 @@
 1. Trim the whitespace from string inputes before storing into the DB, to avoid extra space getting added.
 2. Keep Unique constratins in all table to avoid dublicate entries.
+
+suggesting new commit
