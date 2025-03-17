@@ -23,6 +23,7 @@ function validateLocationData(req, res, next) {
                 res.status(400).json({ success: "false", message: messages_1.ERROR_MESSAGES.MISSING_FIELD });
                 return;
             }
+            //Validate Location data against JOI Schema.
             const { error, value } = yield sessionSchems_1.locationSchema.validateAsync(req.body);
             if (error) {
                 res.status(400).json({ success: "false", message: messages_1.ERROR_MESSAGES.VALIDATION_FAILED, details: error.details });

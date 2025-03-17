@@ -26,11 +26,11 @@ function addLocation(req, res) {
         try {
             let newLocation = yield prisma.location.create({
                 data: {
-                    name: name,
-                    address: address
+                    name: name.trim(),
+                    address: address.trim()
                 }
             });
-            res.status(200).json({ success: "true", message: messages_1.SUCCESS_MESSAGES.LOCATION_ADDED, detail: newLocation });
+            res.status(201).json({ success: "true", message: messages_1.SUCCESS_MESSAGES.LOCATION_ADDED, detail: newLocation });
             return;
         }
         catch (error) {
@@ -50,13 +50,13 @@ function addCoachingPlan(req, res) {
         try {
             let newCoachingPlan = yield prisma.coachingPlan.create({
                 data: {
-                    name: name,
-                    description: description,
-                    planDuration: planDuration,
+                    name: name.trim(),
+                    description: description.trim(),
+                    planDuration: planDuration.trim(),
                     price: price
                 }
             });
-            res.status(200).json({ success: "true", message: messages_1.SUCCESS_MESSAGES.COACHING_PLAN_ADDED, detail: newCoachingPlan });
+            res.status(201).json({ success: "true", message: messages_1.SUCCESS_MESSAGES.COACHING_PLAN_ADDED, detail: newCoachingPlan });
             return;
         }
         catch (error) {
@@ -68,20 +68,30 @@ function addCoachingPlan(req, res) {
 //Add a new coaching schedule to the database.
 function addCoachingSchedule(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { coachingDays, coachingTime, coachingDuration } = req.body;
-        if (!coachingDays || !coachingTime || !coachingDuration) {
+        const { coachingDays, coachingTime, coachingDuration, locationId } = req.body;
+        if (!coachingDays || !coachingTime || !coachingDuration || !locationId) {
             res.status(400).json({ success: "false", message: messages_1.ERROR_MESSAGES.MISSING_FIELD });
             return;
         }
         try {
+            let location = yield prisma.location.findUnique({
+                where: { locationId: locationId }
+            });
+            if (!location) {
+                res.status(400).json({ success: "false", message: messages_1.ERROR_MESSAGES.INVALID_LOCATION_ID });
+                return;
+            }
             let newCoachingSchedule = yield prisma.coachingSchedule.create({
                 data: {
                     coachingDays: coachingDays,
-                    coachingTime: coachingTime,
-                    coachingDuration: coachingDuration
+                    coachingTime: coachingTime.trim(),
+                    coachingDuration: coachingDuration.trim(),
+                    location: {
+                        connect: { locationId: locationId }
+                    }
                 }
             });
-            res.status(200).json({ success: "true", message: messages_1.SUCCESS_MESSAGES.COACHING_PLAN_ADDED, detail: newCoachingSchedule });
+            res.status(201).json({ success: "true", message: messages_1.SUCCESS_MESSAGES.COACHING_PLAN_ADDED, detail: newCoachingSchedule });
             return;
         }
         catch (error) {
