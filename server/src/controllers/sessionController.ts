@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 //Add a new location to the database.
 export async function addLocation(req: Request, res: Response){
     const { name, address } = req.body;
+    
     if(!name || !address){
         res.status(400).json({success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
         return;
