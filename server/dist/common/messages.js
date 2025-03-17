@@ -12,9 +12,10 @@ exports.ERROR_MESSAGES = {
     USER_NOT_FOUND: 'User not found.',
     INVALID_AGE: 'Age must be greater than 0.',
     INVALID_PASSWORD: 'Password must meet the required criteria.',
+    INVALID_LOCATION_ID: 'Invalid Location ID'
 };
 exports.SUCCESS_MESSAGES = {
-    USER_CREATED: 'User created successfully',
+    USER_CREATED: 'New user created successfully',
     USER_LOGIN: 'User loged in successfully',
     LOCATION_ADDED: "New location added successfully",
     COACHING_PLAN_ADDED: "New coaching plan added successfully",
