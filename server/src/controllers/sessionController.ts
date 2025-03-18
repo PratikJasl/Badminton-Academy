@@ -64,18 +64,20 @@ export async function addCoachingPlan(req: Request, res: Response){
 //Add a new coaching schedule to the database.
 export async function addCoachingSchedule(req: Request, res: Response){
     const {
+        coachingBatch,
         coachingDays,
         coachingTime,
         coachingDuration,
         locationId
     } = req.body;
 
-    if(!coachingDays || !coachingTime || !coachingDuration || !locationId){
+    if(!coachingBatch || !coachingDays || !coachingTime || !coachingDuration || !locationId){
         res.status(400).json({success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
         return;
     }
 
     try {
+        //Check if the location ID exists.
         let location = await prisma.location.findUnique({
             where: {locationId: locationId}
         })
@@ -85,9 +87,10 @@ export async function addCoachingSchedule(req: Request, res: Response){
             return
         }
 
-
+        //Add new coaching Schedule and link it with location-ID
         let newCoachingSchedule = await prisma.coachingSchedule.create({
             data:{
+                coachingBatch: coachingBatch,
                 coachingDays: coachingDays,
                 coachingTime: coachingTime.trim(),
                 coachingDuration: coachingDuration.trim(),

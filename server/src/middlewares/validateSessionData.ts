@@ -62,13 +62,14 @@ export async function validateCoachingPlanData(req: Request, res: Response, next
 //Validate the data for the coaching schedule send from the client.
 export async function validateCoachingScheduleData(req: Request, res: Response, next: NextFunction): Promise<void>{
     const {
+        coachingBatch,
         coachingDays,
         coachingTime,
         coachingDuration
     } = req.body
 
     try {
-        if(!coachingDays || !coachingTime || !coachingDuration){
+        if(!coachingBatch || !coachingDays || !coachingTime || !coachingDuration){
             res.status(400).json({ success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
             return;
         }
