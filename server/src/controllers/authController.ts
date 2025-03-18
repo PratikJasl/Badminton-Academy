@@ -9,7 +9,8 @@ import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 const prisma = new PrismaClient();
 
 export async function signUp(req: Request, res: Response) {
-    let {fullName, 
+    let {
+        fullName, 
         dob, 
         gender, 
         email, 
@@ -17,12 +18,12 @@ export async function signUp(req: Request, res: Response) {
         password, 
         role, 
         joinDate, 
-        Location, 
-        coachingPlan, 
-        planStartDate,
-        planEndDate
+        locationId, 
+        coachingPlanId, 
+        planEndDate,
+        planStartDate
     } = req.body;
-    // console.log(fullName, age, gender, email, phone, password, role, joinDate, Location, coachingPlan);
+    
     try {
         //Check for existing Users
         let existingUser = await prisma.user.findUnique({
@@ -31,10 +32,29 @@ export async function signUp(req: Request, res: Response) {
             }
         })
 
-        // console.log("Existing User", existingUser);
         if(existingUser){
             res.status(400).json({success: "false", message: ERROR_MESSAGES.EXISTING_USER});
             return;
+        }
+
+        //Check for existing location
+        let location = await prisma.location.findUnique({
+            where: {locationId: locationId}
+        })
+
+        if (!location) {
+            res.status(400).json({ success: "false", message: ERROR_MESSAGES.INVALID_LOCATION_ID});
+            return
+        }
+
+        //Check for existing Coaching Plan
+        let coachingPlan = await prisma.coachingPlan.findUnique({
+            where: {coachingPlanId: coachingPlanId}
+        })
+
+        if( !coachingPlan){
+            res.status(400).json({ success: "false", message: ERROR_MESSAGES.INVALID_COACHING_PLAN_ID});
+            return
         }
 
         //Hash Password and store the user data
@@ -50,8 +70,12 @@ export async function signUp(req: Request, res: Response) {
                 password: hashedPassword,
                 role: role,
                 joinDate: joinDate,
-                Location: Location,
-                coachingPlan: coachingPlan,
+                Location: {
+                    connect: {locationId: locationId}
+                },
+                coachingPlan: {
+                    connect: {coachingPlanId: coachingPlanId}
+                },
                 planEndDate: planEndDate,
                 planStartDate: planStartDate
             }
