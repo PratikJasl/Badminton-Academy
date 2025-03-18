@@ -1,3 +1,4 @@
+import { coachingBatch } from "@prisma/client";
 import Joi from "joi";
 
 //Schema for validating Coaching Locations.
@@ -16,7 +17,9 @@ export const coachingPlanSchema = Joi.object({
 
 //Schema for validating Coaching Schedule.
 export const coachingScheduleSchema = Joi.object({
+    coachingBatch: Joi.string().required().trim(),
     coachingDays: Joi.array().required(),
     coachingTime: Joi.string().min(3).max(10).required().trim(),
-    coachingDuration: Joi.string().min(1).max(10).required().trim()
+    coachingDuration: Joi.string().min(1).max(10).required().trim(),
+    locationId: Joi.number().required()
 });

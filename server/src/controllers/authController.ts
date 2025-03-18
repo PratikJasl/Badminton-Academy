@@ -9,8 +9,20 @@ import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 const prisma = new PrismaClient();
 
 export async function signUp(req: Request, res: Response) {
-    let {fullName, age, gender, email, phone, password, role, joinDate, Location, coachingPlan} = req.body;
-    console.log(fullName, age, gender, email, phone, password, role, joinDate, Location, coachingPlan);
+    let {fullName, 
+        dob, 
+        gender, 
+        email, 
+        phone, 
+        password, 
+        role, 
+        joinDate, 
+        Location, 
+        coachingPlan, 
+        planStartDate,
+        planEndDate
+    } = req.body;
+    // console.log(fullName, age, gender, email, phone, password, role, joinDate, Location, coachingPlan);
     try {
         //Check for existing Users
         let existingUser = await prisma.user.findUnique({
@@ -18,7 +30,8 @@ export async function signUp(req: Request, res: Response) {
                 email: email,
             }
         })
-        console.log("Existing User", existingUser);
+
+        // console.log("Existing User", existingUser);
         if(existingUser){
             res.status(400).json({success: "false", message: ERROR_MESSAGES.EXISTING_USER});
             return;
@@ -30,7 +43,7 @@ export async function signUp(req: Request, res: Response) {
         let newUser = await prisma.user.create({
             data:{
                 fullName: fullName,
-                age: age,
+                dob: dob,
                 gender: gender,
                 email: email,
                 phone: phone,
@@ -38,7 +51,9 @@ export async function signUp(req: Request, res: Response) {
                 role: role,
                 joinDate: joinDate,
                 Location: Location,
-                coachingPlan: coachingPlan
+                coachingPlan: coachingPlan,
+                planEndDate: planEndDate,
+                planStartDate: planStartDate
             }
         });
         console.log("New user created");

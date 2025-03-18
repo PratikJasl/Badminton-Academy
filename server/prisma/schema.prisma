@@ -50,7 +50,7 @@ model Location {
   name                    String @unique
   address                 String
   primaryUsers            User[]
-  coachingSchedule        CoachingSchedule? @relation
+  coachingSchedule        CoachingSchedule[]
 }
 
 model CoachingPlan {
@@ -64,11 +64,12 @@ model CoachingPlan {
 
 model CoachingSchedule {
   coachingScheduleId      Int @id @default(autoincrement())
+  coachingBatch           coachingBatch
   coachingDays            String[]
   coachingTime            String
   coachingDuration        String
   location                Location? @relation(fields: [locationId], references: [locationId])
-  locationId              Int @unique
+  locationId              Int
   attendance              Attendance[]
 }
 
@@ -118,4 +119,11 @@ enum Gender {
 enum paymentStatus {
   paid
   pending
+}
+
+enum coachingBatch {
+  kidsStandard
+  kidsPremium
+  adultsStandard
+  adultsPremium
 }
