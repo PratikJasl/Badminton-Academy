@@ -5,19 +5,23 @@ import { ERROR_MESSAGES } from "../common/messages";
 export async function validateUserData(req: Request, res: Response, next: NextFunction): Promise<void>{
     const {
         fullName,
-        age,
+        dob,
         gender,
         email,
         phone,
         password,
         role,
         joinDate,
-        Location,
-        coachingPlan
+        locationId,
+        coachingPlanId,
+        planEndDate,
+        planStartDate
     } = req.body;
 
+    console.log(req.body);
+    
     try {
-        if(!fullName || !age || !gender || !email || !phone || !password || !role || !joinDate || !Location || !coachingPlan){
+        if(!fullName || !dob || !gender || !email || !phone || !password || !role || !joinDate || !locationId || !coachingPlanId || !planEndDate || !planStartDate){
             res.status(400).json({ success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
             return
         }
