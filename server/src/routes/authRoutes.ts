@@ -1,14 +1,14 @@
 import { Router } from "express";
 import { validateUserData } from "../middlewares/validateUserData";
-import { signUp } from "../controllers/authController";
+import { logIn, logOut, signUp } from "../controllers/authController";
 
 const authRouter = Router();
 
 authRouter.post('/auth/signup',validateUserData, signUp);
 
-authRouter.post('/auth/login');
+authRouter.post('/auth/login', logIn);
 
-authRouter.post('/auth/logout');
+authRouter.post('/auth/logout', logOut);
 
 authRouter.post('/auth/verify-otp');
 
