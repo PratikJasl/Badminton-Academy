@@ -33,7 +33,7 @@ export async function signUp(req: Request, res: Response) {
         })
 
         if(existingUser){
-            res.status(400).json({success: "false", message: ERROR_MESSAGES.EXISTING_USER});
+            res.status(400).json({success: "false", message: ERROR_MESSAGES.USER_ALREADY_EXISTS});
             return;
         }
 
@@ -107,7 +107,7 @@ export async function signUp(req: Request, res: Response) {
         }
         await transporter.sendMail(mailOptions);
 
-        res.status(200).json({success: true, message: SUCCESS_MESSAGES.USER_CREATED});
+        res.status(201).json({success: true, message: SUCCESS_MESSAGES.USER_CREATED, details: newUser });
         return;
         
     } catch (error) {
@@ -117,9 +117,61 @@ export async function signUp(req: Request, res: Response) {
 }
 
 export async function logIn(req: Request, res: Response) {
-    
+    let {email, password} = req.body;
+
+    if(!email || !password){
+        res.status(400).json({success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
+        return
+    }
+
+    try {
+        let user = await prisma.user.findUnique({
+            where: {
+                email: email
+            }
+        });
+
+        if(!user){
+            res.status(400).json({success: "false", message: ERROR_MESSAGES.USER_NOT_FOUND});
+            return
+        }
+
+        //Compare Password, and generate JWT token, and send it in cookies.
+        if(user){
+            const isMatch = await bcrypt.compare(password, user.password);
+
+            if(!isMatch){
+               res.status(400).json({success: "false", message: ERROR_MESSAGES.INCORRECT_PASSWORD, details: isMatch}); 
+               return;
+            }
+
+            const token = jwt.sign({ id: user.userId}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
+
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+                maxAge: 7 * 24 * 60 * 60 * 1000
+            }).json({success: "true", message: SUCCESS_MESSAGES.USER_LOGIN});
+            return;
+        }
+    } catch (error) {
+        res.json(500).json({success: "false", message: ERROR_MESSAGES.SERVER_ERROR, detatils: error});
+        return
+    }
 }
 
 export async function logOut(req: Request, res: Response) {
-    
+    //Clear the clients cookies.
+    try {
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+        }).json({success: "true", message: SUCCESS_MESSAGES.USER_LOGOUT});
+        return;
+    } catch (error) {
+        res.json(500).json({success: "false", message: ERROR_MESSAGES.SERVER_ERROR, detatils: error});
+        return; 
+    }
 }
