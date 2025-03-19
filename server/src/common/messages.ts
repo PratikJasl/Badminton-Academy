@@ -15,6 +15,7 @@ export const ERROR_MESSAGES = {
     INVALID_COACHING_PLAN_ID: 'Invalid Coaching Plan ID',
     INVALID_OTP: 'Invalid OTP',
     OTP_EXPIRED: 'OTP Expired',
+    NO_DATA_FOUND: 'No data found'
   };
 
   export const SUCCESS_MESSAGES = {
@@ -28,5 +29,7 @@ export const ERROR_MESSAGES = {
     RESET_PASSWORD_EMAIL_SEND: 'Reset Password OTP Send Successfully',
     EMAIL_VERIFIED: 'Email verified succeddsully',
     PASSWORD_RESET_SUCCESS: 'Password has been reset successfully',
-    
+    LOCATION_DATA_FETCHED: 'Location data fetched successfully',
+    PLAN_DATA_FETCHED: 'Coaching plan data fetched successfully',
+    SCHEDULE_DATA_FETCHED: 'Coaching schedule data fetched successfully',
   }
