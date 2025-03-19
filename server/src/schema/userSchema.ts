@@ -6,17 +6,17 @@ export const userSchema = Joi.object({
   dob: Joi.date().required(),
   gender: Joi.string().valid('male', 'female', 'other').required(),
   email: Joi.string().email().required(),
-  phone: Joi.string().min(10).max(15).required(),
+  phone: Joi.string().length(10).required(),
   password: Joi.string().min(4).max(20).required(),
-  role: Joi.string().required(),
-  joinDate: Joi.date(),
-  locationId: Joi.number(),
-  coachingPlanId: Joi.number(),
-  planEndDate: Joi.date(),
-  planStartDate: Joi.date(),
+  role: Joi.string().valid('student', 'coach', 'admin').required(),
+  joinDate: Joi.date().required(),
+  locationId: Joi.number().required(),
+  coachingPlanId: Joi.number().required(),
+  planEndDate: Joi.date().required(),
+  planStartDate: Joi.date().required(),
 });
 
-// Data-Type frat for the incoming Data.
+// Data-Type format for the incoming Data.
 export interface userData {
     fullName: string,
     age: number,
