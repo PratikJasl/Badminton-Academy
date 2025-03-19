@@ -32,17 +32,11 @@ model User {
   membershipStatus        membershipStatus @default(active)
   attendance              Attendance[]
   payment                 Payment[]
-  Authtication            Authentication ? @relation()
-}
-
-model Authentication {
   otpVerificationCode     String @default("")
   otpVerificationExpiry   DateTime @default(now())
   isVerified              Boolean @default(false)
   otpResetCode            String @default("")
   otpResetExpiry          DateTime @default(now())
-  user                    User @relation(fields: [userId], references: [userId])
-  userId                  Int @unique
 }
 
 model Location {
