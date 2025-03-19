@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { coachingBatch, PrismaClient } from "@prisma/client";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
+import { coachingPlanSchema } from "../schema/sessionSchems";
 
 const prisma = new PrismaClient();
 
@@ -106,5 +107,59 @@ export async function addCoachingSchedule(req: Request, res: Response){
     } catch (error) {
         res.status(500).json({ success: "false", message: ERROR_MESSAGES.SERVER_ERROR, detail: error });
         return;
+    }
+}
+
+//Fetch locations from the database.
+export async function getLocation(req: Request, res: Response){
+    try {
+        let locations = await prisma.location.findMany()
+
+        if(!locations){
+            res.status(400).json({status: "false", message: ERROR_MESSAGES.NO_DATA_FOUND});
+            return;
+        }
+
+        res.status(200).json({data: locations, status: "true", message: SUCCESS_MESSAGES.LOCATION_DATA_FETCHED });
+        return;
+    } catch (error) {
+        res.status(500).json({ success: "false", message: ERROR_MESSAGES.SERVER_ERROR, detail: error });
+        return; 
+    }
+}
+
+//Fetch coaching plans from the database.
+export async function getCoachingPlan(req: Request, res: Response){
+    try {
+        let coachingPlan = await prisma.coachingPlan.findMany()
+
+        if(!coachingPlan){
+            res.status(400).json({status: "false", message: ERROR_MESSAGES.NO_DATA_FOUND});
+            return;
+        }
+
+        res.status(200).json({data: coachingPlan, status: "true", message: SUCCESS_MESSAGES.PLAN_DATA_FETCHED });
+        return;
+    } catch (error) {
+        res.status(500).json({ success: "false", message: ERROR_MESSAGES.SERVER_ERROR, detail: error });
+        return; 
+    }
+}
+
+//Fetch coaching schedule from the database.
+export async function getCoachingSchedule(req: Request, res: Response){
+    try {
+        let coachingSchedule = await prisma.coachingSchedule.findMany()
+
+        if(!coachingSchedule){
+            res.status(400).json({ status: "false", message: ERROR_MESSAGES.NO_DATA_FOUND });
+            return;
+        }
+
+        res.status(200).json({ data: coachingSchedule, status: "true", message: SUCCESS_MESSAGES.SCHEDULE_DATA_FETCHED });
+        return;
+    } catch (error) {
+        res.status(500).json({ success: "false", message: ERROR_MESSAGES.SERVER_ERROR, detail: error });
+        return; 
     }
 }
