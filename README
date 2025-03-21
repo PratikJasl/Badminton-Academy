@@ -1,0 +1,22 @@
+***Badminton Academy Web Application***
+
+1.	***Functional Requirements***
+    1)	**Role-Based Access Control (RBAC):** Define roles with specific permissions: students, coaches, and admins. 
+    2)	**User Management:** Store and manage detailed user profiles (name, contact, role, etc.). 
+    3)	**Attendance Tracking:** Track student attendance for each session. 
+    4)	**Payment Tracking:** Monitor student payments, with automated updates on payment due dates and status. 
+    5)	**Coach Management:** Allow admins to add and manage coach details (name, experience, availability). 
+    6)	**Location Management:** Enable coaches to add and manage training locations. 
+    7)	**Coaching Plans:** Allow coaches to create and modify coaching plans. 
+    8)	**Coaching Schedule Management:** Enable coaches to add, update, and manage training schedules. 
+    9)	**Attendance Marking by Coaches:** Allow coaches to mark student attendance for each session. 
+    10)	**Payment Tracking by Coaches:** Allow coaches to track and update payment statuses for students.
+
+2.	***Non-Functional Requirements***
+    1)	**Data persistence:** Persist the user payment and attendance data.
+    2)	**Security:** ensure user data is protected.
+    3)	**Reliability:** Ensure high availability and failover mechanisms to keep the system running smoothly even during maintenance or unexpected issues.
+
+3.	***System Constraints***
+    1)	**MVP (Minimum Viable Product):** Focus on creating the most important features first.
+    2)	**Limited resources:** Only 2 developers available.
