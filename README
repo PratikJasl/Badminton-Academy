@@ -1,6 +1,6 @@
-# ***Badminton Academy Web Application***
+# Badminton Academy Web Application
 
-## ***Functional Requirements***
+## Functional Requirements
 1) **Role-Based Access Control (RBAC):** Define roles with specific permissions: students, coaches, and admins.
 2) **User Management:** Store and manage detailed user profiles (name, contact, role, etc.).
 3) **Attendance Tracking:** Track student attendance for each session.
@@ -12,11 +12,11 @@
 9) **Attendance Marking by Coaches:** Allow coaches to mark student attendance for each session.
 10) **Payment Tracking by Coaches:** Allow coaches to track and update payment statuses for students.
 
-## ***Non-Functional Requirements***
+## Non-Functional Requirements
 1) **Data persistence:** Persist the user payment and attendance data.
 2) **Security:** Ensure user data is protected.
 3) **Reliability:** Ensure high availability and failover mechanisms to keep the system running smoothly even during maintenance or unexpected issues.
 
-## ***System Constraints***
+## System Constraints
 1) **MVP (Minimum Viable Product):** Focus on creating the most important features first.
 2) **Limited resources:** Only 2 developers available.
