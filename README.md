@@ -20,3 +20,21 @@
 ## System Constraints
 1) **MVP (Minimum Viable Product):** Focus on creating the most important features first.
 2) **Limited resources:** Only 2 developers available.
+
+
+## Sequence Diagram
+•	The sequence diagram entails the below mentioned details:
+
+1)	It describes all the different entities involved in the system.
+
+2)	It describes all the API endpoints our system will contain.
+
+3)	It describes the different HTTP methods to be used along with the endpoints.
+
+4)	It describes all the use cases for which our system will be used for.
+
+5)	It describes all the different data formats being shared between the different entities.
+
+6)	It describes the data flow between the different entities of the system.
+
+![Sequence Diagram](./client/src/assets/Badminton%20Academy%20Sequence%20Diagram.png)
