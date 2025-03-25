@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { coachingBatch, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 
 const prisma = new PrismaClient();

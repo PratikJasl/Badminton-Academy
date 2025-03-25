@@ -1,18 +1,34 @@
-import Joi from "joi";
+import * as yup from "yup"
 
-export const userSchema = Joi.object({
-    fullName: Joi.string().min(3).max(50).required().messages({'string.empty': 'Full Name is required',}),
-    dob: Joi.date().required().max('now').messages({'date.base': 'Date of Birth is required', 'date.max': 'Date of Birth must be in the past',}),
-    gender: Joi.string().valid('male', 'female', 'other').required().messages({'any.required': 'Gender is required',}),
-    email: Joi.string().email({ tlds: { allow: true } }).required().messages({'string.email': 'Invalid email format', 'any.required': 'Email is required',}),
-    phone: Joi.string().length(10).pattern(/^[0-9]+$/).required().messages({'string.length': 'Phone number must be 10 digits', 'string.pattern.base': 'Phone number must contain only digits', 'any.required': 'Phone number is required',}),
-    password: Joi.string().min(4).max(20).required().messages({'string.min': 'Password must be at least 6 characters', 'string.max': 'Password must be within 20 characters', 'any.required': 'Password is required',}),
-    role: Joi.string().valid('student', 'coach', 'admin').required().messages({'any.required': 'Role is required',}),
-    locationId: Joi.number().required().messages({'any.required': 'Location is required',}),
-    coachingPlanId: Joi.number().required().messages({'any.required': 'Coaching Plan is required',}),
-    joinDate: Joi.date().required().messages({'date.base': 'Join Date is required',}),
-    planStartDate: Joi.date().required().messages({'date.base': 'Plan Start Date is required',}),
-    planEndDate: Joi.date().required().messages({'date.base': 'Plan End Date is required',}),
+export const userSchema = yup.object({
+    fullName: yup.string()
+        .min(3, 'Full Name must be at least 3 characters')
+        .max(50, 'Full Name must be at most 50 characters')
+        .required('Full Name is required'),
+    dob: yup.date()
+        .required('Date of Birth is required')
+        .max(new Date(), 'Date of Birth must be in the past'),
+    gender: yup.string()
+        .oneOf(['male', 'female', 'other'], 'Invalid gender')
+        .required('Gender is required'),
+    email: yup.string()
+        .email('Invalid email format')
+        .required('Email is required'),
+    phone: yup.string()
+        .length(10, 'Phone number must be 10 digits')
+        .matches(/^[0-9]+$/, 'Phone number must contain only digits')
+        .required('Phone number is required'),
+    password: yup.string()
+        .min(4, 'Password must be at least 4 characters')
+        .max(20, 'Password must be at most 20 characters')
+        .required('Password is required'),
+    role: yup.string()
+        .oneOf(['student', 'coach', 'admin'], 'Invalid Role')
+        .required('Role is required'),
+    locationId: yup.number()
+        .required('Location is required'),
+    coachingPlanId: yup.number()
+        .required('Coaching Plan is required'),
 });
 
 export type SignUpFromData = {
@@ -25,7 +41,4 @@ export type SignUpFromData = {
     role: string;
     locationId: number;
     coachingPlanId: number;
-    joinDate: string;
-    planStartDate: string;
-    planEndDate: string;
 }

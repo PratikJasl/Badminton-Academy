@@ -1,171 +1,116 @@
-import { useForm, Controller } from "react-hook-form"
-import { joiResolver } from "@hookform/resolvers/joi"
-import { userSchema, SignUpFromData } from "../schema/userSchema"
+import { useForm } from "react-hook-form"
+import { userSchema } from "../schema/userSchema";
+import { yupResolver } from "@hookform/resolvers/yup"
+
 
 function SignUp(){
+    const { register, handleSubmit, formState: {errors} } = useForm({
+        resolver: yupResolver(userSchema),
+      })
 
-    const { control, handleSubmit, formState: {errors} } = useForm<SignUpFromData>({
-        resolver: joiResolver(userSchema),
-    })
+    const today = new Date().toISOString().split('T')[0];
 
-    const onSubmit = (data: SignUpFromData) => {
-        console.log('Form Data:', data);
-    };
+    const onSubmit = (data: any) => console.log(data)
 
     return(
-        <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-            <label>Full Name</label>
-            <Controller
-            name="fullName"
-            control={control}
-            render={({ field }) => <input {...field} />}
-            />
-            {errors.fullName && <p>{errors.fullName.message}</p>}
-        </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 w-fit shadow-lg p-10 m-5 rounded-2xl">
 
-        <div>
-            <label>Date of Birth</label>
-            <Controller
-            name="dob"
-            control={control}
-            render={({ field }) => <input type="date" {...field} />}
-            />
-            {errors.dob && <p>{errors.dob.message}</p>}
-        </div>
+            <h1 className="text-3xl font-bold text-blue-600 ">SignUp</h1>
 
-        <div>
-            <label>Gender</label>
-            <Controller
-            name="gender"
-            control={control}
-            render={({ field }) => (
-                <div>
-                <label>
-                    <input {...field} type="radio" value="male" /> Male
-                </label>
-                <label>
-                    <input {...field} type="radio" value="female" /> Female
-                </label>
-                <label>
-                    <input {...field} type="radio" value="other" /> Other
-                </label>
-                </div>
-            )}
+            <input 
+                id="fullName" 
+                type="text" 
+                placeholder="Full Name" 
+                {...register("fullName", { required: true, maxLength: 50, minLength: 3})}
+                className="shadow-lg p-2 rounded-lg"
             />
-            {errors.gender && <p>{errors.gender.message}</p>}
-        </div>
+            <p>{errors.fullName?.message}</p>
 
-        <div>
-            <label>Email</label>
-            <Controller
-            name="email"
-            control={control}
-            render={({ field }) => <input type="email" {...field} />}
+            <input 
+                id="email" 
+                type="email" 
+                placeholder="Email" 
+                {...register("email", {required: true, pattern: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/})}
+                className="shadow-lg p-2 rounded-lg"
             />
-            {errors.email && <p>{errors.email.message}</p>}
-        </div>
+            {errors.email?.message}
 
-        <div>
-            <label>Phone</label>
-            <Controller
-            name="phone"
-            control={control}
-            render={({ field }) => <input {...field} />}
+            <input 
+                id="phone" 
+                type="number" 
+                placeholder="Phone Number" 
+                {...register("phone", {required: true, min: 10, max:10, pattern: /^[0-9]+$/})}
+                className="shadow-lg p-2 rounded-lg"
             />
-            {errors.phone && <p>{errors.phone.message}</p>}
-        </div>
+            {errors.phone?.message}
 
-        <div>
-            <label>Password</label>
-            <Controller
-            name="password"
-            control={control}
-            render={({ field }) => <input type="password" {...field} />}
+            <input 
+                id="dob" 
+                type="text"
+                placeholder="Date of Birth"
+                onFocus={(e) => (e.target.type = 'date')}
+                {...register('dob', {
+                    required: 'Date of birth is required',
+                    max: {
+                      value: today,
+                      message: 'Date of birth cannot be in the future',
+                    },
+                    onBlur: (e) => {
+                      if (!e.target.value) {
+                        e.target.type = 'text';
+                      }
+                    },
+                  })}
+                max={today}
+                className="shadow-lg p-2 rounded-lg"
             />
-            {errors.password && <p>{errors.password.message}</p>}
-        </div>
+            <p>{errors.dob?.message}</p>
 
-        <div>
-            <label>Role</label>
-            <Controller
-            name="role"
-            control={control}
-            render={({ field }) => (
-                <select {...field}>
-                <option value="student">Student</option>
-                <option value="coach">Coach</option>
-                <option value="admin">Admin</option>
-                </select>
-            )}
+            <select 
+                id="locationId" 
+                {...register("locationId")}
+                className="shadow-lg p-2 rounded-lg"
+                >
+                <option value="female">option1</option>
+                <option value="male">option2</option>
+                <option value="other">option3</option>
+            </select>
+            <p>{errors.locationId?.message}</p>
+
+            <select 
+                id="coachingPlanId"     
+                {...register("coachingPlanId")}
+                className="shadow-lg p-2 rounded-lg"
+                >
+                <option value="female">option1</option>
+                <option value="male">option2</option>
+                <option value="other">option3</option>
+            </select>
+            <p>{errors.coachingPlanId?.message}</p>
+
+            <input 
+                id="password"
+                type="text"
+                placeholder="Password" 
+                {...register("password",{required: true, min: 4, max: 20})}
+                className="shadow-lg p-2 rounded-lg"
             />
-            {errors.role && <p>{errors.role.message}</p>}
-        </div>
+            <p>{errors.password?.message}</p>
 
-        <div>
-            <label>Location ID</label>
-            <Controller
-            name="locationId"
-            control={control}
-            render={({ field }) => (
-                <select {...field}>
-                {/* Assuming you will populate these options dynamically */}
-                <option value={1}>New York</option>
-                <option value={2}>Los Angeles</option>
-                </select>
-            )}
+            <input 
+                id="password"
+                type="text"
+                placeholder="Re-Enter Password" 
+                {...register("password",{required: true, min: 4, max: 20})}
+                className="shadow-lg p-2 rounded-lg"
             />
-            {errors.locationId && <p>{errors.locationId.message}</p>}
-        </div>
-
-        <div>
-            <label>Coaching Plan ID</label>
-            <Controller
-            name="coachingPlanId"
-            control={control}
-            render={({ field }) => (
-                <select {...field}>
-                {/* Assuming you will populate these options dynamically */}
-                <option value={1}>Basic Plan</option>
-                <option value={2}>Premium Plan</option>
-                </select>
-            )}
-            />
-            {errors.coachingPlanId && <p>{errors.coachingPlanId.message}</p>}
-        </div>
-
-        <div>
-            <label>Join Date</label>
-            <Controller
-            name="joinDate"
-            control={control}
-            render={({ field }) => <input type="date" {...field} />}
-            />
-            {errors.joinDate && <p>{errors.joinDate.message}</p>}
-        </div>
-
-        <div>
-            <label>Plan Start Date</label>
-            <Controller
-            name="planStartDate"
-            control={control}
-            render={({ field }) => <input type="date" {...field} />}
-            />
-            {errors.planStartDate && <p>{errors.planStartDate.message}</p>}
-        </div>
-
-        <div>
-            <label>Plan End Date</label>
-            <Controller
-            name="planEndDate"
-            control={control}
-            render={({ field }) => <input type="date" {...field} />}
-            />
-            {errors.planEndDate && <p>{errors.planEndDate.message}</p>}
-        </div>
-
-        <button type="submit">Sign Up</button>
-    </form>
+            
+            <button 
+                type="submit"
+                className="shadow-lg p-2 rounded-lg bg-blue-700 text-white font-bold">
+                Submit
+            </button>
+        </form>
     )
 }
 
