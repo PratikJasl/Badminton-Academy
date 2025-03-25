@@ -5,11 +5,13 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { useEffect, useState } from "react";
 import { getLocation } from "../services/locationService";
 import { getCoachingPlan } from "../services/coachingPlanService";
+import { Navigate } from "react-router-dom";
 
 
 function SignUp(){
     const [locations, setLocations] = useState<{locationId: number; name: string }[]>([]);
     const [coachingPlan, setCoachingPlan] = useState<{coachingPlanId: number; name: string}[]>([]);
+    const [redirect, setRedirect] = useState(false);
 
     const { register, handleSubmit, formState: {errors} } = useForm({
         resolver: yupResolver(userSchema),
@@ -51,41 +53,50 @@ function SignUp(){
     }, [])
 
     const Register = async (data: any) => {
-        console.log("control reached within onSubmit");
-        console.log("Form data has been submitted:", data);
-
-        // try {
-        //     const response = await axios.post("http://localhost:3000/api/auth/signup",
-        //     data,
-        //     {
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //       },
-        //       withCredentials: true,
-        //     }
-        //   );
-        //   console.log("Signup successful:", response.data);
+        const { confirmPassword, ...dataToSend} = data;
+        dataToSend.role = "student";
+        let response;
+        try {
+            response = await axios.post("http://localhost:3000/api/auth/signup",
+            dataToSend,
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              withCredentials: true,
+            }
+          );
+           if(response.status == 201){
+                setRedirect(true);
+                alert("SignUp Successful");
+           }else{
+                alert(response.data.message);
+           }
           
-        // } catch (error) {
-        //   if (axios.isAxiosError(error)) {
-        //     console.error("Signup failed:", error.response?.data || error.message);
-        //   } else {
-        //     console.error("An unexpected error occurred:", error);
-        //   }
-        // }
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+                alert(error.response.data.message);
+            } else {
+                console.error("An unexpected error occurred:", error);
+                alert("An unexpected error occurred. Please try again.");
+            }
+        }
     };
 
+    if(redirect){
+        return <Navigate to={'/'} />
+    }
     return(
-        <form onSubmit={handleSubmit(Register)} className="flex flex-col gap-3 lg:w-96 w-80 shadow-lg shadow-gray-600 p-10 m-5 rounded-2xl">
+        <form onSubmit={handleSubmit(Register)} className="flex flex-col gap-3 lg:w-96 w-80 mt-20 shadow-lg shadow-white p-10 m-5 rounded-2xl">
 
-            <h1 className="text-3xl font-bold text-blue-600 ">SignUp</h1>
+            <h1 className="text-3xl font-bold text-blue-600 mb-2 ">SignUp</h1>
 
             <input 
                 id="fullName" 
                 type="text" 
                 placeholder="Full Name" 
                 {...register("fullName")}
-                className="shadow-lg p-2 rounded-lg relative"
+                className="shadow-lg p-2 rounded-lg bg-white text-black"
             />
             {errors.fullName && (
                 <p className="text-sm text-red-700 bg-red-100 p-2 rounded-md mt-1 left-0 w-full">
@@ -99,7 +110,7 @@ function SignUp(){
                 type="email"
                 placeholder="Email"
                 {...register("email")}
-                className="shadow-lg p-2 rounded-lg"
+                className="shadow-lg p-2 rounded-lg bg-white text-black"
             />
             {errors.email && (
                 <p className="text-sm text-red-700 bg-red-100 p-2 rounded-md mt-1 left-0 w-full">
@@ -112,7 +123,7 @@ function SignUp(){
                 type="text"
                 placeholder="Phone Number"
                 {...register("phone")}
-                className="shadow-lg p-2 rounded-lg"
+                className="shadow-lg p-2 rounded-lg bg-white text-black"
             />
             {errors.phone && (
                 <p className="text-sm text-red-700 bg-red-100 p-2 rounded-md mt-1 left-0 w-full">
@@ -127,7 +138,7 @@ function SignUp(){
                 onFocus={(e) => (e.target.type = 'date')}
                 {...register('dob')}
                 max={today}
-                className="shadow-lg p-2 rounded-lg"
+                className="shadow-lg p-2 rounded-lg bg-white text-black"
             />
             {errors.dob && (
                 <p className="text-sm text-red-700 bg-red-100 p-2 rounded-md mt-1 left-0 w-full">
@@ -138,7 +149,7 @@ function SignUp(){
             <select 
                 id="locationId" 
                 {...register("locationId", {valueAsNumber: true})} 
-                className="shadow-lg p-2 rounded-lg"
+                className="shadow-lg p-2 rounded-lg bg-white text-black"
             >
                 <option value="">Select a location</option>
                 {locations.map((location) => (
@@ -156,7 +167,7 @@ function SignUp(){
             <select 
                 id="coachingPlanId" 
                 {...register("coachingPlanId", {valueAsNumber: true})} 
-                className="shadow-lg p-2 rounded-lg"
+                className="shadow-lg p-2 rounded-lg bg-white text-black"
             >
                 <option value="">Select a Coaching Plan</option>
                 {coachingPlan.map((coachingPlan) =>(
@@ -176,7 +187,7 @@ function SignUp(){
                 type="password"
                 placeholder="Password"
                 {...register("password")}
-                className="shadow-lg p-2 rounded-lg"
+                className="shadow-lg p-2 rounded-lg bg-white text-black"
             />
             {errors.password && (
                 <p className="text-sm text-red-700 bg-red-100 p-2 rounded-md mt-1 left-0 w-full">
@@ -189,7 +200,7 @@ function SignUp(){
                 type="password"
                 placeholder="Re-Enter Password"
                 {...register("confirmPassword")}
-                className="shadow-lg p-2 rounded-lg"
+                className="shadow-lg p-2 rounded-lg bg-white text-black"
             />
             {errors.confirmPassword && (
                 <p className="text-sm text-red-700 bg-red-100 p-2 rounded-md mt-1 left-0 w-full">

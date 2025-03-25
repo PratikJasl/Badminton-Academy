@@ -21,6 +21,8 @@ export async function signUp(req: Request, res: Response) {
         password, 
         role,   
     } = req.body;
+
+    console.log("request body:", req.body);
     
     try {
         //Check for existing Users
@@ -35,7 +37,7 @@ export async function signUp(req: Request, res: Response) {
             return;
         }
 
-        //Check for existing location
+        //Check for valid location
         let location = await prisma.location.findUnique({
             where: {locationId: locationId}
         })
@@ -45,7 +47,7 @@ export async function signUp(req: Request, res: Response) {
             return
         }
 
-        //Check for existing Coaching Plan
+        //Check for valid Coaching Plan
         let coachingPlan = await prisma.coachingPlan.findUnique({
             where: {coachingPlanId: coachingPlanId}
         })
@@ -96,7 +98,7 @@ export async function signUp(req: Request, res: Response) {
         }
         await transporter.sendMail(mailOptions);
 
-        res.status(201).json({success: true, message: SUCCESS_MESSAGES.USER_CREATED, details: newUser });
+        res.status(201).json({ success: true, message: SUCCESS_MESSAGES.USER_CREATED, details: newUser });
         return;
         
     } catch (error) {
@@ -109,7 +111,7 @@ export async function logIn(req: Request, res: Response) {
     let {email, password} = req.body;
 
     if(!email || !password){
-        res.status(400).json({success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
+        res.status(400).json({ success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
         return
     }
 
@@ -121,7 +123,7 @@ export async function logIn(req: Request, res: Response) {
         });
 
         if(!user){
-            res.status(400).json({success: "false", message: ERROR_MESSAGES.USER_NOT_FOUND});
+            res.status(400).json({ success: "false", message: ERROR_MESSAGES.USER_NOT_FOUND});
             return
         }
 
@@ -130,7 +132,7 @@ export async function logIn(req: Request, res: Response) {
             const isMatch = await bcrypt.compare(password, user.password);
 
             if(!isMatch){
-               res.status(400).json({success: "false", message: ERROR_MESSAGES.INCORRECT_PASSWORD, details: isMatch}); 
+               res.status(400).json({ success: "false", message: ERROR_MESSAGES.INCORRECT_PASSWORD, details: isMatch}); 
                return;
             }
 

@@ -19,7 +19,7 @@ export async function addLocation(req: Request, res: Response){
         let newLocation = await addNewLocation(name, address);
 
         if(!newLocation){
-            res.status(500).json({status: "false", message: ERROR_MESSAGES.NO_DATA_FOUND});
+            res.status(500).json({success: "false", message: ERROR_MESSAGES.NO_DATA_FOUND});
             return;
         }
 

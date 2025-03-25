@@ -8,8 +8,8 @@ export async function getLocation(){
             },
             withCredentials: true,
         });
-        // console.log("Full response:", response);
-        // console.log("Data received:", response.data);
+        console.log("Full response:", response.status);
+        console.log("Data received:", response.data.status);
 
         if (response.data && response.data.data && Array.isArray(response.data.data)) {
             return response.data.data; // Return the locations array
