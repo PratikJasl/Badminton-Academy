@@ -12,6 +12,7 @@ coachAdminRouter.get('/location', coachAdminController_1.getLocation);
 //Coaching Plan Routes:
 coachAdminRouter.post('/add-coaching-plan', coachingDataValidation_1.coachingPlanDataValidation, coachAdminController_1.addCoachingPlan);
 coachAdminRouter.get('/coaching-plan', coachAdminController_1.getCoachingPlan);
+coachAdminRouter.get('/coaching-plan-ids', coachAdminController_1.getCoachingPlanIds);
 //Coaching Schedule Routes:
 coachAdminRouter.post('/add-coaching-schedule', coachingDataValidation_1.coachingScheduleDataValidation, coachAdminController_1.addCoachingSchedule);
 coachAdminRouter.get('/coaching-schedule', coachAdminController_1.getCoachingSchedule);
