@@ -13,22 +13,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
+model User {
   userId                  Int @id @default(autoincrement())
   fullName                String
-  dob                     DateTime
-  gender                  Gender
   email                   String @unique
-  phone                   String 
-  password                String
-  role                    Roles
-  locationId              Int 
+  phone                   String
+  dob                     DateTime
+  gender                  Gender?
+  locationId              Int
   Location                Location @relation(fields: [locationId], references: [locationId]) //one-to-Many, one location many users
   coachingPlanId          Int
   coachingPlan            CoachingPlan @relation(fields: [coachingPlanId], references: [coachingPlanId]) //one-to-Many, one Plan many Users
-  joinDate                DateTime   @default(now())
-  planEndDate             DateTime
-  planStartDate           DateTime
+  password                String
+  role                    Roles
+  joinDate                DateTime @default(now())
+  planEndDate             DateTime?
+  planStartDate           DateTime?
   membershipStatus        membershipStatus @default(active)
   attendance              Attendance[]
   payment                 Payment[]
@@ -38,14 +38,13 @@ model Users {
   otpResetCode            String @default("")
   otpResetExpiry          DateTime @default(now())
 
-  @@map("Users")
 }
 
 model Location {
   locationId              Int @id @default(autoincrement())
   name                    String @unique
   address                 String
-  primaryUsers            Users[]
+  primaryUsers            User[]
   coachingSchedule        CoachingSchedule[]
 }
 
@@ -55,7 +54,7 @@ model CoachingPlan {
   description             String
   planDuration            String
   price                   Decimal
-  users                   Users[]
+  users                   User[]
 }
 
 model CoachingSchedule {
@@ -75,7 +74,7 @@ model Attendance {
   attendanceDate          DateTime
   userId                  Int
   coachingScheduleId      Int
-  user                    Users @relation(fields: [userId], references: [userId])
+  user                    User @relation(fields: [userId], references: [userId])
   coachingSchedule        CoachingSchedule @relation(fields: [coachingScheduleId], references: [coachingScheduleId])
   @@unique([userId, coachingScheduleId, attendanceDate])
 }
@@ -83,7 +82,7 @@ model Attendance {
 model Payment {
   paymentId               Int @id @default(autoincrement())
   userId                  Int
-  user                    Users @relation(fields: [userId], references: [userId])
+  user                    User @relation(fields: [userId], references: [userId])
   paymentDate             DateTime
   paymentAmount           Int
   isPaymentDone           paymentStatus @default(pending)

@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import transporter from "../config/nodeMailer";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
+import { addNewUser } from "../repository/userRepo";
 
 
 const prisma = new PrismaClient();
@@ -11,18 +12,14 @@ const prisma = new PrismaClient();
 //User On-boarding routes
 export async function signUp(req: Request, res: Response) {
     let {
-        fullName, 
-        dob, 
-        gender, 
+        fullName,
         email, 
         phone, 
-        password, 
-        role, 
-        joinDate, 
+        dob, 
         locationId, 
-        coachingPlanId, 
-        planEndDate,
-        planStartDate
+        coachingPlanId,
+        password, 
+        role,   
     } = req.body;
     
     try {
@@ -61,27 +58,18 @@ export async function signUp(req: Request, res: Response) {
         //Hash Password and store the user data
         let hashedPassword = await bcrypt.hash(password, 10);
         console.log("Hashed Password", hashedPassword);
-        let newUser = await prisma.users.create({
-            data:{
-                fullName: fullName,
-                dob: dob,
-                gender: gender,
-                email: email,
-                phone: phone,
-                password: hashedPassword,
-                role: role,
-                joinDate: joinDate,
-                Location: {
-                    connect: {locationId: locationId}
-                },
-                coachingPlan: {
-                    connect: {coachingPlanId: coachingPlanId}
-                },
-                planEndDate: planEndDate,
-                planStartDate: planStartDate
-            }
-        });
-        console.log("New user created");
+
+        let newUser = await addNewUser
+        (
+            fullName,
+            email, 
+            phone, 
+            dob, 
+            locationId, 
+            coachingPlanId,
+            password, 
+            role
+        )
 
         //Generate JWT token and send it in response cookies.
         let token = jwt.sign({ id: newUser.userId}, process.env.JWT_SECRET as string, {expiresIn: '7d'});

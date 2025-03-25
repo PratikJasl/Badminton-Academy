@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
-import { coachingBatch, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
+import { addNewLocation, getAllLocationIds } from "../repository/locationRepo";
+import { getAllCoachingPlanIds } from "../repository/coachingPlanRepo";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
-import { addNewLocation } from "../repository/locationRepo";
+
 
 const prisma = new PrismaClient();
 
@@ -15,13 +17,12 @@ export async function addLocation(req: Request, res: Response){
     }
 
     try {
-        // let newLocation = await prisma.location.create({
-        //     data:{
-        //         name: name.trim(),
-        //         address: address.trim()
-        //     }
-        // })
-        let newLocation=addNewLocation(name,address);
+        let newLocation = await addNewLocation(name, address);
+
+        if(!newLocation){
+            res.status(400).json({status: "false", message: ERROR_MESSAGES.NO_DATA_FOUND});
+            return;
+        }
 
         res.status(201).json({success: "true", message: SUCCESS_MESSAGES.LOCATION_ADDED, detail: newLocation});
         return
@@ -114,7 +115,7 @@ export async function addCoachingSchedule(req: Request, res: Response){
 //Fetch locations from the database.
 export async function getLocation(req: Request, res: Response){
     try {
-        let locations = await prisma.location.findMany()
+        let locations = await getAllLocationIds();
 
         if(!locations){
             res.status(400).json({status: "false", message: ERROR_MESSAGES.NO_DATA_FOUND});
@@ -140,6 +141,24 @@ export async function getCoachingPlan(req: Request, res: Response){
         }
 
         res.status(200).json({data: coachingPlan, status: "true", message: SUCCESS_MESSAGES.PLAN_DATA_FETCHED });
+        return;
+    } catch (error) {
+        res.status(500).json({ success: "false", message: ERROR_MESSAGES.SERVER_ERROR, detail: error });
+        return; 
+    }
+}
+
+//Fetch coaching plans id and Name from the database.
+export async function getCoachingPlanIds(req: Request, res: Response){
+    try {
+        let coachingPlanIds = await getAllCoachingPlanIds();
+
+        if(!coachingPlanIds){
+            res.status(400).json({status: "false", message: ERROR_MESSAGES.NO_DATA_FOUND});
+            return;
+        }
+
+        res.status(200).json({data: coachingPlanIds, status: "true", message: SUCCESS_MESSAGES.PLAN_DATA_FETCHED });
         return;
     } catch (error) {
         res.status(500).json({ success: "false", message: ERROR_MESSAGES.SERVER_ERROR, detail: error });

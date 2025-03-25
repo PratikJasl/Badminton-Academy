@@ -1,14 +1,26 @@
 import { PrismaClient } from "@prisma/client";
-const prisma=new PrismaClient();
 
+const prisma = new PrismaClient();
 
-export async function addNewLocation(name:String,address:String):Promise<String>{
-    const  newLocation=await prisma.location.create({
+export async function addNewLocation(name: string, address: string){
+    let newLocation = await prisma.location.create({
         data:{
-            name:name.trim(),
-            address:address.trim()
+            name: name.trim(),
+            address: address.trim()
         }
     })
 
-    return newLocation.name;
+    return newLocation;
+}
+
+export async function getAllLocationIds(){
+
+    let locations = await prisma.location.findMany({
+            select: {
+            locationId: true,
+            name: true
+        }
+    });
+    console.log("locations fetched:", locations);
+    return locations;
 }

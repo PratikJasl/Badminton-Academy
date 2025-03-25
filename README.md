@@ -22,7 +22,7 @@
 2) **Limited resources:** Only 2 developers available.
 
 
-## Sequence Diagram
+## SEQUENCE DIAGRAM
 •	The sequence diagram entails the below mentioned details:
 
 1)	It describes all the different entities involved in the system.
@@ -38,3 +38,42 @@
 6)	It describes the data flow between the different entities of the system.
 
 ![Sequence Diagram](./client/src/assets/Badminton%20Academy%20Sequence%20Diagram.png)
+
+
+## TECHINAL STACK
+
+1) **Client Side [Front-end]**
+    Technology Used: React.js, Tailwind CSS
+    Language: Typescript 
+    Version: 18.x
+    Libraries: Recoil [version: 0.7.x], React-charts, React-table, React hook forms
+
+2) **Business Logic [Back-end]**
+    Technology Used: Node.js  
+    Language: Typescript
+    Version: 20.18.0 LTS [NES can be added]
+    Framework: Express [version: 4.x]
+
+3) **Database**
+    Technology Used: Postgres SQL 2022
+    Version: 2022
+
+4) **Authentication and Authorization**
+    Technology Used: JWT Tokens along with Email OTP verification
+    Package: jsonwebtoken, node-mailer
+
+5)	**API Standard**
+    Technology Used: REST API’s
+
+6)	**Error Logging**
+    Error Logging system will be used in the backend.
+    Libraries like “Winston” can be used for Error Logging.
+
+
+## SYSTEM DESIGN
+
+![System Design](./client/src/assets/Badminton_Academy_System_Design.png)
+
+## DATABASE SCHEMA
+
+![DataBase Schema](./client/src/assets/Badminton_Acadmey_DB_DESIGN.png)
