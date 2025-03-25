@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Users {
   userId                  Int @id @default(autoincrement())
   fullName                String
   dob                     DateTime
@@ -37,13 +37,15 @@ model User {
   isVerified              Boolean @default(false)
   otpResetCode            String @default("")
   otpResetExpiry          DateTime @default(now())
+
+  @@map("Users")
 }
 
 model Location {
   locationId              Int @id @default(autoincrement())
   name                    String @unique
   address                 String
-  primaryUsers            User[]
+  primaryUsers            Users[]
   coachingSchedule        CoachingSchedule[]
 }
 
@@ -53,7 +55,7 @@ model CoachingPlan {
   description             String
   planDuration            String
   price                   Decimal
-  users                   User[]
+  users                   Users[]
 }
 
 model CoachingSchedule {
@@ -73,7 +75,7 @@ model Attendance {
   attendanceDate          DateTime
   userId                  Int
   coachingScheduleId      Int
-  user                    User @relation(fields: [userId], references: [userId])
+  user                    Users @relation(fields: [userId], references: [userId])
   coachingSchedule        CoachingSchedule @relation(fields: [coachingScheduleId], references: [coachingScheduleId])
   @@unique([userId, coachingScheduleId, attendanceDate])
 }
@@ -81,7 +83,7 @@ model Attendance {
 model Payment {
   paymentId               Int @id @default(autoincrement())
   userId                  Int
-  user                    User @relation(fields: [userId], references: [userId])
+  user                    Users @relation(fields: [userId], references: [userId])
   paymentDate             DateTime
   paymentAmount           Int
   isPaymentDone           paymentStatus @default(pending)

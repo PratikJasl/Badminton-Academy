@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { coachingBatch, PrismaClient } from "@prisma/client";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
+import { addNewLocation } from "../repository/locationRepo";
 
 const prisma = new PrismaClient();
 
@@ -14,12 +15,13 @@ export async function addLocation(req: Request, res: Response){
     }
 
     try {
-        let newLocation = await prisma.location.create({
-            data:{
-                name: name.trim(),
-                address: address.trim()
-            }
-        })
+        // let newLocation = await prisma.location.create({
+        //     data:{
+        //         name: name.trim(),
+        //         address: address.trim()
+        //     }
+        // })
+        let newLocation=addNewLocation(name,address);
 
         res.status(201).json({success: "true", message: SUCCESS_MESSAGES.LOCATION_ADDED, detail: newLocation});
         return

@@ -27,7 +27,7 @@ export async function signUp(req: Request, res: Response) {
     
     try {
         //Check for existing Users
-        let existingUser = await prisma.user.findUnique({
+        let existingUser = await prisma.users.findUnique({
             where:{
                 email: email,
             }
@@ -61,7 +61,7 @@ export async function signUp(req: Request, res: Response) {
         //Hash Password and store the user data
         let hashedPassword = await bcrypt.hash(password, 10);
         console.log("Hashed Password", hashedPassword);
-        let newUser = await prisma.user.create({
+        let newUser = await prisma.users.create({
             data:{
                 fullName: fullName,
                 dob: dob,
@@ -126,7 +126,7 @@ export async function logIn(req: Request, res: Response) {
     }
 
     try {
-        let user = await prisma.user.findUnique({
+        let user = await prisma.users.findUnique({
             where: {
                 email: email
             }
@@ -188,7 +188,7 @@ export async function sendVerifyOTP(req: Request, res: Response){
 
     try{
         //Check if the user exists.
-        const user = await prisma.user.findUnique({
+        const user = await prisma.users.findUnique({
             where:{
                 userId: userId
             }
@@ -208,7 +208,7 @@ export async function sendVerifyOTP(req: Request, res: Response){
         const OTP = String(Math.floor(100000 + Math.random() * 900000));
         const otpExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
         
-        await prisma.user.update({
+        await prisma.users.update({
             where:{
                 userId: userId,
             },
@@ -250,7 +250,7 @@ export async function verifyEmail(req: Request, res: Response){
     }
 
     try {
-        const user = await prisma.user.findUnique({
+        const user = await prisma.users.findUnique({
             where:{
                 userId: userId,
             }
@@ -272,7 +272,7 @@ export async function verifyEmail(req: Request, res: Response){
         }
 
         const date = new Date (Date.now());
-        await prisma.user.update({
+        await prisma.users.update({
             where:{
                 userId: userId,
             },
@@ -302,7 +302,7 @@ export async function sendResetPasswordOTP(req: Request, res: Response){
         }
 
         //Check if the user exists.
-        const user = await prisma.user.findUnique({
+        const user = await prisma.users.findUnique({
             where:{
                 email: email,
             }
@@ -317,7 +317,7 @@ export async function sendResetPasswordOTP(req: Request, res: Response){
         const OTP = String(Math.floor(100000 + Math.random() * 900000));
         const otpExpiry = new Date(Date.now() + 15 * 60 * 1000);
         
-        await prisma.user.update({
+        await prisma.users.update({
             where:{
                 email: email,
             },
@@ -360,7 +360,7 @@ export async function resetPassword(req: Request, res: Response){
 
     try {
         //Check if user exists.
-        let user = await prisma.user.findUnique({
+        let user = await prisma.users.findUnique({
             where:{
                 email: email
             }
@@ -386,7 +386,7 @@ export async function resetPassword(req: Request, res: Response){
         const date = new Date (Date.now());
         const newPassword = await bcrypt.hash(password, 10);
     
-        await prisma.user.update({
+        await prisma.users.update({
             where:{
                 email: email,
             },
