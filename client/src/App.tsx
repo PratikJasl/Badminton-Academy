@@ -5,7 +5,6 @@ function App() {
   return (
     <>
       <SignUp/>
-      <h1 className='text-3xl'>Vite + React</h1>
     </>
   )
 }
