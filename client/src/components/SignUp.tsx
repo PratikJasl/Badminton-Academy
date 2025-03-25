@@ -24,7 +24,11 @@ function SignUp(){
                 {...register("fullName", { required: true, maxLength: 50, minLength: 3})}
                 className="shadow-lg p-2 rounded-lg"
             />
-            <p>{errors.fullName?.message}</p>
+            
+            <p className="shadow-2xl shadow-gray-600 p-2 mt-2 bg-red-100 text-red-700 rounded-md">
+                {errors.fullName?.message}
+            </p>
+           
 
             <input 
                 id="email" 
@@ -107,7 +111,7 @@ function SignUp(){
             
             <button 
                 type="submit"
-                className="shadow-lg p-2 rounded-lg bg-blue-700 text-white font-bold">
+                className="shadow-lg p-2 rounded-lg bg-blue-700 text-white font-bold hover:bg-blue-600">
                 Submit
             </button>
         </form>
