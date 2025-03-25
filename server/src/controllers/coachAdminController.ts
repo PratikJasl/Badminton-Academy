@@ -19,7 +19,7 @@ export async function addLocation(req: Request, res: Response){
         let newLocation = await addNewLocation(name, address);
 
         if(!newLocation){
-            res.status(400).json({status: "false", message: ERROR_MESSAGES.NO_DATA_FOUND});
+            res.status(500).json({status: "false", message: ERROR_MESSAGES.NO_DATA_FOUND});
             return;
         }
 
@@ -40,7 +40,7 @@ export async function addCoachingPlan(req: Request, res: Response){
         } = req.body;
 
     if(!name || !description || !planDuration || !price){
-        res.status(400).json({success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
+        res.status(400).json({ success: "false", message: ERROR_MESSAGES.MISSING_FIELD });
         return;
     }
 
@@ -54,7 +54,7 @@ export async function addCoachingPlan(req: Request, res: Response){
             }
         })
 
-        res.status(201).json({success: "true", message: SUCCESS_MESSAGES.COACHING_PLAN_ADDED, detail: newCoachingPlan});
+        res.status(201).json({ success: "true", message: SUCCESS_MESSAGES.COACHING_PLAN_ADDED, detail: newCoachingPlan });
         return;
         
     } catch (error) {
