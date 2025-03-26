@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useForm } from "react-hook-form"
-import { userSchema } from "../schema/userSchema";
+import { signUpSchema } from "../schema/userSchema";
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useEffect, useState } from "react";
 import { getLocation } from "../services/locationService";
@@ -14,17 +14,7 @@ function SignUp(){
     const [redirect, setRedirect] = useState(false);
 
     const { register, handleSubmit, formState: {errors} } = useForm({
-        resolver: yupResolver(userSchema),
-        defaultValues: {
-            fullName: '',
-            email: '',
-            phone: '',
-            dob: undefined,
-            locationId: undefined,
-            coachingPlanId: undefined,
-            password: '',
-            confirmPassword: ''
-        }
+        resolver: yupResolver(signUpSchema),
     });
 
     const today = new Date().toISOString().split('T')[0];
@@ -84,7 +74,7 @@ function SignUp(){
     };
 
     if(redirect){
-        return <Navigate to={'/'} />
+        return <Navigate to={'/Login'} />
     }
     return(
         <form onSubmit={handleSubmit(Register)} className="flex flex-col gap-3 lg:w-96 w-80 mt-20 shadow-lg shadow-white p-10 m-5 rounded-2xl">
@@ -131,6 +121,22 @@ function SignUp(){
                 </p>
             )}
 
+            <select 
+                id="gender"
+                {...register("gender")}
+                className="shadow-lg p-2 rounded-lg bg-white text-gray-500"
+            >
+                <option value="">Select a Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+            {errors.gender && (
+                <p className="text-sm text-red-700 bg-red-100 p-2 rounded-md mt-1 left-0 w-full">
+                    {errors.gender?.message}
+                </p>
+            )}
+
             <input
                 id="dob" 
                 type="text"
@@ -146,9 +152,9 @@ function SignUp(){
                 </p>
             )}
 
-            <select 
-                id="locationId" 
-                {...register("locationId", {valueAsNumber: true})} 
+            <select
+                id="locationId"
+                {...register("locationId")}
                 className="shadow-lg p-2 rounded-lg bg-white text-black"
             >
                 <option value="">Select a location</option>
@@ -166,7 +172,7 @@ function SignUp(){
 
             <select 
                 id="coachingPlanId" 
-                {...register("coachingPlanId", {valueAsNumber: true})} 
+                {...register("coachingPlanId")} 
                 className="shadow-lg p-2 rounded-lg bg-white text-black"
             >
                 <option value="">Select a Coaching Plan</option>

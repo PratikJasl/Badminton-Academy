@@ -1,13 +1,18 @@
 import { useState } from "react";
-import { Bars3Icon } from "@heroicons/react/24/outline";
+import { Bars3Icon} from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { userInfoState } from "../atom/userAtom";
+import { useRecoilValue } from "recoil";
 import person from "../assets/person.png";
-// import male from "../assets/male.png";
-// import female from "../assets/female.png";
+import male from "../assets/male.png";
+import female from "../assets/female.png";
 
 
 function Navbar(){
     const [menuOpen, setMenuOpen] = useState(false);
+    const userInfo = useRecoilValue(userInfoState);
+
+    console.log("The user info received is:", userInfo);
 
     const toggleMenu = () =>{
         setMenuOpen(!menuOpen);
@@ -33,7 +38,12 @@ function Navbar(){
                 
                 <div className={`${ menuOpen ? "block fixed right-0 top-13 z-10 p-10 h-screen bg-gray-800 text-white" : "hidden"}`}>
                     <div className="flex flex-col items-center justify-center p-4 gap-5">
-                        <img className="rounded-full lg:h-25 lg:w-20 h-15 w-15 mb-5" src={person} alt="User"></img>
+                        <img 
+                            className="rounded-full lg:h-25 lg:w-20 h-15 w-15" 
+                            src={userInfo?.gender==='male'?male : userInfo?.gender === 'female'? female : userInfo?.gender ==='other' || !userInfo?.gender? person : person}  
+                            alt="User">
+                        </img>
+                        {userInfo?.fullName && <h1>{userInfo.fullName}</h1>}
                         <a href="#home" className="p-2 rounded-xl w-62 hover:bg-blue-500 bg-white text-black">Coaching Plan</a>
                         <a href="#services" className="p-2 rounded-xl w-62 hover:bg-blue-500 bg-white text-black">Coaching Schedule</a>
                         <a href="#testimonials" className="p-2 rounded-xl w-62 hover:bg-blue-500 bg-white text-black">Attendance</a>
