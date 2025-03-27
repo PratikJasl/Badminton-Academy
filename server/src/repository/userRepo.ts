@@ -6,7 +6,8 @@ const prisma = new PrismaClient();
 export async function addNewUser(
     fullName :string,
     email :string, 
-    phone :string, 
+    phone :string,
+    gender : Gender, 
     dob :Date, 
     locationId :number, 
     coachingPlanId :number,
@@ -18,6 +19,7 @@ export async function addNewUser(
             fullName: fullName,
             email: email,
             phone: phone,
+            gender: gender,
             dob: dob,
             Location: {
                 connect: {locationId: locationId}
@@ -34,3 +36,5 @@ export async function addNewUser(
     return newUser;
 }
 
+//Type of Gender.
+type Gender = "male" | "female" | "other";

@@ -1,4 +1,3 @@
-import { coachingBatch } from "@prisma/client";
 import Joi from "joi";
 
 // Schema for validating Coaching Locations.

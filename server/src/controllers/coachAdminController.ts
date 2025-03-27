@@ -35,6 +35,11 @@ export async function addCoachingPlan(req: Request, res: Response){
             price 
         } = req.body;
 
+    if(!name || !description || !planDuration || !price){
+        res.status(400).json({success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
+        return;
+    }
+
     try {
         let newCoachingPlan = await prisma.coachingPlan.create({
             data:{
@@ -44,8 +49,10 @@ export async function addCoachingPlan(req: Request, res: Response){
                 price: price
             }
         })
+
         res.status(201).json(successResponse(SUCCESS_MESSAGES.COACHING_PLAN_ADDED,newCoachingPlan));
-        return;    
+        return;
+        
     } catch (error) {
         console.log(error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));

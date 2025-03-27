@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-// import { locationSchema, planSchema, scheduleSchema  } from "../schema/coaching";
-import { coachingSchema } from "../schema/coachingSchema";
+import { coachingSchema  } from "../schema/coachingSchema";
 import { ERROR_MESSAGES } from "../common/messages";
 import { errorResponse } from "../common/apiResponse";
 

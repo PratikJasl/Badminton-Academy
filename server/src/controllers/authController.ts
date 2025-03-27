@@ -15,13 +15,16 @@ export async function signUp(req: Request, res: Response) {
     let {
         fullName,
         email, 
-        phone, 
+        phone,
+        gender, 
         dob, 
         locationId, 
         coachingPlanId,
         password, 
         role,   
     } = req.body;
+
+    console.log("request body:", req.body);
     
     try {
         //Check for existing Users
@@ -35,7 +38,7 @@ export async function signUp(req: Request, res: Response) {
             return;
         }
 
-        //Check for existing location
+        //Check for valid location
         let location = await prisma.location.findUnique({
             where: {locationId: locationId}
         })
@@ -45,7 +48,7 @@ export async function signUp(req: Request, res: Response) {
             return
         }
 
-        //Check for existing Coaching Plan
+        //Check for valid Coaching Plan
         let coachingPlan = await prisma.coachingPlan.findUnique({
             where: {coachingPlanId: coachingPlanId}
         })
@@ -63,16 +66,17 @@ export async function signUp(req: Request, res: Response) {
         (
             fullName,
             email, 
-            phone, 
+            phone,
+            gender, 
             dob, 
             locationId, 
             coachingPlanId,
-            password, 
+            hashedPassword, 
             role
         )
 
         //Generate JWT token and send it in response cookies.
-        let token = jwt.sign({ id: newUser.userId}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
+        let token = jwt.sign({ id: newUser.userId }, process.env.JWT_SECRET as string, {expiresIn: '7d'});
         console.log("Token", token);
 
         res.cookie('token', token, {
@@ -95,8 +99,10 @@ export async function signUp(req: Request, res: Response) {
              Pratik Jussal`
         }
         await transporter.sendMail(mailOptions);
+
         res.status(201).json(successResponse(SUCCESS_MESSAGES.USER_CREATED,newUser));
-        return;  
+        return;
+        
     } catch (error) {
         console.log(error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
@@ -106,9 +112,10 @@ export async function signUp(req: Request, res: Response) {
 
 export async function logIn(req: Request, res: Response) {
     let {email, password} = req.body;
+    console.log('received body in Login:', req.body);
 
     if(!email || !password){
-        res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
+        res.status(400).json({success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
         return
     }
 
@@ -120,27 +127,29 @@ export async function logIn(req: Request, res: Response) {
         });
 
         if(!user){
-            res.status(204).json(successResponse(SUCCESS_MESSAGES.USER_NOT_FOUND));
+            res.status(400).json({success: "false", message: ERROR_MESSAGES.USER_NOT_FOUND});
             return
         }
-
+        console.log("user info:", user);
         //Compare Password, and generate JWT token, and send it in cookies.
         if(user){
             const isMatch = await bcrypt.compare(password, user.password);
 
             if(!isMatch){
-               res.status(400).json(errorResponse(ERROR_MESSAGES.INCORRECT_PASSWORD,isMatch)); 
+               res.status(400).json({success: "false", message: ERROR_MESSAGES.INCORRECT_PASSWORD, details: isMatch}); 
                return;
             }
 
             const token = jwt.sign({ id: user.userId}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
+            const data = {fullName: user.fullName, role: user.role, gender: user.gender};
+            console.log("Data to send:", data);
 
             res.status(200).cookie('token', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
                 maxAge: 7 * 24 * 60 * 60 * 1000
-            }).json(successResponse(SUCCESS_MESSAGES.USER_LOGIN));
+            }).json(successResponse(SUCCESS_MESSAGES.USER_LOGIN,data));
             return;
         }
     } catch (error) {

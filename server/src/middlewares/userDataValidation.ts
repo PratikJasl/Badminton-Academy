@@ -3,7 +3,7 @@ import { userSchema } from "../schema/userSchema";
 import { ERROR_MESSAGES } from "../common/messages";
 import { errorResponse } from "../common/apiResponse";
 
-export async function validateUserData(req: Request, res: Response, next: NextFunction): Promise<void>{
+export async function userDataValidation(req: Request, res: Response, next: NextFunction): Promise<void>{
     const {
         fullName,
         email,

@@ -1,11 +1,21 @@
 import './App.css'
-import SignUp from './components/SignUp'
+import Home from './components/Home';
+import SignUp from './components/auth/SignUp'
+import LogIn from './components/auth/Login'
+import Navbar from './components/navbar/Navbar'
+import { Route, Routes } from 'react-router-dom'
+
 
 function App() {
   return (
-    <>
-      <SignUp/>
-    </>
+    <div className='h-screen flex items-center justify-center'>
+      <Navbar/>
+      <Routes>
+      <Route path='/' element= {<Home/>}></Route>
+        <Route path='/Signup' element= {<SignUp/>}></Route>
+        <Route path='/Login' element= {<LogIn/>}></Route>
+      </Routes>
+    </div>
   )
 }
 
