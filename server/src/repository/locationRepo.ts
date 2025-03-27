@@ -13,7 +13,7 @@ export async function addNewLocation(name: string, address: string){
     return newLocation;
 }
 
-export async function getAllLocationIds(){
+export async function getAllLocations(){
 
     let locations = await prisma.location.findMany({
             select: {
