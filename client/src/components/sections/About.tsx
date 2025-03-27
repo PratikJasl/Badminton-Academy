@@ -1,12 +1,54 @@
 import profileImage from "../../assets/carasol-1.png";
 import signature from "../../assets/signature.png";
 import { PhoneIcon } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
 
 function About(){
-    return(
-        <section id="about" className="max-w-7xl p-19">
-            <div className="lg:flex lg:flex-row lg:items-center lg:gap-5">
+    const [playersTrained, setPlayersTrained] = useState(0);
+    const [stateTournaments, setStateTournaments] = useState(0);
+    const [nationalTournaments, setNationalTournaments] = useState(0);
 
+    useEffect(()=>{
+        const playersCount = 200;
+        const stateCount = 50;
+        const nationalCount = 10;
+
+        // Count up animation for Players Trained
+        const countUpPlayers = setInterval(() => {
+            setPlayersTrained((prev) => {
+                if (prev < playersCount) return prev + 1;
+                clearInterval(countUpPlayers); // Stop once the count is reached
+                return playersCount;
+            });
+        }, 20); // Update every 20ms
+
+        // Count up animation for State Tournaments
+        const countUpState = setInterval(() => {
+            setStateTournaments((prev) => {
+                if (prev < stateCount) return prev + 1;
+                clearInterval(countUpState); // Stop once the count is reached
+                return stateCount;
+            });
+        }, 30); // Update every 30ms
+
+        // Count up animation for National Tournaments
+        const countUpNational = setInterval(() => {
+            setNationalTournaments((prev) => {
+                if (prev < nationalCount) return prev + 1;
+                clearInterval(countUpNational); // Stop once the count is reached
+                return nationalCount;
+            });
+        }, 50); // Update every 50ms
+
+        return () => {
+            clearInterval(countUpPlayers);
+            clearInterval(countUpState);
+            clearInterval(countUpNational);
+        };
+    },[])
+    return(
+        <section id="about" className="md:max-w-280 max-w-74 p-5">
+            <div className="lg:flex lg:flex-row lg:items-center lg:gap-5">
                 <div className="lg:h-120 lg:w-250 mb-10 border-10 border-white rounded-lg shadow-xl shadow-gray-600">
                     <img 
                         src={profileImage}
@@ -55,6 +97,22 @@ function About(){
                             </a>
                         </button>
                     </div>
+                </div>
+            </div>
+            <div className="flex lg:flex-row flex-col justify-between font-serif mt-10">
+                <div className="text-5xl p-10 text-center">
+                    {playersTrained}+
+                    <p className="text-2xl p-3">Players Trained</p>
+                </div>
+
+                <div className="text-5xl p-10 text-center">
+                    {stateTournaments}+
+                    <p className="text-2xl p-3">State Tournaments</p>
+                </div>
+
+                <div className="text-5xl p-10 text-center">
+                    {nationalTournaments}+
+                    <p className="text-2xl p-3">National Tournaments</p>
                 </div>
             </div>
         </section>

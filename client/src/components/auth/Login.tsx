@@ -50,7 +50,7 @@ function LogIn(){
         return <Navigate to={'/'} />
     }
     return(
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center gap-3 lg:w-96 w-80 shadow-lg shadow-white p-10 rounded-2xl">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center gap-3 lg:w-96 w-74 shadow-lg shadow-white p-10 rounded-2xl">
 
             <h1 className="text-3xl font-bold text-blue-600 mb-2 ">LogIn</h1>
 

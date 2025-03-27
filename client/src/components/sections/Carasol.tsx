@@ -46,8 +46,8 @@ function Carousel() {
   };
 
   return (
-    <section id="carousel" className="mt-180">
-      <div className="flex flex-row justify-center items-center shadow-lg shadow-gray-600 ">
+    <section id="carousel" className="mt-9">
+      <div className="flex flex-row justify-center items-center">
         {imageLinks.length > 0 && (
           <div className="flex flex-col justify-center relative">
             <img
