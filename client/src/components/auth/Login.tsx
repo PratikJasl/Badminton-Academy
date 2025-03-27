@@ -2,10 +2,10 @@ import axios from "axios";
 import { useForm } from "react-hook-form"
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
-import { loginSchema } from "../schema/userSchema";
+import { loginSchema } from "../../schema/userSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRecoilState} from "recoil";
-import { userInfoState } from "../atom/userAtom"
+import { userInfoState } from "../../atom/userAtom"
 
 
 function LogIn(){
