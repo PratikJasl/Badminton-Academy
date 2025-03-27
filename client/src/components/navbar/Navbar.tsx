@@ -20,10 +20,10 @@ function Navbar(){
 
     return(
         <>
-            <div className="flex flex-row justify-between items-center w-screen p-3 font-serif fixed top-0 bg-gray-800 z-10">
+            <div className="flex flex-row justify-between items-center font-serif fixed top-0 bg-gray-800 min-w-screen p-3 z-10">
                 
                 <div className="lg:text-2xl">
-                   <a href="#home">Badminton Academy</a>
+                   <a href="/">Badminton Academy</a>
                 </div>
 
                 {userInfo === null ?
