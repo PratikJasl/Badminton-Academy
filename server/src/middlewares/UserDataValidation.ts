@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { userSchema } from "../schema/userSchema";
 import { ERROR_MESSAGES } from "../common/messages";
 
-export async function validateUserData(req: Request, res: Response, next: NextFunction): Promise<void>{
+export async function UserDataValidation(req: Request, res: Response, next: NextFunction): Promise<void>{
     const {
         fullName,
         email,

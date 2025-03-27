@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { validateUserData } from "../middlewares/validateUserData";
+import { UserDataValidation } from "../middlewares/UserDataValidation";
 import { logIn, logOut, signUp, sendVerifyOTP, verifyEmail, sendResetPasswordOTP, resetPassword } from "../controllers/authController";
 import { userAuth } from "../middlewares/userAuth";
 
 const authRouter = Router();
 
-authRouter.post('/auth/signup',validateUserData, signUp);
+authRouter.post('/auth/signup',UserDataValidation, signUp);
 
 authRouter.post('/auth/login', logIn);
 

@@ -36,7 +36,7 @@ export async function addCoachingPlan(req: Request, res: Response){
     const { name, 
             description, 
             planDuration, 
-            price 
+            price
         } = req.body;
 
     if(!name || !description || !planDuration || !price){
