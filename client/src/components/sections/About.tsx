@@ -38,7 +38,7 @@ function About(){
                             </a>
                             <div className="flex items-center gap-2 hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out">
                                 <PhoneIcon className="h-6 w-6 text-blue-600" />
-                                <h3 className="text-lg">+91 8870018565</h3>
+                                <h3 className="text-lg">8870018565</h3>
                             </div>
                         </div>
 

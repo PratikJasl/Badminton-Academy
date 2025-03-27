@@ -1,11 +1,13 @@
-import Carousel from "./sections/carasol";
+import Carousel from "./sections/Carasol";
 import About from "./sections/About";
 
 function LandingPage(){
     return(
-        <>
-            <Carousel/>
-            <About/>
+        <>  
+            <div className="flex flex-col items-center justify-center">
+                <Carousel/>
+                <About/>
+            </div>
         </>
     )
 }
