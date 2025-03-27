@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Bars3Icon} from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { userInfoState } from "../atom/userAtom";
+import { userInfoState } from "../../atom/userAtom";
 import { useRecoilValue } from "recoil";
-import person from "../assets/person.png";
-import male from "../assets/male.png";
-import female from "../assets/female.png";
+import person from "../../assets/person.png";
+import male from "../../assets/male.png";
+import female from "../../assets/female.png";
 
 
 function Navbar(){
@@ -20,16 +20,16 @@ function Navbar(){
 
     return(
         <>
-            <div className="flex flex-row justify-between shadow-lg w-full p-2 font-serif fixed top-0 bg-gray-800 z-10">
+            <div className="flex flex-row justify-between items-center w-screen p-3 font-serif fixed top-0 bg-gray-800 z-10">
                 
-                <div className="text-xl font-semibold">
+                <div className="lg:text-2xl">
                    <a href="#home">Badminton Academy</a>
                 </div>
 
                 {userInfo === null ?
                     <div className="flex items-center gap-5">
-                        <a href="/Login" className="hover:text-blue-500 p-2 text-xl">Login</a>
-                        <a href="/Signup" className="hover:text-blue-500 p-2 text-xl">SignUp</a>
+                        <a href="/Login" className="hover:text-blue-500  lg:text-xl">Login</a>
+                        <a href="/Signup" className="hover:text-blue-500  lg:text-xl">SignUp</a>
                     </div> :
                     <div>
                         <div className="flex items-center">
