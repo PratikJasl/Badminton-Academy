@@ -6,7 +6,7 @@ export async function addNewCoachingPlan(name: string, address: string){
     
 }
 
-export async function getAllCoachingPlanIds(){
+export async function getAllCoachingPlanName(){
     let coachingPlans = await prisma.coachingPlan.findMany({
             select: {
             coachingPlanId: true,

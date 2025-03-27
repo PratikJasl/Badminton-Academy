@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from "express";
 // import { locationSchema, planSchema, scheduleSchema  } from "../schema/coaching";
 import { coachingSchema } from "../schema/coachingSchema";
 import { ERROR_MESSAGES } from "../common/messages";
+import { errorResponse } from "../common/apiResponse";
+
 
 //Validate the data for the location send from the client.
 export async function locationDataValidation(req: Request, res: Response, next: NextFunction): Promise<void>{
@@ -12,21 +14,21 @@ export async function locationDataValidation(req: Request, res: Response, next: 
 
     try {
         if(!name || !address){
-            res.status(400).json({ success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
-            return;
+         res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
+         return;
         }
         //Validate Location data against JOI Schema.
         const {error, value} = await coachingSchema.location.validateAsync(req.body);
-
         if(error){
-            res.status(400).json({success: "false", message: ERROR_MESSAGES.VALIDATION_FAILED, details: error.details});
+            console.log(error);
+            res.status(400).json(errorResponse(ERROR_MESSAGES.VALIDATION_FAILED));
             return;
         }
-
         next();
 
     } catch (error) {
-        res.status(500).json({success: "false", message: ERROR_MESSAGES.SERVER_ERROR, details: error});
+        console.log(error);
+        res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }
 }
@@ -42,20 +44,17 @@ export async function coachingPlanDataValidation(req: Request, res: Response, ne
 
     try {
         if(!name || !description || !planDuration || !price){
-            res.status(400).json({ success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
+            res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
             return;
         }
-
         const {error, value} = await coachingSchema.plan.validateAsync(req.body);
-
         if(error){
-            res.status(400).json({success: "false", message: ERROR_MESSAGES.VALIDATION_FAILED, details: error.details});
+            res.status(400).json(errorResponse(ERROR_MESSAGES.VALIDATION_FAILED));
             return;
         }
-
         next();
     } catch (error) {
-        res.status(500).json({success: "false", message: ERROR_MESSAGES.SERVER_ERROR, details: error});
+        res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }
 }
@@ -71,21 +70,23 @@ export async function coachingScheduleDataValidation(req: Request, res: Response
 
     try {
         if(!coachingBatch || !coachingDays || !coachingTime || !coachingDuration){
-            res.status(400).json({ success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
+            res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
             return;
         }
 
         const {error, value} = await coachingSchema.schedule.validateAsync(req.body);
 
         if(error){
-            res.status(400).json({success: "false", message: ERROR_MESSAGES.VALIDATION_FAILED, details: error.details});
+            console.log(error);
+            res.status(400).json(errorResponse(ERROR_MESSAGES.VALIDATION_FAILED));
             return;
         }
 
         next();
         
     } catch (error) {
-        res.status(500).json({success: "false", message: ERROR_MESSAGES.SERVER_ERROR, details: error});
+        console.log(error);
+        res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }
 }
