@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { userSchema } from "../schema/userSchema";
 import { ERROR_MESSAGES } from "../common/messages";
+import { errorResponse } from "../common/apiResponse";
 
-export async function UserDataValidation(req: Request, res: Response, next: NextFunction): Promise<void>{
+export async function userDataValidation(req: Request, res: Response, next: NextFunction): Promise<void>{
     const {
         fullName,
         email,
@@ -13,26 +14,21 @@ export async function UserDataValidation(req: Request, res: Response, next: Next
         password,
         role,
     } = req.body;
-
-    console.log(req.body);
+    console.log(req.body); 
     
     try {
         if(!fullName || !dob  || !email || !phone || !password || !role || !locationId || !coachingPlanId){
-            res.status(400).json({ success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
+            res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
             return
         }
-
         const {error, value} = await userSchema.validateAsync(req.body);
-
         if(error){
-            res.status(400).json({success: "false", message: ERROR_MESSAGES.VALIDATION_FAILED, details: error.details});
+            res.status(400).json(errorResponse(ERROR_MESSAGES.VALIDATION_FAILED));
             return;
         }
-
         next();
-
     } catch (error) {
-        res.status(500).json({success: "false", message: ERROR_MESSAGES.SERVER_ERROR, details: error});
+        res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }
 }

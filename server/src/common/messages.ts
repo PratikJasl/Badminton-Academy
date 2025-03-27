@@ -6,22 +6,25 @@ export const ERROR_MESSAGES = {
     ACCOUNT_ALREADY_VERIFIED: 'Account already verified',
     USER_ALREADY_EXISTS: 'A user with this email already exists.',
     USER_NOT_FOUND: 'User not found.',
+    INVALID_USER:'User With Given Id Not Exist',
     NOT_AUTH: 'Not Authorized Login Again',
     JWT_SECRET_ERROR: 'Jwt secret not defined',
     INVALID_EMAIL: 'Email format is invalid.',
     INVALID_AGE: 'Age must be greater than 0.',
     INVALID_PASSWORD: 'Password must meet the required criteria.',
-    INVALID_LOCATION_ID: 'Invalid Location ID',
+    INVALID_LOCATION_ID: 'Location ID Does Not Exists',
     INVALID_COACHING_PLAN_ID: 'Invalid Coaching Plan ID',
     INVALID_OTP: 'Invalid OTP',
     OTP_EXPIRED: 'OTP Expired',
-    NO_DATA_FOUND: 'No data found'
+    NO_DATA_FOUND: 'No data found',
+    DATA_NOT_INSERTED:'Data Insertion Failed'
   };
 
   export const SUCCESS_MESSAGES = {
     USER_CREATED: 'New user created successfully',
     USER_LOGIN: 'User loged in successfully',
     USER_LOGOUT: 'User loged out successfully',
+    USER_NOT_FOUND: 'User not found.',
     LOCATION_ADDED: "New location added successfully",
     COACHING_PLAN_ADDED: "New coaching plan added successfully",
     COACHING_SCHEDULE_ADDED: "New coaching schedule added successfully",
@@ -32,4 +35,6 @@ export const ERROR_MESSAGES = {
     LOCATION_DATA_FETCHED: 'Location data fetched successfully',
     PLAN_DATA_FETCHED: 'Coaching plan data fetched successfully',
     SCHEDULE_DATA_FETCHED: 'Coaching schedule data fetched successfully',
+    NO_DATA_FOUND:'Data Not Available',
+    ACCOUNT_ALREADY_VERIFIED: 'Account already verified',
   }
