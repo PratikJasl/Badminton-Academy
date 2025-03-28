@@ -101,7 +101,7 @@ function About(){
                 </div>
             </div>
 
-            <div className="flex lg:flex-row flex-col justify-between font-serif mt-50 bg-center bg-no-repeat rounded-lg"
+            <div className="flex lg:flex-row flex-col justify-between font-serif mt-20 bg-center bg-no-repeat rounded-lg"
                 style={{ backgroundImage: `url(${bgImage})` }}
             >
                 <div className="text-5xl p-10 text-center">
