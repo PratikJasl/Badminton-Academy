@@ -2,6 +2,7 @@ import profileImage from "../../assets/carasol-1.png";
 import signature from "../../assets/signature.png";
 import { PhoneIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
+import bgImage from "../../assets/grass.jpg";
 
 function About(){
     const [playersTrained, setPlayersTrained] = useState(0);
@@ -9,9 +10,9 @@ function About(){
     const [nationalTournaments, setNationalTournaments] = useState(0);
 
     useEffect(()=>{
-        const playersCount = 200;
-        const stateCount = 50;
-        const nationalCount = 10;
+        const playersCount = 300;
+        const stateCount = 100;
+        const nationalCount = 50;
 
         // Count up animation for Players Trained
         const countUpPlayers = setInterval(() => {
@@ -99,19 +100,22 @@ function About(){
                     </div>
                 </div>
             </div>
-            <div className="flex lg:flex-row flex-col justify-between font-serif mt-10">
+
+            <div className="flex lg:flex-row flex-col justify-between font-serif mt-50 bg-center bg-no-repeat rounded-lg"
+                style={{ backgroundImage: `url(${bgImage})` }}
+            >
                 <div className="text-5xl p-10 text-center">
-                    {playersTrained}+
+                    <h1>{playersTrained}+</h1>
                     <p className="text-2xl p-3">Players Trained</p>
                 </div>
 
                 <div className="text-5xl p-10 text-center">
-                    {stateTournaments}+
+                    <h1>{stateTournaments}+</h1>
                     <p className="text-2xl p-3">State Tournaments</p>
                 </div>
 
                 <div className="text-5xl p-10 text-center">
-                    {nationalTournaments}+
+                    <h1>{nationalTournaments}+</h1>
                     <p className="text-2xl p-3">National Tournaments</p>
                 </div>
             </div>

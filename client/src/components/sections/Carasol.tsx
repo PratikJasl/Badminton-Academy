@@ -3,7 +3,7 @@ import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import slide1 from "../../assets/carasol-1.png";
 import slide2 from "../../assets/carasol-2.png";
-import slide3 from "../../assets/carasol-3.jpg"
+import slide3 from "../../assets/carasol-3.jpg";
 
 function Carousel() {
   const [imageLinks, setImageLinks] = useState<string[]>([]);
@@ -45,19 +45,36 @@ function Carousel() {
     }, 500);
   };
 
+  //Text to display on top of the slides.
+  const slideTextHeading = [
+    "OUR MISSION",
+    "EXTENSIVE SUPPORT",
+    "ONE TO ONE FEEDBACK"
+  ]
+
+  const slideTextContent = [
+    "our mission is to nurture talent and develop players capable of competing at state and national levels",
+    "We provide Extensive player support and trainig",
+    "One to One feedback with the coach after every traning session."
+  ]
+
   return (
     <section id="carousel" className="mt-9">
-      <div className="flex flex-row justify-center items-center">
+      <div className="flex flex-row justify-center items-center relative">
         {imageLinks.length > 0 && (
           <div className="flex flex-col justify-center relative">
             <img
               src={imageLinks[currentIndex]}
               alt="carousel"
-              className={`w-fit h-[225px] md:h-[500px] object-cover rounded-md transition-opacity duration-1000 ease-in-out ${
+              className={`w-screen h-72 md:h-170 object-cover rounded-md transition-opacity duration-1000 ease-in-out ${
                 isFading ? "opacity-0" : "opacity-100"
               }`}
               key={currentIndex}
             />
+            <div className="absolute text-sm md:text-xl top-3/5 left-1/20 p-3 text-yellow-400 text-justify">
+              <h2 className="font-bold">{slideTextHeading[currentIndex]}</h2>
+              <p className="mt-2 text-white rounded-2xl">{slideTextContent[currentIndex]}</p>
+            </div>
           </div>
         )}
         <button
