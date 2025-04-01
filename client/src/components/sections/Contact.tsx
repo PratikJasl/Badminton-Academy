@@ -6,7 +6,7 @@ function Contact(){
             <div className="flex flex-col gap-8 items-center">
                 <h1 className="md:text-5xl text-3xl text-yellow-500">Reach out to us</h1>
                 <p className="text-center lg:text-xl text-lg">🏸 Our mission is to nurture talent and develop players capable of competing at state and national levels. We 
-                    are commited to our mission and continious strive for excilence.
+                    are commited to our mission and continiously strive for excilence. We are a team of humble and dedicated coaches, here to turn you into a badminton champ.
                 </p>
                 <button 
                     className="w-fit bg-yellow-500 text-white text-xl p-2 mt-5 rounded-lg hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out">
