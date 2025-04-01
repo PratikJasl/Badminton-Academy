@@ -48,7 +48,7 @@ function About(){
         };
     },[])
     return(
-        <section id="about" className="md:max-w-280 max-w-74 p-5">
+        <section id="about" className="md:max-w-300 max-w-74 p-5">
             <div className="lg:flex lg:flex-row lg:items-center lg:gap-5">
                 <div className="lg:h-120 lg:w-250 mb-10 border-10 border-white rounded-lg shadow-xl shadow-gray-600">
                     <img 
@@ -59,14 +59,13 @@ function About(){
                 </div>
 
                 <div className="text-center font-serif flex flex-col gap-5 items-center">
-                    
                     <div className="flex flex-col items-center gap-5">
                         <p className="lg:text-3xl text-xl">Meet</p>
                         <p className="lg:text-5xl text-2xl">Ranjit Subramaniyam</p>
                         <p className="lg:text-2xl text-xl italic">National's Player & International Certified Badminton Coach</p>
-                        <p className="text-justify"> 
+                        <p className="text-justify lg:text-lg"> 
                             Ranjit is an internationally certified badminton coach, having earned his certification in Thailand. He was ranked 16th nationally in India and held a state ranking of 2nd.
-                            With over 200 students mentored, Ranjit has successfully guided players at both state and national levels..
+                            With over 200 students mentored, Ranjit has successfully guided players at both state and national levels.
                         </p>
 
                         <div className="flex flex-row gap-5 w-full justify-center">
