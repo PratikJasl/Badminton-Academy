@@ -1,5 +1,5 @@
 import './App.css'
-import Home from './components/Home';
+import Home from './components/landingPage/Home';
 import SignUp from './components/auth/SignUp'
 import LogIn from './components/auth/Login'
 import Navbar from './components/navbar/Navbar'

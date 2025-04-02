@@ -1,7 +1,7 @@
-import Carousel from "./sections/Carasol";
-import About from "./sections/About";
-import Service from "./sections/Services";
-import Contact from "./sections/Contact";
+import Carousel from "./Carasol";
+import About from "./About";
+import Service from "./Services";
+import Contact from "./Contact";
 
 function LandingPage(){
     return(
