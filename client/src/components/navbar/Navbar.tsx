@@ -43,7 +43,7 @@ function Navbar(){
                         </div> 
 
                         {userInfo?.role != "student" ?
-                            <div className={`${ menuOpen ? "block fixed right-0 top-13 z-10 p-10 h-screen bg-gray-800 text-white" : "hidden"}`}>
+                            <div className={`${ menuOpen ? "block fixed right-0 top-13 z-10 p-10 h-screen md:w-72 w-64 bg-gray-800 text-white" : "hidden"}`}>
                                 <div className="flex flex-col items-center justify-center p-4 gap-5">
                                     <img
                                         className="rounded-full lg:h-25 lg:w-20 h-15 w-15" 
@@ -51,15 +51,15 @@ function Navbar(){
                                         alt="User">
                                     </img>
                                     {userInfo?.fullName && <h1>{userInfo.fullName}</h1>}
-                                    <a href="#home" className="p-2 rounded-xl w-62 hover:bg-blue-500 bg-white text-black">Add Coaching Plan</a>
-                                    <a href="#services" className="p-2 rounded-xl w-62 hover:bg-blue-500 bg-white text-black">Add Coaching Schedule</a>
-                                    <a href="#testimonials" className="p-2 rounded-xl w-62 hover:bg-blue-500 bg-white text-black">Add Locations</a>
-                                    <a href="#community" className="p-2 rounded-xl w-62 hover:bg-blue-500 bg-white text-black">Mark Payments</a>
-                                    <a href="#contact" className="p-2 rounded-xl w-62 hover:bg-blue-500 bg-white text-black">Mark Attendance</a>
+                                    <a href="#home" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Coaching Plan</a>
+                                    <a href="#services" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Coaching Schedule</a>
+                                    <a href="#testimonials" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Locations</a>
+                                    <a href="#community" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Mark Payments</a>
+                                    <a href="#contact" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Mark Attendance</a>
                                 </div>
                             </div> 
                             : 
-                            <div className={`${ menuOpen ? "block fixed right-0 top-13 z-10 p-10 h-screen bg-gray-800 text-white" : "hidden"}`}>
+                            <div className={`${ menuOpen ? "block fixed right-0 top-13 z-10 p-10 h-screen md:w-72 w-64 bg-gray-800 text-white" : "hidden"}`}>
                                 <div className="flex flex-col items-center justify-center p-4 gap-5">
                                     <img
                                         className="rounded-full lg:h-25 lg:w-20 h-15 w-15" 
@@ -67,11 +67,11 @@ function Navbar(){
                                         alt="User">
                                     </img>
                                     {userInfo?.fullName && <h1>{userInfo.fullName}</h1>}
-                                    <a href="#home" className="p-2 rounded-xl w-62 hover:bg-blue-500 bg-white text-black">Coaching Plan</a>
-                                    <a href="#services" className="p-2 rounded-xl w-62 hover:bg-blue-500 bg-white text-black">Coaching Schedule</a>
-                                    <a href="#testimonials" className="p-2 rounded-xl w-62 hover:bg-blue-500 bg-white text-black">Attendance</a>
-                                    <a href="#community" className="p-2 rounded-xl w-62 hover:bg-blue-500 bg-white text-black">Community</a>
-                                    <a href="#contact" className="p-2 rounded-xl w-62 hover:bg-blue-500 bg-white text-black">Contacts</a>
+                                    <a href="#home" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Plan</a>
+                                    <a href="#services" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Schedule</a>
+                                    <a href="#testimonials" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Attendance</a>
+                                    <a href="#community" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Community</a>
+                                    <a href="#contact" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Contacts</a>
                                 </div>
                             </div>
                         }

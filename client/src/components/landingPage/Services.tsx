@@ -6,11 +6,11 @@ import priceChart2 from "../../assets/priceChart2.png";
 
 function Service(){
     return(
-        <section id="service" className="flex flex-col items-center justify-center">
+        <section id="service" className="flex flex-col items-center justify-center md:max-w-280 max-w-96 p-5">
             {/* Standard pack details */}
             <div className="flex flex-col items-center justify-center text-center md:gap-15 gap-10 p-5">
                 <h1 className="md:text-5xl text-3xl font-serif font-bold text-yellow-400">STANDARD PACK</h1>
-                <div className="flex lg:flex-row flex-col items-center md:gap-5 gap-10">
+                <div className="flex lg:flex-row flex-col items-center justify-center md:gap-5 gap-10">
                     <img src={design1} alt="" className="md:h-110 h-60"/>
                     <img src={packDetails1} alt="" className="h-60"/>
                 </div>
@@ -27,7 +27,7 @@ function Service(){
             {/* Premium pac details */}
             <div className="flex flex-col items-center justify-center md:gap-15 gap-10 p-5">
                 <h1 className="md:text-5xl text-3xl font-serif font-bold text-yellow-400">PREMIUM PACK</h1>
-                <div className="flex lg:flex-row flex-col items-center md:gap-5 gap-10">
+                <div className="flex lg:flex-row flex-col items-center justify-center md:gap-5 gap-10">
                     <img src={design1} alt="" className="md:h-110 h-60"/>
                     <img src={packDetails2} alt="" className="h-60"/>
                 </div>
@@ -42,7 +42,7 @@ function Service(){
             </div>
            
             <button 
-                className="w-fit bg-yellow-500 text-white text-xl font-semibold p-2 rounded-lg hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out mb-40">
+                className="w-fit bg-yellow-500 text-white text-xl p-2 rounded-lg hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out">
                 <a 
                     href="" 
                     target="blank">
