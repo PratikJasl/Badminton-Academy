@@ -120,7 +120,6 @@ export async function getLocation(req: Request, res: Response){
     }
 }
 
-
 //Fetch coaching plans from the database.
 export async function getCoachingPlan(req: Request, res: Response){
 
@@ -175,7 +174,6 @@ export async function getCoachingSchedule(req: Request, res: Response){
         return; 
     }
 }
-
 
 export async  function getAttendence(req:Request,res:Response){
     

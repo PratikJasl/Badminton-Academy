@@ -76,4 +76,9 @@
 
 ## DATABASE SCHEMA
 
-![DataBase Schema](./client/src/assets/Badminton_Acadmey_DB_DESIGN.png)
+![DataBase Schema](./client/src/assets/Badminton_Acadmey_DB_DESIGN.png) 
+
+
+## Suggestions
+1) Security: JWT authentication checking on protected routes.
+2) Decoupling: Create a service layer to de-couple controllers. 
