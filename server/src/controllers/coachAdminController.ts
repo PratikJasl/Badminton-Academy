@@ -10,6 +10,7 @@ const prisma = new PrismaClient();
 
 //Add a new location to the database.
 export async function addLocation(req: Request, res: Response){
+    console.log("------Add Location Route------");
     const { name, address } = req.body;
     try {
         let newLocation = await addNewLocation(name, address);
@@ -23,12 +24,12 @@ export async function addLocation(req: Request, res: Response){
         console.log(error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return; 
-        
     }
 }
 
 //Add a new coaching plan to the database.
 export async function addCoachingPlan(req: Request, res: Response){
+    console.log("------Add Coaching Plan Route------");
     const { name, 
             description, 
             planDuration, 
