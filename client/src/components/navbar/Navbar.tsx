@@ -1,35 +1,40 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Bars3Icon} from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { userInfoState } from "../../atom/userAtom";
 import { useRecoilState } from "recoil";
-import { getInitialUserInfo } from "../../services/storeUserInfo";
+import { clearUserInfo} from "../../services/storeUserInfo";
 import person from "../../assets/person.png";
 import male from "../../assets/male.png";
 import female from "../../assets/female.png";
 import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
-
+import axios from "axios";
 
 function Navbar(){
     const [menuOpen, setMenuOpen] = useState(false);
     const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
-    console.log("The user info received is:", userInfo);
-
     const toggleMenu = () =>{
         setMenuOpen(!menuOpen);
     }
 
-    function logOut(){
+    async function logOut(){
+        try {
+            let response = await axios.post("http://localhost:3000/api/auth/logout", {}, {
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
 
-    }
-
-    useEffect(()=>{
-        let localData = getInitialUserInfo();
-        if(localData){
-            setUserInfo(localData);
+            if(response.status === 200){
+                await clearUserInfo();
+                setUserInfo(null);
+                console.log("Logged Out");
+            }
+        } catch (error) {
+            console.log("Error Logging Out", error);
         }
-    },[]);
+    }
 
     return(
         <>
@@ -69,7 +74,9 @@ function Navbar(){
                                     <a href="/Location" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Locations</a>
                                     <a href="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Mark Payments</a>
                                     <a href="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Mark Attendance</a>
-                                    <button className="flex flex-row p-2 rounded-xl hover:text-red-500 hover:scale-130 active:scale-120 transition transform duration-500 ease-in-out">
+                                    <button className="flex flex-row p-2 rounded-xl hover:text-red-500 hover:scale-130 active:scale-120 transition transform duration-500 ease-in-out"
+                                            onClick={logOut}
+                                    >
                                         LogOut
                                         <ArrowRightStartOnRectangleIcon className="h-6 w-6 text-red-500" />
                                     </button>

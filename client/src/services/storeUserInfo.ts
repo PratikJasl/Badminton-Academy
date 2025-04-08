@@ -17,8 +17,8 @@ export function saveUserInfo(userInfo: UserInfoType){
 }
 
 // Function to remove data from the Local Storage.
-export const clearUserInfo = () => {
-    localStorage.removeItem(USER_INFO_STORAGE_KEY);
+export const clearUserInfo = async () => {
+  localStorage.removeItem(USER_INFO_STORAGE_KEY);
 }
 
 //Function to initialize atom with local storage data.
