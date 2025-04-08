@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-interface UserInfoType {
+export interface UserInfoType {
     fullName: string;
     gender: string;
     role: "student" | "coach" | "admin";

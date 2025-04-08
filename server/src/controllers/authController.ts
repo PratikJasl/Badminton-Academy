@@ -141,8 +141,11 @@ export async function logIn(req: Request, res: Response) {
                res.status(400).json({success: "false", message: ERROR_MESSAGES.INCORRECT_PASSWORD, details: isMatch}); 
                return;
             }
+
             console.log("Generating JWT token");
-            const token = jwt.sign({ id: user.userId, role: user.role}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
+            const token = jwt.sign({ userName: user.fullName, id: user.userId, role: user.role}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
+            console.log("Generated token is:", token);
+            
             const data = {fullName: user.fullName, role: user.role, gender: user.gender};
             console.log("Data to send:", data);
 
@@ -161,6 +164,7 @@ export async function logIn(req: Request, res: Response) {
 }
 
 export async function logOut(req: Request, res: Response) {
+    console.log("------LogOut Route------");
     //Clear the clients cookies.
     try {
         res.status(200).clearCookie('token', {
@@ -177,6 +181,7 @@ export async function logOut(req: Request, res: Response) {
 
 //Verify email routes:
 export async function sendVerifyOTP(req: Request, res: Response){
+    console.log("------Send Verify OTP Route------");
     const { userId } = req.body;
 
     if (!userId) {
@@ -241,6 +246,7 @@ export async function sendVerifyOTP(req: Request, res: Response){
 }
 
 export async function verifyEmail(req: Request, res: Response){
+    console.log("-----Verify Email Route------");
     const {userId, OTP} = req.body;
 
     if(!userId || !OTP){
@@ -293,6 +299,7 @@ export async function verifyEmail(req: Request, res: Response){
 
 //Reset password routes:
 export async function sendResetPasswordOTP(req: Request, res: Response){
+    console.log("------Send Reset Password OTP Route------");
     try{
         const { email } = req.body;
 
@@ -352,6 +359,7 @@ export async function sendResetPasswordOTP(req: Request, res: Response){
 }
 
 export async function resetPassword(req: Request, res: Response){
+    console.log("------Reset Password Route------");
     const {email, OTP, password} = req.body;
 
     if(!email || !OTP || !password){
