@@ -141,9 +141,11 @@ export async function logIn(req: Request, res: Response) {
                res.status(400).json({success: "false", message: ERROR_MESSAGES.INCORRECT_PASSWORD, details: isMatch}); 
                return;
             }
+
             console.log("Generating JWT token");
-            const token = jwt.sign({ id: user.userId, role: user.role}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
+            const token = jwt.sign({ userName: user.fullName, id: user.userId, role: user.role}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
             console.log("Generated token is:", token);
+            
             const data = {fullName: user.fullName, role: user.role, gender: user.gender};
             console.log("Data to send:", data);
 

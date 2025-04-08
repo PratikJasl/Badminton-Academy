@@ -1,22 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Bars3Icon} from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { userInfoState } from "../../atom/userAtom";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
+import { getInitialUserInfo } from "../../services/storeUserInfo";
 import person from "../../assets/person.png";
 import male from "../../assets/male.png";
 import female from "../../assets/female.png";
+import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 
 
 function Navbar(){
     const [menuOpen, setMenuOpen] = useState(false);
-    const userInfo = useRecoilValue(userInfoState);
+    const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
     console.log("The user info received is:", userInfo);
 
     const toggleMenu = () =>{
         setMenuOpen(!menuOpen);
     }
+
+    function logOut(){
+
+    }
+
+    useEffect(()=>{
+        let localData = getInitialUserInfo();
+        if(localData){
+            setUserInfo(localData);
+        }
+    },[]);
 
     return(
         <>
@@ -51,11 +64,15 @@ function Navbar(){
                                         alt="User">
                                     </img>
                                     {userInfo?.fullName && <h1>{userInfo.fullName}</h1>}
-                                    <a href="#home" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Coaching Plan</a>
-                                    <a href="#services" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Coaching Schedule</a>
+                                    <a href="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Coaching Plan</a>
+                                    <a href="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Coaching Schedule</a>
                                     <a href="/Location" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Locations</a>
-                                    <a href="#community" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Mark Payments</a>
-                                    <a href="#contact" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Mark Attendance</a>
+                                    <a href="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Mark Payments</a>
+                                    <a href="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Mark Attendance</a>
+                                    <button className="flex flex-row p-2 rounded-xl hover:text-red-500 hover:scale-130 active:scale-120 transition transform duration-500 ease-in-out">
+                                        LogOut
+                                        <ArrowRightStartOnRectangleIcon className="h-6 w-6 text-red-500" />
+                                    </button>
                                 </div>
                             </div> 
                             : 
@@ -67,11 +84,17 @@ function Navbar(){
                                         alt="User">
                                     </img>
                                     {userInfo?.fullName && <h1>{userInfo.fullName}</h1>}
-                                    <a href="#home" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Plan</a>
-                                    <a href="#services" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Schedule</a>
-                                    <a href="#testimonials" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Attendance</a>
-                                    <a href="#community" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Community</a>
-                                    <a href="#contact" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Contacts</a>
+                                    <a href="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Plan</a>
+                                    <a href="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Schedule</a>
+                                    <a href="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Attendance</a>
+                                    <a href="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Community</a>
+                                    <a href="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Contacts</a>
+                                    <button className="flex flex-row p-2 rounded-xl hover:text-red-500 hover:scale-130 active:scale-120 transition transform duration-500 ease-in-out"
+                                            onClick={logOut}
+                                    >
+                                        LogOut
+                                        <ArrowRightStartOnRectangleIcon className="h-6 w-6 text-red-500" />
+                                    </button>
                                 </div>
                             </div>
                         }

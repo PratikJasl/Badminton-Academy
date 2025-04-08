@@ -6,7 +6,7 @@ import { loginSchema } from "../../schema/userSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRecoilState} from "recoil";
 import { userInfoState } from "../../atom/userAtom"
-
+import { getInitialUserInfo, saveUserInfo } from "../../services/storeUserInfo";
 
 function LogIn(){
     const [redirect, setRedirect] = useState(false);
@@ -29,7 +29,9 @@ function LogIn(){
           );
            if(response.status == 200){
                 setRedirect(true);
-                setUserInfo(response.data.data);
+                saveUserInfo(response.data.data);
+                const localData = getInitialUserInfo();
+                setUserInfo(localData);
                 alert("LogIn Successful");
                 console.log("User Info stored is:",userInfo);
            }else{
