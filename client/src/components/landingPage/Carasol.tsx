@@ -25,7 +25,7 @@ function Carousel() {
       }, 500); 
     }, 5000);
     return () => clearInterval(interval);
-  }, [imageLinks.length]);
+  }, []);
 
   //Introduce a delay of 500ms before changing the image
   const nextImage = () => {
@@ -66,7 +66,7 @@ function Carousel() {
             <img
               src={imageLinks[currentIndex]}
               alt="carousel"
-              className={`w-screen h-72 md:h-170 object-cover rounded-md transition-opacity duration-1000 ease-in-out ${
+              className={`w-screen h-72 md:h-170 object-cover transition-opacity duration-1000 ease-in-out ${
                 isFading ? "opacity-0" : "opacity-100"
               }`}
               key={currentIndex}

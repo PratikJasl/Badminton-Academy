@@ -98,7 +98,6 @@ export async function addCoachingSchedule(req: Request, res: Response){
         return;      
     } catch (error) {
         console.log(error);
-        
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }

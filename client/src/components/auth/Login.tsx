@@ -4,18 +4,23 @@ import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { loginSchema } from "../../schema/userSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRecoilState} from "recoil";
-import { userInfoState } from "../../atom/userAtom"
-import { getInitialUserInfo, saveUserInfo } from "../../services/storeUserInfo";
+import { saveUserInfo } from "../../services/storeUserInfo";
+import { toast } from 'react-toastify';
+import { InferType } from 'yup';
+
+//@dev Login Form Data Type.
+type LoginFormData = InferType<typeof loginSchema>;
 
 function LogIn(){
     const [redirect, setRedirect] = useState(false);
-    const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+    const [isLoading, setIsLoading] = useState(false);
     const { register, handleSubmit, formState: {errors} } = useForm({
             resolver: yupResolver(loginSchema),
-        });
+    });
 
-    const onSubmit = async (data: any) => {
+    //@dev Function to handle the form submission, and store user information in local storage.
+    const onSubmit = async (data: LoginFormData) => {
+        setIsLoading(true)
         let response;
         try {
             response = await axios.post("http://localhost:3000/api/auth/login",
@@ -25,32 +30,31 @@ function LogIn(){
                 "Content-Type": "application/json",
               },
               withCredentials: true,
-            }
-          );
-           if(response.status == 200){
+            });
+           if(response.status === 200){
                 setRedirect(true);
-                saveUserInfo(response.data.data);
-                const localData = getInitialUserInfo();
-                setUserInfo(localData);
-                alert("LogIn Successful");
-                console.log("User Info stored is:",userInfo);
+                saveUserInfo(response.data.data); //@dev Save user info to local storage.
+                toast.success("LogIn Successful");
            }else{
-                alert(response.data.message);
+                toast.error(response.data.message || "Login failed. Please try again.");
            }
-          
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
-                alert(error.response.data.message);
+                toast.error(error.response.data.message);
             } else {
                 console.error("An unexpected error occurred:", error);
-                alert("An unexpected error occurred. Please try again.");
+                toast.error("An unexpected error occurred. Please try again.");
             }
+        } finally {
+            setIsLoading(false);
         }
     };
 
+    //@dev After successful login, redirect the user to the home page.
     if(redirect){
         return <Navigate to={'/'} />
     }
+
     return(
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center gap-3 lg:w-96 w-74 shadow-lg shadow-white p-10 rounded-2xl">
 
@@ -59,7 +63,9 @@ function LogIn(){
             <div className="flex flex-col gap-5">
                 <input
                     id="email"
+                    disabled={isLoading}
                     type="email"
+                    autoComplete="email"
                     placeholder="Email"
                     {...register("email")}
                     className="shadow-lg p-2 rounded-lg bg-white text-black min-w-64"
@@ -72,7 +78,9 @@ function LogIn(){
             
                 <input
                     id="password"
+                    disabled={isLoading}
                     type="password"
+                    autoComplete="current-password"
                     placeholder="Password"
                     {...register("password")}
                     className="shadow-lg p-2 rounded-lg bg-white text-black"
@@ -88,11 +96,13 @@ function LogIn(){
 
             <button 
                 type="submit"
+                disabled={isLoading}
                 className="shadow-lg p-2 min-w-64 rounded-lg bg-blue-700 text-white font-bold hover:bg-blue-600"
             >
-                LogIn
+                {isLoading ? 'Logging In...' : 'LogIn'}
             </button>
         </form>
+        
     )
 }
 
