@@ -1,5 +1,6 @@
 import axios from "axios";
 
+//@dev Function to get coaching plan details.
 export async function getCoachingPlan(){
     try {
         const response = await axios.get('http://localhost:3000/api/coachAdmin/coaching-plan-ids', {
