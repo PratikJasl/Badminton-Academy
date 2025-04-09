@@ -5,10 +5,10 @@ import { userInfoState } from "../../atom/userAtom";
 import { useRecoilState } from "recoil";
 import { clearUserInfo} from "../../services/storeUserInfo";
 import { Link } from "react-router-dom";
+// import Logo from "../../assets/Logo.jpg";
 import person from "../../assets/person.png";
 import male from "../../assets/male.png";
 import female from "../../assets/female.png";
-import logo from "../../assets/Logo.PNG";
 import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 
@@ -43,8 +43,8 @@ function Navbar(){
             <div className="flex flex-row justify-between items-center font-serif fixed top-0 bg-gray-800 min-w-screen p-3 z-10">
                 
                 <div className="lg:text-2xl">
-                   {/* <a href="/">Badminton Academy</a> */}
-                   <img src="{}" alt="" />
+                   <a href="/">Badminton Academy</a>
+                   {/* <img src={Logo} alt="" className="h-15 w-20" /> */}
                 </div>
 
                 {userInfo === null ?
