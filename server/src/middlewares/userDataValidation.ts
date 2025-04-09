@@ -4,6 +4,7 @@ import { ERROR_MESSAGES } from "../common/messages";
 import { errorResponse } from "../common/apiResponse";
 
 export async function userDataValidation(req: Request, res: Response, next: NextFunction): Promise<void>{
+    console.log("User Data Validation Middleware")
     const {
         fullName,
         email,
@@ -28,7 +29,8 @@ export async function userDataValidation(req: Request, res: Response, next: Next
         }
         next();
     } catch (error) {
-        res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
+        console.log(error);
+        res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR, (error as any).details));
         return;
     }
 }

@@ -88,18 +88,18 @@ export async function signUp(req: Request, res: Response) {
         // })
 
         //Send Acknowledgment Mail and Response
-        const mailOptions = {
-            from: process.env.SENDER_EMAIL,
-            to: email,
-            subject: 'Welcome!! Thanks for Signing Up',
-            text: 
-            `Hi ${fullName}👋, 
-             We're thrilled to have you on board. Your account has been created with email id 📧: ${email}.
+        // const mailOptions = {
+        //     from: process.env.SENDER_EMAIL,
+        //     to: email,
+        //     subject: 'Welcome!! Thanks for Signing Up',
+        //     text: 
+        //     `Hi ${fullName}👋, 
+        //      We're thrilled to have you on board. Your account has been created with email id 📧: ${email}.
 
-             Best Regards
-             Pratik Jussal`
-        }
-        await transporter.sendMail(mailOptions);
+        //      Best Regards
+        //      Pratik Jussal`
+        // }
+        // await transporter.sendMail(mailOptions);
 
         res.status(201).json(successResponse(SUCCESS_MESSAGES.USER_CREATED,newUser));
         return;

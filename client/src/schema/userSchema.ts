@@ -50,6 +50,9 @@ export const signUpSchema = yup.object({
         .string()
         .oneOf([yup.ref('password'), undefined], 'Passwords must match')
         .required('Confirm Password is required'), 
+    role: yup
+        .string()
+        .oneOf(['student', 'admin', 'coach'])
 });
 
 export const loginSchema = yup.object({
