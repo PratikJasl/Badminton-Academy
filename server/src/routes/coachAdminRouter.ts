@@ -5,20 +5,20 @@ import { coachAdminAuth } from "../middlewares/coachAdminAuth";
 
 const coachAdminRouter = Router();
 
-//Location Routes:
+//@dev Location Routes:
 coachAdminRouter.post('/add-location',coachAdminAuth ,locationDataValidation, addLocation);
 coachAdminRouter.get('/location', getLocation);
 
-//Coaching Plan Routes:
+//@dev Coaching Plan Routes:
 coachAdminRouter.post('/add-coaching-plan',coachAdminAuth , coachingPlanDataValidation, addCoachingPlan);
 coachAdminRouter.get('/coaching-plan', getCoachingPlan);
 coachAdminRouter.get('/coaching-plan-ids', getCoachingPlanNames);
 
-//Coaching Schedule Routes:
+//@dev Coaching Schedule Routes:
 coachAdminRouter.post('/add-coaching-schedule',coachAdminAuth , coachingScheduleDataValidation, addCoachingSchedule);
 coachAdminRouter.get('/coaching-schedule', getCoachingSchedule);
 
-// Attendence Related Routes:
+//@dev Attendence Related Routes:
 // coachAdminRouter.get('attendence',getAttendence);
 
 export {coachAdminRouter}

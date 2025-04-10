@@ -5,8 +5,6 @@ import { userRouter } from "./routes/userRoutes";
 import { authRouter } from "./routes/authRoutes";
 import { coachAdminRouter } from "./routes/coachAdminRouter";
 
-
-
 const port = 3000;
 const app = express();
 
