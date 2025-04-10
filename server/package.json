@@ -19,5 +19,9 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/nodemailer": "^6.4.17",
     "typescript": "^5.8.2"
+  },
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc"
   }
 }

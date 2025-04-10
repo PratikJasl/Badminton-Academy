@@ -12,6 +12,7 @@ const prisma = new PrismaClient();
 
 //User On-boarding routes
 export async function signUp(req: Request, res: Response) {
+    console.log("------SignUp Route------");
     let {
         fullName,
         email, 
@@ -24,7 +25,7 @@ export async function signUp(req: Request, res: Response) {
         role,   
     } = req.body;
 
-    console.log("request body:", req.body);
+    console.log("Received request body:", req.body);
     
     try {
         //Check for existing Users
@@ -76,29 +77,29 @@ export async function signUp(req: Request, res: Response) {
         )
 
         //Generate JWT token and send it in response cookies.
-        let token = jwt.sign({ id: newUser.userId }, process.env.JWT_SECRET as string, {expiresIn: '7d'});
-        console.log("Token", token);
+        // let token = jwt.sign({ id: newUser.userId, role: newUser.role }, process.env.JWT_SECRET as string, {expiresIn: '7d'});
+        // console.log("Token", token);
 
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-            maxAge: 7 * 24 * 60 * 60 * 1000
-        })
+        // res.cookie('token', token, {
+        //     httpOnly: true,
+        //     secure: process.env.NODE_ENV === 'production',
+        //     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+        //     maxAge: 7 * 24 * 60 * 60 * 1000
+        // })
 
         //Send Acknowledgment Mail and Response
-        const mailOptions = {
-            from: process.env.SENDER_EMAIL,
-            to: email,
-            subject: 'Welcome!! Thanks for Signing Up',
-            text: 
-            `Hi ${fullName}👋, 
-             We're thrilled to have you on board. Your account has been created with email id 📧: ${email}.
+        // const mailOptions = {
+        //     from: process.env.SENDER_EMAIL,
+        //     to: email,
+        //     subject: 'Welcome!! Thanks for Signing Up',
+        //     text: 
+        //     `Hi ${fullName}👋, 
+        //      We're thrilled to have you on board. Your account has been created with email id 📧: ${email}.
 
-             Best Regards
-             Pratik Jussal`
-        }
-        await transporter.sendMail(mailOptions);
+        //      Best Regards
+        //      Pratik Jussal`
+        // }
+        // await transporter.sendMail(mailOptions);
 
         res.status(201).json(successResponse(SUCCESS_MESSAGES.USER_CREATED,newUser));
         return;
@@ -111,6 +112,7 @@ export async function signUp(req: Request, res: Response) {
 }
 
 export async function logIn(req: Request, res: Response) {
+    console.log("------LogIn Route------");
     let {email, password} = req.body;
     console.log('received body in Login:', req.body);
 
@@ -130,7 +132,7 @@ export async function logIn(req: Request, res: Response) {
             res.status(400).json({success: "false", message: ERROR_MESSAGES.USER_NOT_FOUND});
             return
         }
-        console.log("user info:", user);
+        console.log("found existing user with user info:", user);
         //Compare Password, and generate JWT token, and send it in cookies.
         if(user){
             const isMatch = await bcrypt.compare(password, user.password);
@@ -140,7 +142,10 @@ export async function logIn(req: Request, res: Response) {
                return;
             }
 
-            const token = jwt.sign({ id: user.userId}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
+            console.log("Generating JWT token");
+            const token = jwt.sign({ userName: user.fullName, id: user.userId, role: user.role}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
+            console.log("Generated token is:", token);
+            
             const data = {fullName: user.fullName, role: user.role, gender: user.gender};
             console.log("Data to send:", data);
 
@@ -159,6 +164,7 @@ export async function logIn(req: Request, res: Response) {
 }
 
 export async function logOut(req: Request, res: Response) {
+    console.log("------LogOut Route------");
     //Clear the clients cookies.
     try {
         res.status(200).clearCookie('token', {
@@ -175,6 +181,7 @@ export async function logOut(req: Request, res: Response) {
 
 //Verify email routes:
 export async function sendVerifyOTP(req: Request, res: Response){
+    console.log("------Send Verify OTP Route------");
     const { userId } = req.body;
 
     if (!userId) {
@@ -239,6 +246,7 @@ export async function sendVerifyOTP(req: Request, res: Response){
 }
 
 export async function verifyEmail(req: Request, res: Response){
+    console.log("-----Verify Email Route------");
     const {userId, OTP} = req.body;
 
     if(!userId || !OTP){
@@ -291,6 +299,7 @@ export async function verifyEmail(req: Request, res: Response){
 
 //Reset password routes:
 export async function sendResetPasswordOTP(req: Request, res: Response){
+    console.log("------Send Reset Password OTP Route------");
     try{
         const { email } = req.body;
 
@@ -350,6 +359,7 @@ export async function sendResetPasswordOTP(req: Request, res: Response){
 }
 
 export async function resetPassword(req: Request, res: Response){
+    console.log("------Reset Password Route------");
     const {email, OTP, password} = req.body;
 
     if(!email || !OTP || !password){

@@ -47,6 +47,7 @@ function About(){
             clearInterval(countUpNational);
         };
     },[])
+    
     return(
         <section id="about" className="md:max-w-300 max-w-74 p-5">
             <div className="lg:flex lg:flex-row lg:items-center lg:gap-5">

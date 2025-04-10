@@ -12,7 +12,8 @@ import { coachingScheduleInterface, scheduleResponseInterface } from "../common/
 const prisma = new PrismaClient();
 
 //Add a new location to the database.
-export async function addLocation(req: Request, res: Response) {
+export async function addLocation(req: Request, res: Response){
+    console.log("------Add Location Route------");
     const { name, address } = req.body;
     try {
         let newLocation = await addNewLocation(name, address);
@@ -25,18 +26,18 @@ export async function addLocation(req: Request, res: Response) {
     } catch (error) {
         console.log(error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
-        return;
-
+        return; 
     }
 }
 
 //Add a new coaching plan to the database.
-export async function addCoachingPlan(req: Request, res: Response) {
-    const { name,
-        description,
-        planDuration,
-        price
-    } = req.body;
+export async function addCoachingPlan(req: Request, res: Response){
+    console.log("------Add Coaching Plan Route------");
+    const { name, 
+            description, 
+            planDuration, 
+            price
+        } = req.body;
 
     if (!name || !description || !planDuration || !price) {
         res.status(400).json({ success: "false", message: ERROR_MESSAGES.MISSING_FIELD });
@@ -151,7 +152,6 @@ export async function getLocation(req: Request, res: Response) {
     }
 }
 
-
 //Fetch coaching plans from the database.
 export async function getCoachingPlan(req: Request, res: Response) {
 
@@ -208,8 +208,8 @@ export async function getCoachingSchedule(req: Request, res: Response) {
 }
 
 
-export async function getAttendenceRecords(req: Request, res: Response) {
-
+export async  function getAttendence(req:Request,res:Response){
+    
     try {
         let scheduleByLocation = await getCochingScheduleByLocation();
         res.status(200).json(successResponse(SUCCESS_MESSAGES.SCHEDULE_DATA_FETCHED, scheduleByLocation));

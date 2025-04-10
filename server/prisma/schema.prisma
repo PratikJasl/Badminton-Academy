@@ -53,7 +53,7 @@ model CoachingPlan {
   coachingPlanId          Int @id @default(autoincrement())
   name                    String @unique
   description             String
-  planDuration            String
+  planDuration            String 
   price                   Decimal
   users                   User[]
 }

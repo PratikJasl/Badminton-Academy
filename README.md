@@ -76,4 +76,11 @@
 
 ## DATABASE SCHEMA
 
-![DataBase Schema](./client/src/assets/Badminton_Acadmey_DB_DESIGN.png)
+![DataBase Schema](./client/src/assets/Badminton_Acadmey_DB_DESIGN.png) 
+
+
+## Suggestions
+1) Security: JWT authentication checking on protected routes.
+2) Decoupling: Create a service layer to de-couple controllers. 
+3) TabNapping: In frontend avoid tab napping errors in href tags to external links.
+4) Load Carausel Image: Load the first carousel image early to avoid delay.
