@@ -25,7 +25,7 @@ function Carousel() {
       }, 500); 
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [imageLinks]);
 
   //Introduce a delay of 500ms before changing the image
   const nextImage = () => {
