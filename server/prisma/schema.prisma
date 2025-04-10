@@ -19,6 +19,7 @@ model User {
   email                   String @unique
   phone                   String
   dob                     DateTime
+  isKid                   Boolean @default(false)
   gender                  Gender?
   locationId              Int
   Location                Location @relation(fields: [locationId], references: [locationId]) //one-to-Many, one location many users
@@ -60,9 +61,9 @@ model CoachingPlan {
 model CoachingSchedule {
   coachingScheduleId      Int @id @default(autoincrement())
   coachingBatch           coachingBatch
-  coachingDays            String[]
-  coachingTime            String
-  coachingDuration        String
+  coachingDays            String
+  startTime               String
+  endTime                 String
   location                Location? @relation(fields: [locationId], references: [locationId])
   locationId              Int
   attendance              Attendance[]

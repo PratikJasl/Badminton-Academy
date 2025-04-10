@@ -17,9 +17,9 @@ const planSchema = Joi.object({
 // Schema for validating Coaching Schedule.
 const scheduleSchema = Joi.object({
   coachingBatch: Joi.string().required().trim(),
-  coachingDays: Joi.array().required(),
-  coachingTime: Joi.string().min(3).max(10).required().trim(),
-  coachingDuration: Joi.string().min(1).max(10).required().trim(),
+  coachingDays: Joi.string().min(1).max(7).required(),
+  startTime: Joi.string().min(3).max(10).required().trim(),
+  endTime: Joi.string().min(3).max(10).required().trim(),
   locationId: Joi.number().required(),
 });
 

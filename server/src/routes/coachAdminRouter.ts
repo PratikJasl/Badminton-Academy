@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addLocation, addCoachingPlan, addCoachingSchedule, getLocation, getCoachingPlan, getCoachingSchedule, getCoachingPlanNames, getAttendence } from "../controllers/coachAdminController";
+import { addLocation, addCoachingPlan, addCoachingSchedule, getLocation, getCoachingPlan, getCoachingSchedule, getCoachingPlanNames} from "../controllers/coachAdminController";
 import { coachingPlanDataValidation, coachingScheduleDataValidation, locationDataValidation } from "../middlewares/coachingDataValidation";
 import { coachAdminAuth } from "../middlewares/coachAdminAuth";
 
@@ -19,6 +19,6 @@ coachAdminRouter.post('/add-coaching-schedule',coachAdminAuth , coachingSchedule
 coachAdminRouter.get('/coaching-schedule', getCoachingSchedule);
 
 //@dev Attendence Related Routes:
-coachAdminRouter.get('attendence',getAttendence);
+// coachAdminRouter.get('attendence',getAttendence);
 
 export {coachAdminRouter}
