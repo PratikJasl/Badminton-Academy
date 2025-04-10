@@ -63,17 +63,17 @@ export async function coachingScheduleDataValidation(req: Request, res: Response
     const {
         coachingBatch,
         coachingDays,
-        coachingTime,
-        coachingDuration
+        startTime,
+        endTime
     } = req.body
 
     try {
-        if(!coachingBatch || !coachingDays || !coachingTime || !coachingDuration){
+        if(!coachingBatch || !coachingDays || !startTime || !endTime){
             res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
             return;
         }
-
-        const {error, value} = await coachingSchema.schedule.validateAsync(req.body);
+        
+        const {error} = await coachingSchema.schedule.validateAsync(req.body);
 
         if(error){
             console.log(error);
