@@ -5,7 +5,6 @@ import { userInfoState } from "../../atom/userAtom";
 import { useRecoilState } from "recoil";
 import { clearUserInfo} from "../../services/storeUserInfo";
 import { Link } from "react-router-dom";
-// import Logo from "../../assets/Logo.jpg";
 import person from "../../assets/person.png";
 import male from "../../assets/male.png";
 import female from "../../assets/female.png";
@@ -43,14 +42,14 @@ function Navbar(){
             <div className="flex flex-row justify-between items-center font-serif fixed top-0 bg-gray-800 min-w-screen p-3 z-10">
                 
                 <div className="lg:text-2xl">
-                   <a href="/">Badminton Academy</a>
+                   <Link to="/">Badminton Academy</Link>
                    {/* <img src={Logo} alt="" className="h-15 w-20" /> */}
                 </div>
 
                 {userInfo === null ?
                     <div className="flex items-center gap-5">
-                        <a href="/Login" className="hover:text-blue-500  lg:text-xl">Login</a>
-                        <a href="/Signup" className="hover:text-blue-500  lg:text-xl">SignUp</a>
+                        <Link to="/Login" className="hover:text-blue-500  lg:text-xl">Login</Link>
+                        <Link to="/Signup" className="hover:text-blue-500  lg:text-xl">SignUp</Link>
                     </div> :
                     <div>
                         <div className="flex items-center">

@@ -1,7 +1,8 @@
 import { Router } from "express";
+import { userAuth } from "../middlewares/userAuth";
 import { userDataValidation } from "../middlewares/userDataValidation";
 import { logIn, logOut, signUp, sendVerifyOTP, verifyEmail, sendResetPasswordOTP, resetPassword } from "../controllers/authController";
-import { userAuth } from "../middlewares/userAuth";
+
 
 const authRouter = Router();
 

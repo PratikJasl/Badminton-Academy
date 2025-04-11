@@ -1,18 +1,19 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { addNewLocation, getAllLocations } from "../repository/locationRepo";
-import { getAllCoachingPlanName } from "../repository/coachingPlanRepo";
+import { addNewCoachingPlan, getAllCoachingPlan, getAllCoachingPlanName } from "../repository/coachingPlanRepo";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 import { errorResponse, successResponse } from "../common/apiResponse";
 import { getCochingScheduleByLocation } from "../service/attendanceService";
 import { isSchedulesDatesValid, isValidCoachingSchedule } from "../middlewares/coachingScheduleValidation";
 import { coachingScheduleInterface, scheduleResponseInterface } from "../common/interface";
+import { getAllCoachingSchedule } from "../repository/coachingScheduleRepo";
 
 
 const prisma = new PrismaClient();
 
-//Add a new location to the database.
-export async function addLocation(req: Request, res: Response){
+//@dev: Add a new location to the database.
+export async function addLocation(req: Request, res: Response): Promise<void>{
     console.log("------Add Location Route------");
     const { name, address } = req.body;
     try {
@@ -30,8 +31,8 @@ export async function addLocation(req: Request, res: Response){
     }
 }
 
-//Add a new coaching plan to the database.
-export async function addCoachingPlan(req: Request, res: Response){
+//@dev: Add a new coaching plan to the database.
+export async function addCoachingPlan(req: Request, res: Response): Promise<void>{
     console.log("------Add Coaching Plan Route------");
     const { name, 
             description, 
@@ -39,34 +40,20 @@ export async function addCoachingPlan(req: Request, res: Response){
             price
         } = req.body;
 
-    if (!name || !description || !planDuration || !price) {
-        res.status(400).json({ success: "false", message: ERROR_MESSAGES.MISSING_FIELD });
-        return;
-    }
-
     try {
-        let newCoachingPlan = await prisma.coachingPlan.create({
-            data: {
-                name: name.trim(),
-                description: description.trim(),
-                planDuration: planDuration.trim(),
-                price: price
-            }
-        })
-
+        let newCoachingPlan = await addNewCoachingPlan(name, description, planDuration, price);
         res.status(201).json(successResponse(SUCCESS_MESSAGES.COACHING_PLAN_ADDED, newCoachingPlan));
         return;
 
     } catch (error) {
-        console.log(error);
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }
-
 }
 
-//Add a new coaching schedule to the database.
-export async function addCoachingSchedule(req: Request, res: Response) {
+//@dev: Add a new coaching schedule to the database.
+export async function addCoachingSchedule(req: Request, res: Response): Promise<void> {
     const {
         coachingBatch,
         coachingDays,
@@ -82,6 +69,7 @@ export async function addCoachingSchedule(req: Request, res: Response) {
         endTime: endTime.trim(),
         locationId: locationId
     }
+
     try {
         //Check if the location ID exists.
         let location = await prisma.location.findUnique({
@@ -91,11 +79,11 @@ export async function addCoachingSchedule(req: Request, res: Response) {
             res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_LOCATION_ID));
             return
         }
+
         if(!isSchedulesDatesValid(data.coachingDays)){
             console.log("selected days are invalid");
             res.status(400).json(errorResponse("selected days are invalid"));
-            return;
-            
+            return;  
         }
 
         const value: scheduleResponseInterface = await isValidCoachingSchedule(data);
@@ -103,7 +91,6 @@ export async function addCoachingSchedule(req: Request, res: Response) {
             console.log(value.message);
             res.status(400).json(errorResponse(value.message));
             return ;
-
         }
         try {
             let newCoachingSchedule = await prisma.coachingSchedule.create({
@@ -125,8 +112,6 @@ export async function addCoachingSchedule(req: Request, res: Response) {
             res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
             return;
         }
-
-
     } catch (error) {
         console.log(error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
@@ -135,8 +120,8 @@ export async function addCoachingSchedule(req: Request, res: Response) {
     }
 }
 
-//Fetch locations from the database.
-export async function getLocation(req: Request, res: Response) {
+//@dev: Fetch locations from the database.
+export async function getLocation(req: Request, res: Response): Promise<void> {
     try {
         let locations = await getAllLocations();
         if (!locations) {
@@ -146,17 +131,16 @@ export async function getLocation(req: Request, res: Response) {
         res.status(200).json(successResponse(SUCCESS_MESSAGES.LOCATION_DATA_FETCHED, locations));
         return;
     } catch (error) {
-        console.log(error);
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }
 }
 
-//Fetch coaching plans from the database.
-export async function getCoachingPlan(req: Request, res: Response) {
-
+//@dev: Fetch coaching plans from the database.
+export async function getCoachingPlan(req: Request, res: Response): Promise<void> {
     try {
-        let coachingPlan = await prisma.coachingPlan.findMany()
+        let coachingPlan = await getAllCoachingPlan();
         if (!coachingPlan) {
             res.status(204).json(successResponse(SUCCESS_MESSAGES.NO_DATA_FOUND));
             return;
@@ -164,15 +148,15 @@ export async function getCoachingPlan(req: Request, res: Response) {
         res.status(200).json(successResponse(SUCCESS_MESSAGES.PLAN_DATA_FETCHED));
         return;
     } catch (error) {
-        console.log(error);
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }
 
 }
 
-//Fetch coaching plan Names from the database.
-export async function getCoachingPlanNames(req: Request, res: Response) {
+//@dev: Fetch coaching plan Names from the database.
+export async function getCoachingPlanNames(req: Request, res: Response): Promise<void> {
     try {
         let coachingPlanNames = await getAllCoachingPlanName();
         if (!coachingPlanNames) {
@@ -188,27 +172,25 @@ export async function getCoachingPlanNames(req: Request, res: Response) {
     }
 }
 
-//Fetch coaching schedule from the database.
-export async function getCoachingSchedule(req: Request, res: Response) {
+//@dev: Fetch coaching schedule from the database.
+export async function getCoachingSchedule(req: Request, res: Response): Promise<void> {
     try {
-        let coachingSchedule = await prisma.coachingSchedule.findMany()
-
+        let coachingSchedule = await getAllCoachingSchedule();
         if (!coachingSchedule) {
             res.status(204).json(successResponse(SUCCESS_MESSAGES.NO_DATA_FOUND));
             return;
         }
-
         res.status(200).json(successResponse(SUCCESS_MESSAGES.SCHEDULE_DATA_FETCHED, coachingSchedule));
         return;
     } catch (error) {
-        console.log(error);
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }
 }
 
-
-export async  function getAttendence(req:Request,res:Response){
+//@dev: Fetch user attendance.
+export async  function getAttendence(req:Request,res:Response): Promise<void> {
     
     try {
         let scheduleByLocation = await getCochingScheduleByLocation();

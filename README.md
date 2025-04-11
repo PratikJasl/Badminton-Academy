@@ -84,3 +84,4 @@
 2) Decoupling: Create a service layer to de-couple controllers. 
 3) TabNapping: In frontend avoid tab napping errors in href tags to external links.
 4) Load Carausel Image: Load the first carousel image early to avoid delay.
+5) Reloading of the website while 

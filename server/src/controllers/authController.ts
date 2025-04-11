@@ -1,17 +1,19 @@
-import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { checkAge} from "../service/isKid";
+import { Request, Response } from "express";
+import { PrismaClient } from "@prisma/client";
 import transporter from "../config/nodeMailer";
+import { checkValidLocation } from "../repository/locationRepo";
+import { addNewUser, checkExistingUser, findUser } from "../repository/userRepo";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
-import { addNewUser } from "../repository/userRepo";
 import { errorResponse, successResponse } from "../common/apiResponse";
-
+import { checkValidCoachingPlan } from "../repository/coachingPlanRepo";
 
 const prisma = new PrismaClient();
 
 //User On-boarding routes
-export async function signUp(req: Request, res: Response) {
+export async function signUp(req: Request, res: Response): Promise<void> {
     console.log("------SignUp Route------");
     let {
         fullName,
@@ -28,41 +30,34 @@ export async function signUp(req: Request, res: Response) {
     console.log("Received request body:", req.body);
     
     try {
-        //Check for existing Users
-        let existingUser = await prisma.user.findUnique({
-            where:{
-                email: email,
-            }
-        })
+        //@dev Check for existing users.
+        let existingUser = await checkExistingUser(email);
         if(existingUser){
-            res.status(400).json(errorResponse(ERROR_MESSAGES.USER_ALREADY_EXISTS));
+            res.status(409).json(errorResponse(ERROR_MESSAGES.USER_ALREADY_EXISTS));
             return;
         }
 
-        //Check for valid location
-        let location = await prisma.location.findUnique({
-            where: {locationId: locationId}
-        })
-
-        if (!location) {
+        //@dev Check for valid locations.
+        let validLocation = await checkValidLocation(locationId);
+        if (!validLocation) {
             res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_LOCATION_ID));
             return
         }
 
-        //Check for valid Coaching Plan
-        let coachingPlan = await prisma.coachingPlan.findUnique({
-            where: {coachingPlanId: coachingPlanId}
-        })
-
-        if( !coachingPlan){
+        //@dev Check for valid coaching plan.
+        let validCoachingPlan = await checkValidCoachingPlan(coachingPlanId);
+        if( !validCoachingPlan){
             res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_COACHING_PLAN_ID));
             return
         }
 
-        //Hash Password and store the user data
-        let hashedPassword = await bcrypt.hash(password, 10);
-        // console.log("Hashed Password", hashedPassword);
+        //@dev Check user is kid or adult.
+        let isKid = checkAge(dob);
 
+        //@dev Hash password.
+        let hashedPassword = await bcrypt.hash(password, 10);
+
+        //@dev Store new user in DB.
         let newUser = await addNewUser
         (
             fullName,
@@ -73,45 +68,20 @@ export async function signUp(req: Request, res: Response) {
             locationId, 
             coachingPlanId,
             hashedPassword, 
-            role
+            role,
+            isKid
         )
 
-        //Generate JWT token and send it in response cookies.
-        // let token = jwt.sign({ id: newUser.userId, role: newUser.role }, process.env.JWT_SECRET as string, {expiresIn: '7d'});
-        // console.log("Token", token);
-
-        // res.cookie('token', token, {
-        //     httpOnly: true,
-        //     secure: process.env.NODE_ENV === 'production',
-        //     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
-        //     maxAge: 7 * 24 * 60 * 60 * 1000
-        // })
-
-        //Send Acknowledgment Mail and Response
-        // const mailOptions = {
-        //     from: process.env.SENDER_EMAIL,
-        //     to: email,
-        //     subject: 'Welcome!! Thanks for Signing Up',
-        //     text: 
-        //     `Hi ${fullName}👋, 
-        //      We're thrilled to have you on board. Your account has been created with email id 📧: ${email}.
-
-        //      Best Regards
-        //      Pratik Jussal`
-        // }
-        // await transporter.sendMail(mailOptions);
-
-        res.status(201).json(successResponse(SUCCESS_MESSAGES.USER_CREATED,newUser));
+        res.status(201).json(successResponse(SUCCESS_MESSAGES.USER_CREATED, newUser));
         return;
-        
     } catch (error) {
         console.log(error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }
 }
-
-export async function logIn(req: Request, res: Response) {
+ 
+export async function logIn(req: Request, res: Response): Promise<void> {
     console.log("------LogIn Route------");
     let {email, password} = req.body;
     console.log('received body in Login:', req.body);
@@ -122,33 +92,24 @@ export async function logIn(req: Request, res: Response) {
     }
 
     try {
-        let user = await prisma.user.findUnique({
-            where: {
-                email: email
-            }
-        });
-
+        //@dev Check existing user.
+        let user = await findUser(email);
         if(!user){
-            res.status(400).json({success: "false", message: ERROR_MESSAGES.USER_NOT_FOUND});
+            res.status(404).json({success: "false", message: ERROR_MESSAGES.USER_NOT_FOUND});
             return
         }
-        console.log("found existing user with user info:", user);
-        //Compare Password, and generate JWT token, and send it in cookies.
+
+        //@dev Compare Password, and generate JWT token, and send it in cookies.
         if(user){
             const isMatch = await bcrypt.compare(password, user.password);
-
             if(!isMatch){
                res.status(400).json({success: "false", message: ERROR_MESSAGES.INCORRECT_PASSWORD, details: isMatch}); 
                return;
             }
 
-            console.log("Generating JWT token");
             const token = jwt.sign({ userName: user.fullName, id: user.userId, role: user.role}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
-            console.log("Generated token is:", token);
-            
             const data = {fullName: user.fullName, role: user.role, gender: user.gender};
-            console.log("Data to send:", data);
-
+        
             res.status(200).cookie('token', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
@@ -163,9 +124,9 @@ export async function logIn(req: Request, res: Response) {
     }
 }
 
-export async function logOut(req: Request, res: Response) {
+export async function logOut(req: Request, res: Response): Promise<void> {
     console.log("------LogOut Route------");
-    //Clear the clients cookies.
+    //@dev Clear the clients cookies.
     try {
         res.status(200).clearCookie('token', {
             httpOnly: true,
@@ -180,7 +141,7 @@ export async function logOut(req: Request, res: Response) {
 }
 
 //Verify email routes:
-export async function sendVerifyOTP(req: Request, res: Response){
+export async function sendVerifyOTP(req: Request, res: Response): Promise<void> {
     console.log("------Send Verify OTP Route------");
     const { userId } = req.body;
 
@@ -245,7 +206,7 @@ export async function sendVerifyOTP(req: Request, res: Response){
     }
 }
 
-export async function verifyEmail(req: Request, res: Response){
+export async function verifyEmail(req: Request, res: Response): Promise<void> {
     console.log("-----Verify Email Route------");
     const {userId, OTP} = req.body;
 
@@ -298,7 +259,7 @@ export async function verifyEmail(req: Request, res: Response){
 }
 
 //Reset password routes:
-export async function sendResetPasswordOTP(req: Request, res: Response){
+export async function sendResetPasswordOTP(req: Request, res: Response): Promise<void> {
     console.log("------Send Reset Password OTP Route------");
     try{
         const { email } = req.body;
@@ -358,7 +319,7 @@ export async function sendResetPasswordOTP(req: Request, res: Response){
     }
 }
 
-export async function resetPassword(req: Request, res: Response){
+export async function resetPassword(req: Request, res: Response): Promise<void> {
     console.log("------Reset Password Route------");
     const {email, OTP, password} = req.body;
 

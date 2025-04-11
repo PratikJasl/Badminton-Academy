@@ -9,7 +9,20 @@ export interface coachingScheduleInterface{
 }
 
 export interface scheduleResponseInterface{
-        success:boolean,
-        message:string
+    success:boolean,
+    message:string
 }
 
+export type gender = "male" | "female" | "other";
+
+export interface existingUserCheckResult {
+    userId: number;
+}
+
+export interface existingLocationCheckResult {
+    locationId: number;
+}
+
+export interface existingCoachingPlanCheckResult {
+    coachingPlanId: number;
+}

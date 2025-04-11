@@ -1,34 +1,35 @@
 import { PrismaClient } from "@prisma/client";
-import { coachingScheduleInterface, scheduleResponseInterface } from "../common/interface";
 import { DAYS_CODE } from "../common/daysCode";
+import { coachingScheduleInterface, scheduleResponseInterface } from "../common/interface";
 
 const prisma=new PrismaClient();
-export async function isValidCoachingSchedule(data:coachingScheduleInterface):Promise<scheduleResponseInterface>{
 
-    const startTime:number=timeToMinutes(data.startTime);
-    const endTime:number=timeToMinutes(data.endTime);
-    if(startTime>endTime){
+export async function isValidCoachingSchedule(data:coachingScheduleInterface):Promise<scheduleResponseInterface>{
+    const startTime:number = timeToMinutes(data.startTime);
+    const endTime:number = timeToMinutes(data.endTime);
+
+    if(startTime > endTime){
         return {
             success:true,
             message:"Start time is greater than end time"
         }
     }
-         let existingSchedule=await prisma.coachingSchedule.findMany({
-            where: ({locationId:data.locationId})
-         })
+
+    let existingSchedule = await prisma.coachingSchedule.findMany({
+        where: ({locationId:data.locationId})
+    })
     // console.log(" Schedule Data...",existingSchedule);
     // console.log("----------------------------------------")
     
-
-   for(let i:number=0;i<existingSchedule.length;i++){
-    if(startTime<timeToMinutes(existingSchedule[i].endTime) && endTime >timeToMinutes(existingSchedule[i].startTime)){
+   for(let i:number = 0; i<existingSchedule.length; i++){
+    if(startTime < timeToMinutes(existingSchedule[i].endTime) && endTime > timeToMinutes(existingSchedule[i].startTime)){
 
         const res=checkForDaysConflict(data.coachingDays,existingSchedule[i].coachingDays);
        if(res.success){
-        return {
-            success:true,
-            message:`${DAYS_CODE[res.message as keyof typeof DAYS_CODE]} is conflicting`
-        };
+            return {
+                success:true,
+                message:`${DAYS_CODE[res.message as keyof typeof DAYS_CODE]} is conflicting`
+            };
        }
 
     }   
@@ -58,8 +59,7 @@ function checkForDaysConflict(newCoachingDays:string,existingCoachingDays:string
 function timeToMinutes(timeStr:string):number {
     const [hours, minutes] = timeStr.split(':').map(Number);
     return hours * 60 + minutes;
-  }
-
+}
 
 export function isSchedulesDatesValid(newDays:string){
     const validDate:string=DAYS_CODE.VALID_DAYS;
@@ -76,4 +76,4 @@ export function isSchedulesDatesValid(newDays:string){
     }
 
     return true;
-  }
+}

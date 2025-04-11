@@ -1,12 +1,11 @@
 import jwt from "jsonwebtoken"
-import { Request, Response, NextFunction } from "express"
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
+import { ERROR_MESSAGES } from "../common/messages";
 import { errorResponse } from "../common/apiResponse";
+import { Request, Response, NextFunction } from "express"
 
-export function coachAdminAuth(req: Request, res: Response, next: NextFunction){
+//@dev Middleware to authenticate user role.
+export function coachAuth(req: Request, res: Response, next: NextFunction){
     const token = req.cookies.token;
-    console.log("Token received is:", token);
-    
     if(!token){
         res.status(401).json(errorResponse(ERROR_MESSAGES.NOT_AUTH));
         return;
