@@ -8,9 +8,10 @@ import { getCoachingPlan } from "../../services/coachingPlanService";
 import { Navigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { InferType } from 'yup';
+import { signUpService } from "../../services/authService";
 
-//@dev Login Form Data Type.
-type SignUpFormData = InferType<typeof signUpSchema>;
+//@dev: Login Form Data Type.
+export type SignUpFormData = InferType<typeof signUpSchema>;
 
 function SignUp(){
     const [locations, setLocations] = useState<{locationId: number; name: string }[]>([]);
@@ -22,7 +23,7 @@ function SignUp(){
     });
     const today = new Date().toISOString().split('T')[0];
     
-    //@dev Function to fetch location and coaching Plan data.
+    //@dev: Function to fetch location and coaching Plan data.
     useEffect(() => {
         const fetchLocation = async () => {
             try {
@@ -51,18 +52,10 @@ function SignUp(){
         setIsLoading(true);
         const { confirmPassword, ...dataToSend} = data;
         dataToSend.role = "student";
-        let response;
+        let response: any;
         
         try {
-            response = await axios.post("http://localhost:3000/api/auth/signup",
-            dataToSend,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-              withCredentials: true,
-            }
-          );
+            response = await signUpService(dataToSend);
            if(response.status == 201){
                 setRedirect(true);
                 toast.success("SignUp Successful");

@@ -41,14 +41,14 @@ export async function signUp(req: Request, res: Response): Promise<void> {
         let validLocation = await checkValidLocation(locationId);
         if (!validLocation) {
             res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_LOCATION_ID));
-            return
+            return;
         }
 
         //@dev Check for valid coaching plan.
         let validCoachingPlan = await checkValidCoachingPlan(coachingPlanId);
         if( !validCoachingPlan){
             res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_COACHING_PLAN_ID));
-            return
+            return;
         }
 
         //@dev Check user is kid or adult.
