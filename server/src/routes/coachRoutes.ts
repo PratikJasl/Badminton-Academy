@@ -5,20 +5,20 @@ import { addLocation, addCoachingPlan, addCoachingSchedule, getLocation, getCoac
 
 const coachRouter = Router();
 
-//@dev Location Routes:
-coachRouter.post('/add-location',coachAuth ,locationDataValidation, addLocation);
+//@dev: Location Routes:
+coachRouter.post('/add-location',coachAuth, locationDataValidation, addLocation);
 coachRouter.get('/location', getLocation);
 
-//@dev Coaching Plan Routes:
-coachRouter.post('/add-coaching-plan',coachAuth , coachingPlanDataValidation, addCoachingPlan);
+//@dev: Coaching Plan Routes:
+coachRouter.post('/add-coaching-plan' ,coachAuth, coachingPlanDataValidation, addCoachingPlan);
 coachRouter.get('/coaching-plan', getCoachingPlan);
 coachRouter.get('/coaching-plan-ids', getCoachingPlanNames);
 
-//@dev Coaching Schedule Routes:
+//@dev: Coaching Schedule Routes:
 coachRouter.post('/add-coaching-schedule',coachAuth , coachingScheduleDataValidation, addCoachingSchedule);
 coachRouter.get('/coaching-schedule', getCoachingSchedule);
 
-//@dev Attendence Related Routes:
+//@dev: Attendence Related Routes:
 // coachRouter.get('attendence',getAttendence);
 
 export {coachRouter}

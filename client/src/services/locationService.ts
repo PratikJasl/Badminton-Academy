@@ -1,9 +1,9 @@
 import axios from "axios";
 
-//@dev Function to get location details.
+//@dev: Function to get location details.
 export async function getLocation(){
     try {
-        const response = await axios.get('http://localhost:3000/api/coachAdmin/location', {
+        const response = await axios.get('http://localhost:3000/api/coach/location', {
             headers: {
               'Content-Type': 'application/json',
             },

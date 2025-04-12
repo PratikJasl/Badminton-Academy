@@ -1,15 +1,15 @@
 import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { Link } from "react-router-dom";
+import male from "../../assets/male.png";
+import person from "../../assets/person.png";
+import female from "../../assets/female.png";
+import { logOutService } from "../../services/authService";
+import { userInfoState } from "../../atom/userAtom";
 import { Bars3Icon} from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { userInfoState } from "../../atom/userAtom";
-import { useRecoilState } from "recoil";
-import { clearUserInfo} from "../../services/storeUserInfo";
-import { Link } from "react-router-dom";
-import person from "../../assets/person.png";
-import male from "../../assets/male.png";
-import female from "../../assets/female.png";
+import { clearUserInfo } from "../../services/storeUserInfo";
 import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
-import axios from "axios";
 
 function Navbar(){
     const [menuOpen, setMenuOpen] = useState(false);
@@ -19,15 +19,12 @@ function Navbar(){
         setMenuOpen(!menuOpen);
     }
 
-    async function logOut(){
+    async function handleLogOut(): Promise<void>{ 
         try {
-            let response = await axios.post("http://localhost:3000/api/auth/logout", {}, {
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            });
-
-            if(response.status === 200){
+            console.log("----- Handle Log OUT-----");
+            const response = await logOutService();
+            console.log("Response of Logout:", response);
+            if(response?.status === 200){ 
                 await clearUserInfo();
                 setUserInfo(null);
                 console.log("Logged Out");
@@ -83,7 +80,7 @@ function Navbar(){
                                     
                                     <button 
                                         className="flex flex-row p-2 rounded-xl hover:text-red-500 hover:scale-130 active:scale-120 transition transform duration-500 ease-in-out"
-                                        onClick={logOut}
+                                        onClick={handleLogOut}
                                     >
                                         LogOut
                                         <ArrowRightStartOnRectangleIcon className="h-6 w-6 text-red-500" />
@@ -111,7 +108,7 @@ function Navbar(){
                                    
                                     <button 
                                         className="flex flex-row p-2 rounded-xl hover:text-red-500 hover:scale-130 active:scale-120 transition transform duration-500 ease-in-out"
-                                        onClick={logOut}
+                                        onClick={handleLogOut}
                                     >
                                         LogOut
                                         <ArrowRightStartOnRectangleIcon className="h-6 w-6 text-red-500" />

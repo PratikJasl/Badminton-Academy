@@ -32,7 +32,7 @@ export async function locationDataValidation(req: Request, res: Response, next: 
     }
 }
 
-//Validate the data for the coaching plan send from the client.
+//@dev: Validate the data for the coaching plan send from the client.
 export async function coachingPlanDataValidation(req: Request, res: Response, next: NextFunction): Promise<void>{
     const {
         name,
@@ -60,7 +60,7 @@ export async function coachingPlanDataValidation(req: Request, res: Response, ne
     }
 }
 
-//Validate the data for the coaching schedule send from the client.
+//@dev: Validate the data for the coaching schedule send from the client.
 export async function coachingScheduleDataValidation(req: Request, res: Response, next: NextFunction): Promise<void>{
     const {
         coachingBatch,

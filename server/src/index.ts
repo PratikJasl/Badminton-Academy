@@ -19,7 +19,7 @@ app.use(cors({
 //Routes:
 app.use('/api', userRouter);
 app.use('/api', authRouter);
-app.use('/api/coachAdmin', coachRouter);
+app.use('/api/coach', coachRouter);
 // app.use('/api/admin',adminRouter);
 
 app.listen(port, ()=>{
