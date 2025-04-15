@@ -99,7 +99,7 @@ export async function addCoachingSchedule(req: Request, res: Response): Promise<
                 res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
                 return; 
             }
-            res.status(201).json(successResponse(SUCCESS_MESSAGES.COACHING_PLAN_ADDED, newCoachingSchedule));
+            res.status(201).json(successResponse(SUCCESS_MESSAGES.COACHING_PLAN_ADDED, newCoachingSchedule)); //Change Success message.
             return;
         } catch (error) {
             console.log("ERROR: error while persisting schedule data...", error);  
@@ -107,7 +107,7 @@ export async function addCoachingSchedule(req: Request, res: Response): Promise<
             return;
         }
     } catch (error) {
-        console.log(error);
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }
@@ -183,7 +183,7 @@ export async function getCoachingSchedule(req: Request, res: Response): Promise<
 }
 
 //@dev: Fetch user attendance.
-export async  function getAttendence(req:Request,res:Response): Promise<void> {
+export async  function getAttendence(req:Request, res:Response): Promise<void> {
     
     try {
         let scheduleByLocation = await getCochingScheduleByLocation();

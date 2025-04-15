@@ -49,8 +49,7 @@ export async function isValidCoachingSchedule(data:coachingScheduleInterface): P
     } catch (error) {
         console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         throw error;
-    }
-    
+    }  
 }
 
 //@dev: Function to check valid Dates.
