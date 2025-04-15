@@ -20,7 +20,7 @@ function LogIn(){
             resolver: yupResolver(loginSchema),
     });
 
-    //@dev Function to handle the form submission, and store user information in local storage.
+    //@dev: Function to handle the form submission, and store user information in local storage.
     const onSubmit = async (data: LoginFormData) => {
         setIsLoading(true)
         let response: any;
@@ -45,7 +45,7 @@ function LogIn(){
         }
     };
 
-    //@dev After successful login, redirect the user to the home page.
+    //@dev: After successful login, redirect the user to the home page.
     if(redirect){
         return <Navigate to={'/'} />
     }
@@ -53,7 +53,7 @@ function LogIn(){
     return(
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center gap-3 lg:w-96 w-74 shadow-lg shadow-white p-10 rounded-2xl">
 
-            <h1 className="text-3xl font-bold text-blue-600 mb-2 ">LogIn</h1>
+            <h1 className="text-3xl font-bold text-blue-600 mb-2">LogIn</h1>
 
             <div className="flex flex-col gap-5">
                 <input
@@ -92,7 +92,7 @@ function LogIn(){
             <button 
                 type="submit"
                 disabled={isLoading}
-                className="shadow-lg p-2 min-w-64 rounded-lg bg-blue-700 text-white font-bold hover:bg-blue-600"
+                className="shadow-lg p-2 min-w-64 rounded-lg bg-blue-700 text-white font-bold hover:bg-blue-600 hover:cursor-pointer"
             >
                 {isLoading ? 'Logging In...' : 'LogIn'}
             </button>

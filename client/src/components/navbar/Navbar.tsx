@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import male from "../../assets/male.png";
 import person from "../../assets/person.png";
 import female from "../../assets/female.png";
@@ -14,6 +14,7 @@ import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 function Navbar(){
     const [menuOpen, setMenuOpen] = useState(false);
     const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+    const navigate = useNavigate();
 
     const toggleMenu = () =>{
         setMenuOpen(!menuOpen);
@@ -27,12 +28,14 @@ function Navbar(){
             if(response?.status === 200){ 
                 await clearUserInfo();
                 setUserInfo(null);
+                navigate("/");
                 console.log("Logged Out");
             }
         } catch (error) {
             console.log("Error Logging Out", error);
         }
     }
+
 
     return(
         <>
@@ -74,7 +77,7 @@ function Navbar(){
                                     {userInfo?.fullName && <h1>{userInfo.fullName}</h1>}
                                     <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Coaching Plan</Link>
                                     <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Coaching Schedule</Link>
-                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Locations</Link>
+                                    <Link to="/Location" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Locations</Link>
                                     <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Mark Payments</Link>
                                     <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Mark Attendance</Link>
                                     

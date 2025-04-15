@@ -26,7 +26,8 @@ export async function getAllLocations(){
         let locations = await prisma.location.findMany({
             select: {
                 locationId: true,
-                name: true
+                name: true,
+                address: true
             }
         });
         return locations;

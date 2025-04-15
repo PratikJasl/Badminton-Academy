@@ -258,7 +258,7 @@ function SignUp(){
             <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full mt-6 shadow-lg p-3 rounded-lg bg-blue-700 text-white font-bold hover:bg-blue-600"
+                className="w-full mt-6 shadow-lg p-3 rounded-lg bg-blue-700 text-white font-bold hover:bg-blue-600 hover:cursor-pointer"
             >
                 {isLoading ? 'Signing Up...' : 'SignUp'}
             </button>

@@ -3,12 +3,26 @@ import Home from './components/landingPage/Home';
 import SignUp from './components/auth/SignUp'
 import LogIn from './components/auth/Login'
 import Navbar from './components/navbar/Navbar'
+import Location from './components/features/Location';
 import AddLocation from './components/features/AddLocation';
 import { Route, Routes } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify';
+import { useEffect } from 'react';
+import { getInitialUserInfo } from './services/storeUserInfo';
+import { userInfoState } from "./atom/userAtom";
+import { useSetRecoilState } from "recoil";
 
 
 function App() {
+  const setUserInfo = useSetRecoilState(userInfoState);
+
+  useEffect(()=>{
+    let localData = getInitialUserInfo();
+    if(localData){
+        setUserInfo(localData);
+    }
+  },[]);
+
   return (
     <div className='h-screen flex flex-col items-center justify-center'>
       <Navbar/>
@@ -16,8 +30,10 @@ function App() {
           <Route path='/' element= {<Home/>}></Route>
           <Route path='/Signup' element= {<SignUp/>}></Route>
           <Route path='/Login' element= {<LogIn/>}></Route>
-          <Route path='/Location' element= {<AddLocation/>}></Route>
+          <Route path='/Location' element= {<Location/>}></Route>
+          <Route path='/AddLocation' element= {<AddLocation/>}></Route>
       </Routes>
+
       <ToastContainer
         position="top-right" 
         autoClose={3000}
