@@ -18,7 +18,7 @@ coachAdminRouter.get('/coaching-plan-ids', getCoachingPlanNames);
 coachAdminRouter.post('/add-coaching-schedule',coachAdminAuth , coachingScheduleDataValidation, addCoachingSchedule);
 coachAdminRouter.get('/coaching-schedule', getCoachingSchedule);
 
-//@dev Attendence Related Routes:
+// @dev Attendence Related Routes:
 // coachAdminRouter.get('attendence',getAttendence);
 
 export {coachAdminRouter}
