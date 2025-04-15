@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { addNewLocation, getAllLocations } from "../repository/locationRepo";
+import { addNewLocation, checkValidLocation, getAllLocations } from "../repository/locationRepo";
 import { addNewCoachingPlan, getAllCoachingPlan, getAllCoachingPlanName } from "../repository/coachingPlanRepo";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 import { errorResponse, successResponse } from "../common/apiResponse";
 import { getCochingScheduleByLocation } from "../service/attendanceService";
-import { isSchedulesDatesValid, isValidCoachingSchedule } from "../middlewares/coachingScheduleValidation";
+import { isValidCoachingSchedule } from "../service/ScheduleService";
+import { isSchedulesDatesValid } from "../service/ScheduleService";
 import { coachingScheduleInterface, scheduleResponseInterface } from "../common/interface";
-import { getAllCoachingSchedule } from "../repository/coachingScheduleRepo";
-
+import { addNewCoachingSchedule, getAllCoachingSchedule } from "../repository/coachingScheduleRepo";
 
 const prisma = new PrismaClient();
 
@@ -53,7 +53,7 @@ export async function addCoachingPlan(req: Request, res: Response): Promise<void
 }
 
 //@dev: Add a new coaching schedule to the database.
-export async function addCoachingSchedule(req: Request, res: Response): Promise<void> {
+export async function addCoachingSchedule(req: Request, res: Response): Promise<void>{
     const {
         coachingBatch,
         coachingDays,
@@ -71,44 +71,38 @@ export async function addCoachingSchedule(req: Request, res: Response): Promise<
     }
 
     try {
-        //Check if the location ID exists.
-        let location = await prisma.location.findUnique({
-            where: { locationId: data.locationId }
-        })
+        //@dev: Check if the location ID exists.
+        let location = await checkValidLocation(locationId);
         if (!location) {
             res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_LOCATION_ID));
-            return
+            return;
         }
 
+        //@dev: Check if the schedule dates are valid.
         if(!isSchedulesDatesValid(data.coachingDays)){
-            console.log("selected days are invalid");
-            res.status(400).json(errorResponse("selected days are invalid"));
+            console.log(ERROR_MESSAGES.INVALID_DAYS);
+            res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_DAYS));
             return;  
         }
 
+        //@dev: Check if the schedule does not overlap with any existing schedule.
         const value: scheduleResponseInterface = await isValidCoachingSchedule(data);
         if (value.success) {
             console.log(value.message);
             res.status(400).json(errorResponse(value.message));
-            return ;
+            return;
         }
+
         try {
-            let newCoachingSchedule = await prisma.coachingSchedule.create({
-                data: {
-                    coachingBatch: data.coachingBatch,
-                    coachingDays: data.coachingDays,
-                    startTime: data.startTime,
-                    endTime: data.endTime,
-                    location: {
-                        connect: { locationId: data.locationId }
-                    }
-                }
-            })
+            let newCoachingSchedule = await addNewCoachingSchedule(data);
+            if(!newCoachingSchedule){ 
+                res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
+                return; 
+            }
             res.status(201).json(successResponse(SUCCESS_MESSAGES.COACHING_PLAN_ADDED, newCoachingSchedule));
             return;
         } catch (error) {
-            console.log("ERROR: error while persisting schedule data...");  
-            console.log(error);
+            console.log("ERROR: error while persisting schedule data...", error);  
             res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
             return;
         }
@@ -116,7 +110,6 @@ export async function addCoachingSchedule(req: Request, res: Response): Promise<
         console.log(error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
-
     }
 }
 
