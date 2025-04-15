@@ -22,7 +22,7 @@ export const clearUserInfo = async () => {
 }
 
 //@dev Function to initialize atom with local storage data.
-export function getInitialUserInfo(){
+export function getInitialUserInfo() {
     if (typeof window !== 'undefined') { // Ensure code runs only in browser
       try {
         const storedData = localStorage.getItem(USER_INFO_STORAGE_KEY);

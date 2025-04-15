@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { checkAge} from "../service/isKid";
+import { checkAge} from "../common/helperFunctions";
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import transporter from "../config/nodeMailer";
@@ -12,7 +12,7 @@ import { checkValidCoachingPlan } from "../repository/coachingPlanRepo";
 
 const prisma = new PrismaClient();
 
-//User On-boarding routes
+//@dev: Add a new user to database.
 export async function signUp(req: Request, res: Response): Promise<void> {
     console.log("------SignUp Route------");
     let {
@@ -80,7 +80,8 @@ export async function signUp(req: Request, res: Response): Promise<void> {
         return;
     }
 }
- 
+
+//@dev: Login user.
 export async function logIn(req: Request, res: Response): Promise<void> {
     console.log("------LogIn Route------");
     let {email, password} = req.body;
@@ -124,6 +125,7 @@ export async function logIn(req: Request, res: Response): Promise<void> {
     }
 }
 
+//@dev: Logout user.
 export async function logOut(req: Request, res: Response): Promise<void> {
     console.log("------LogOut Route------");
     //@dev Clear the clients cookies.
