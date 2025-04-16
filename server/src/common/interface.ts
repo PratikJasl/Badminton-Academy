@@ -19,8 +19,12 @@ export interface existingUserCheckResult {
     userId: number;
 }
 
-export interface existingLocationCheckResult {
+export interface validLocationCheckResult {
     locationId: number;
+}
+
+export interface existingLocationCheckResult {
+    name: string;
 }
 
 export interface existingCoachingPlanCheckResult {

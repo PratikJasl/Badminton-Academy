@@ -1,28 +1,51 @@
-import { useEffect, useState } from "react";
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import { Link } from "react-router-dom";
-import { getLocation } from "../../services/locationService";
-import { MapPinIcon } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
 import { FlagIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
+import { MapPinIcon } from "@heroicons/react/24/outline";
+import { getLocation, deleteLocation } from "../../services/locationService";
 
 //@dev: Function to fetch all the locations.
 function Location(){
     const [locations, setLocations] = useState<{ locationId: string; name: string; address: string }[]>([]);
 
-    useEffect(()=>{
-        const fetchLocation = async() => {
-            try {
-                let response = await getLocation();
-                setLocations(response);
-            } catch (error) {
-                console.log("Error Fetching Location", error);
-            }
+    const fetchLocation = async() => {
+        try {
+            let response = await getLocation();
+            setLocations(response);
+        } catch (error) {
+            console.log("Error Fetching Location", error);
         }
+    }
+
+    useEffect(()=>{
         fetchLocation();
     }, []);
 
-    const deleteLocation = async () => {
-
+    const handleDeleteLocation = async (locationId: any) => {
+        let response: any
+        console.log("Location Id clicked is:", locationId);
+        try {
+            response = await deleteLocation(locationId);
+            if(response){
+                if(response.status === 200){
+                    toast.success("Location Deleted Successfully");
+                    fetchLocation();
+                }else{
+                    toast.error(response.data.message || "Failed, Please try again.");
+                }
+            }
+        } catch (error) {
+            console.log("Error occured is:",error);
+            if (axios.isAxiosError(error) && error.response) {
+                toast.error(error.response.data.message);
+            } else {
+                console.error("An unexpected error occurred:", error);
+                toast.error("An unexpected error occurred. Please try again.");
+            }
+        }
     }
 
     return(
@@ -50,12 +73,12 @@ function Location(){
 
                                 <TrashIcon 
                                     className="h-6 w-6 text-gray-500 right-1 absolute hover:scale-110 hover:text-red-600 hover:cursor-pointer" 
-                                    onClick={deleteLocation}
+                                    onClick={() => handleDeleteLocation(location.locationId)}
                                 />
                             </div>
                         ))
                     ) : (
-                        <p>No Locations added, Add new location</p>
+                        <p className="mt-28">No Locations added, add new location</p>
                     )}
                 </div>
 

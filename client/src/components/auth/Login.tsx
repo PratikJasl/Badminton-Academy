@@ -26,13 +26,13 @@ function LogIn(){
         let response: any;
         try {
             response = await loginService(data)
-           if(response.status === 200){
-                setRedirect(true);
-                saveUserInfo(response.data.data); //@dev Save user info to local storage.
-                toast.success("LogIn Successful");
-           }else{
-                toast.error(response.data.message || "Login failed. Please try again.");
-           }
+            if(response.status === 200){
+                    setRedirect(true);
+                    saveUserInfo(response.data.data); //@dev Save user info to local storage.
+                    toast.success("LogIn Successful");
+            }else{
+                    toast.error(response.data.message || "Login failed. Please try again.");
+            }
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
                 toast.error(error.response.data.message);

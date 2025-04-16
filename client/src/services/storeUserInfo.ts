@@ -2,7 +2,7 @@ import { UserInfoType } from "../atom/userAtom";
 export const USER_INFO_STORAGE_KEY = 'app_user_info';
 
 
-//@dev Function to save data in Local Storage.
+//@dev: Function to save data in Local Storage.
 export function saveUserInfo(userInfo: UserInfoType){
     if (userInfo) {
         try {
@@ -16,12 +16,12 @@ export function saveUserInfo(userInfo: UserInfoType){
       }
 }
 
-//@dev Function to remove data from the Local Storage.
+//@dev: Function to remove data from the Local Storage.
 export const clearUserInfo = async () => {
   localStorage.removeItem(USER_INFO_STORAGE_KEY);
 }
 
-//@dev Function to initialize atom with local storage data.
+//@dev: Function to initialize atom with local storage data.
 export function getInitialUserInfo() {
     if (typeof window !== 'undefined') { // Ensure code runs only in browser
       try {
