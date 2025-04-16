@@ -6,13 +6,15 @@ import { errorResponse } from "../common/apiResponse";
 
 //@dev: Validate the data for the location send from the client.
 export async function locationDataValidation(req: Request, res: Response, next: NextFunction): Promise<void>{
+    console.log("------Location Data Validation------");
     const {
         name,
         address
     } = req.body;
-
+    console.log("Received Req body:", req.body, name, address);
     try {
         if(!name || !address){
+            console.log(ERROR_MESSAGES.MISSING_FIELD);
             res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
             return;
         }

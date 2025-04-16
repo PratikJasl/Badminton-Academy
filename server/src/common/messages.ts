@@ -18,7 +18,8 @@ export const ERROR_MESSAGES = {
     INVALID_DAYS: `Selected Days are Invalid, Please select from 'MTWTFSS'`,
     OTP_EXPIRED: 'OTP Expired',
     NO_DATA_FOUND: 'No data found',
-    DATA_NOT_INSERTED:'Data Insertion Failed'
+    DATA_NOT_INSERTED:'Data Insertion Failed',
+    EXISTING_LOCATION: 'Location with same name already exists'
   };
 
   export const SUCCESS_MESSAGES = {

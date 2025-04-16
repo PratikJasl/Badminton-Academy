@@ -1,4 +1,5 @@
 import axios from "axios";
+import { LocationFormData } from "../components/features/AddLocation";
 
 //@dev: Function to get location details.
 export async function getLocation(){
@@ -13,7 +14,7 @@ export async function getLocation(){
         console.log("Data received:", response);
 
         if (response.data && response.data.data && Array.isArray(response.data.data)) {
-            return response.data.data; // Return the locations array
+            return response.data.data;
         } 
         else {
             console.error("Unexpected data structure from server.");
@@ -22,5 +23,39 @@ export async function getLocation(){
     } catch (error) {
         console.error("Error fetching locations", error);
         return [];
+    }
+}
+
+//@dev: Function to add new location.
+export async function addLocation(data: LocationFormData){
+    try {
+        let response = await axios.post('http://localhost:3000/api/coach/add-location', data, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            withCredentials: true
+        });
+        console.log("New Location Data received:", response);
+        return response;
+    } catch (error) {
+        console.error("Error adding locations", error);
+        throw error;
+    }
+}
+
+//@dev: Function to delete location.
+export async function deleteLocation(locationId: number){
+    try {
+        let response = await axios.post('http://localhost:3000/api/coach/delete-location', {locationId: locationId}, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            withCredentials: true
+        });
+        console.log("Delete Location Data received:", response);
+        return response;
+    } catch (error) {
+        console.error("Error adding locations", error);
+        throw error;
     }
 }
