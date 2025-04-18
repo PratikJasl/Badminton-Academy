@@ -8,7 +8,7 @@ import { getCochingScheduleByLocation } from "../service/attendanceService";
 import { isValidCoachingSchedule } from "../service/ScheduleService";
 import { isSchedulesDatesValid } from "../service/ScheduleService";
 import { coachingScheduleInterface, scheduleResponseInterface } from "../common/interface";
-import { addNewCoachingSchedule, getAllCoachingSchedule } from "../repository/coachingScheduleRepo";
+import { addNewCoachingSchedule, getAllCoachingSchedule, removeSchedule, ValidCoachingSchedule } from "../repository/coachingScheduleRepo";
 
 const prisma = new PrismaClient();
 
@@ -245,7 +245,40 @@ export async function deleteLocation(req:Request, res: Response): Promise<void> 
             res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
             return;
         }
-        res.status(200).json(successResponse(SUCCESS_MESSAGES.LOCATION_ADDED, response));
+        res.status(200).json(successResponse(SUCCESS_MESSAGES.LOCATION_REMOVED, response));
+        return;
+    } catch (error) {
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
+        res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
+        return; 
+    }
+}
+
+//@dev: Delete Schedule.
+export async function deleteSchedule(req:Request, res: Response): Promise<void> {
+    console.log("------Delete Schedule Route------");
+    const { scheduleId } = req.body;
+
+    try {
+        if(!scheduleId){
+            res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
+            return;
+        }
+    
+        //@dev: Check for valid schedule.
+        let validLocation = await ValidCoachingSchedule(scheduleId);
+        if (!validLocation) {
+            res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_COACHING_SCHEDULE_ID));
+            return;
+        }
+    
+        //@dev: Delete location.
+        let response = await removeSchedule(scheduleId);
+        if (!response) {
+            res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
+            return;
+        }
+        res.status(200).json(successResponse(SUCCESS_MESSAGES.SCHEDULE_REMOVED, response));
         return;
     } catch (error) {
         console.log(ERROR_MESSAGES.SERVER_ERROR, error);

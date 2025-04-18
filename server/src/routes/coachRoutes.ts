@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { coachAuth } from "../middlewares/coachAuth";
 import { coachingPlanDataValidation, coachingScheduleDataValidation, locationDataValidation } from "../middlewares/coachingDataValidation";
-import { addLocation, addCoachingPlan, addCoachingSchedule, getLocation, getCoachingPlan, getCoachingSchedule, getCoachingPlanNames, deleteLocation} from "../controllers/coachController";
+import { addLocation, addCoachingPlan, addCoachingSchedule, getLocation, getCoachingPlan, getCoachingSchedule, getCoachingPlanNames, deleteLocation, deleteSchedule} from "../controllers/coachController";
 
 const coachRouter = Router();
 
@@ -17,6 +17,7 @@ coachRouter.get('/coaching-plan-ids', getCoachingPlanNames);
 
 //@dev: Coaching Schedule Routes:
 coachRouter.post('/add-coaching-schedule',coachAuth , coachingScheduleDataValidation, addCoachingSchedule);
+coachRouter.post('/delete-coaching-schedule', coachAuth, deleteSchedule);
 coachRouter.get('/coaching-schedule', getCoachingSchedule);
 
 //@dev: Attendence Related Routes:

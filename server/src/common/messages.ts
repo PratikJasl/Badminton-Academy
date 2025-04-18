@@ -12,8 +12,9 @@ export const ERROR_MESSAGES = {
     INVALID_EMAIL: 'Email format is invalid.',
     INVALID_AGE: 'Age must be greater than 0.',
     INVALID_PASSWORD: 'Password must meet the required criteria.',
-    INVALID_LOCATION_ID: 'Location ID Does Not Exists',
+    INVALID_LOCATION_ID: 'Invalid Location ID',
     INVALID_COACHING_PLAN_ID: 'Invalid Coaching Plan ID',
+    INVALID_COACHING_SCHEDULE_ID: 'Invalid Coaching Schedule ID',
     INVALID_OTP: 'Invalid OTP',
     INVALID_DAYS: `Selected Days are Invalid, Please select from 'MTWTFSS'`,
     OTP_EXPIRED: 'OTP Expired',
@@ -39,4 +40,6 @@ export const ERROR_MESSAGES = {
     SCHEDULE_DATA_FETCHED: 'Coaching schedule data fetched successfully',
     NO_DATA_FOUND:'Data Not Available',
     ACCOUNT_ALREADY_VERIFIED: 'Account already verified',
+    LOCATION_REMOVED: 'Location removed successfully',
+    SCHEDULE_REMOVED: 'Coaching Schedule removed successfully',
   }

@@ -1,17 +1,18 @@
 import './App.css'
-import Home from './components/landingPage/Home';
-import SignUp from './components/auth/SignUp'
-import LogIn from './components/auth/Login'
-import Navbar from './components/navbar/Navbar'
-import Location from './components/features/Location';
-import AddLocation from './components/features/AddLocation';
-import { Route, Routes } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify';
 import { useEffect } from 'react';
-import { getInitialUserInfo } from './services/storeUserInfo';
-import { userInfoState } from "./atom/userAtom";
 import { useSetRecoilState } from "recoil";
-
+import LogIn from './components/auth/Login';
+import SignUp from './components/auth/SignUp';
+import Navbar from './components/navbar/Navbar';
+import { userInfoState } from "./atom/userAtom";
+import { ToastContainer } from 'react-toastify';
+import Home from './components/landingPage/Home';
+import { Route, Routes } from 'react-router-dom';
+import Location from './components/features/location/Location';
+import Schedule from './components/features/schedule/Schedule';
+import { getInitialUserInfo } from './services/storeUserInfo';
+import AddLocation from './components/features/location/AddLocation';
+import AddSchedule from './components/features/schedule/AddSchedule';
 
 function App() {
   const setUserInfo = useSetRecoilState(userInfoState);
@@ -32,6 +33,8 @@ function App() {
           <Route path='/Login' element= {<LogIn/>}></Route>
           <Route path='/Location' element= {<Location/>}></Route>
           <Route path='/AddLocation' element= {<AddLocation/>}></Route>
+          <Route path='/Schedule' element={<Schedule/>}></Route>
+          <Route path='/AddSchedule' element={<AddSchedule/>}></Route>
       </Routes>
 
       <ToastContainer

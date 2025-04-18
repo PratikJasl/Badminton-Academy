@@ -1,6 +1,6 @@
 import { CoachingPlan, CoachingSchedule, PrismaClient } from "@prisma/client";
 import { ERROR_MESSAGES } from "../common/messages";
-import { coachingScheduleInterface, existingCoachingPlanCheckResult } from "../common/interface";
+import { coachingScheduleInterface, existingCoachingPlanCheckResult, existingScheduleCheckResult } from "../common/interface";
 
 const prisma = new PrismaClient();
 
@@ -28,7 +28,21 @@ export async function addNewCoachingSchedule(data: coachingScheduleInterface): P
 //@dev: Function to fetch all coaching schedules.
 export async function getAllCoachingSchedule(): Promise<CoachingSchedule[]| null>{
     try {
-        let coachingSchedules = await prisma.coachingSchedule.findMany();
+        let coachingSchedules = await prisma.coachingSchedule.findMany({
+            select: {
+                coachingScheduleId: true,
+                coachingBatch: true,
+                coachingDays: true,
+                startTime: true,
+                endTime: true,
+                locationId: true,
+                location: {
+                  select: {
+                    name: true,
+                  },
+                }, 
+            }
+        });
         return coachingSchedules;
     } catch (error) {
         console.log(ERROR_MESSAGES.SERVER_ERROR, error);
@@ -36,13 +50,42 @@ export async function getAllCoachingSchedule(): Promise<CoachingSchedule[]| null
     }
 }
 
-//@dev: Function to check existing coaching schedule.
+//@dev: Function to check existing coaching schedule with locationID.
 export async function checkValidCoachingSchedule(locationId: number): Promise<CoachingSchedule[] | null>{
     try {
         const validCoachingSchedule = await prisma.coachingSchedule.findMany({
             where:{locationId: locationId},
         })
         return validCoachingSchedule;
+    } catch (error) {
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
+        throw error;
+    }
+}
+
+//@dev: Function to check existing coaching schedule with scheduleID.
+export async function ValidCoachingSchedule(scheduleId: number): Promise<existingScheduleCheckResult | null>{
+    try {
+        const validCoachingSchedule = await prisma.coachingSchedule.findFirst({
+            where: { coachingScheduleId: scheduleId },
+            select: { coachingScheduleId: true }
+        });
+        return validCoachingSchedule as existingScheduleCheckResult | null;
+    } catch (error) {
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
+        throw error;
+    }
+}
+
+//@dev: Function to remove Schedule.
+export async function removeSchedule(scheduleId: number){
+    try {
+        let response = await prisma.coachingSchedule.delete({
+            where:{
+                coachingScheduleId: scheduleId
+            }
+        });
+        return response
     } catch (error) {
         console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         throw error;

@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { Link, useNavigate } from "react-router-dom";
 import male from "../../assets/male.png";
 import person from "../../assets/person.png";
 import female from "../../assets/female.png";
-import { logOutService } from "../../services/authService";
 import { userInfoState } from "../../atom/userAtom";
+import { Link, useNavigate } from "react-router-dom";
 import { Bars3Icon} from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { logOutService } from "../../services/authService";
 import { clearUserInfo } from "../../services/storeUserInfo";
 import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 
@@ -75,9 +75,9 @@ function Navbar(){
                                         alt="User">
                                     </img>
                                     {userInfo?.fullName && <h1>{userInfo.fullName}</h1>}
-                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Coaching Plan</Link>
-                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Coaching Schedule</Link>
-                                    <Link to="/Location" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Add Locations</Link>
+                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Plan</Link>
+                                    <Link to="/Schedule" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Schedule</Link>
+                                    <Link to="/Location" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Locations</Link>
                                     <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Mark Payments</Link>
                                     <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Mark Attendance</Link>
                                     
@@ -104,9 +104,9 @@ function Navbar(){
                                     </img>
                                     {userInfo?.fullName && <h1>{userInfo.fullName}</h1>}
                                     <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Plan</Link>
-                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Schedule</Link>
+                                    <Link to="/Schedule" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Schedule</Link>
                                     <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Attendance</Link>
-                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Community</Link>
+                                    <Link to="/Location" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Locations</Link>
                                     <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Contacts</Link>
                                    
                                     <button 
