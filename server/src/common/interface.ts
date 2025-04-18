@@ -30,3 +30,7 @@ export interface existingLocationCheckResult {
 export interface existingCoachingPlanCheckResult {
     coachingPlanId: number;
 }
+
+export interface existingScheduleCheckResult {
+    coachingScheduleId: number;
+}

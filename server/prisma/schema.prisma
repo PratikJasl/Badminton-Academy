@@ -118,8 +118,8 @@ enum paymentStatus {
 }
 
 enum coachingBatch {
-  kidsStandard
-  kidsPremium
-  adultsStandard
-  adultsPremium
+  Kids_Standard
+  Kids_Premium
+  Adults_Standard
+  Adults_Premium
 }

@@ -6,13 +6,11 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { addLocation } from "../../services/locationService";
-import { locationSchema } from "../../schema/coachingSchema";
+import { addLocation } from "../../../services/locationService";
+import { locationSchema } from "../../../schema/coachingSchema";
 
 //@dev: Location form data type.
 export type LocationFormData = InferType<typeof locationSchema>
-
-
 
 function AddLocation(){
     const [isLoading, setIsLoading] = useState(false);

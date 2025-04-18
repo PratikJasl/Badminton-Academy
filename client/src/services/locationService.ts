@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LocationFormData } from "../components/features/AddLocation";
+import { LocationFormData } from "../components/features/location/AddLocation";
 
 //@dev: Function to get location details.
 export async function getLocation(){
