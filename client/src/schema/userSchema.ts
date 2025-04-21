@@ -66,3 +66,35 @@ export const loginSchema = yup.object({
         .max(20, 'Password must be at most 20 characters')
         .required('Password is required'),
 })
+
+export const scheduleSchema = yup.object({
+    batch: yup
+        .string()
+        .oneOf(["Kids_Standarg", "Kids_Premium", "Adults_Standard", "Adults_Premium"])
+        .required("Coaching batch is required"),
+    days: yup
+        .string()
+        .required("Coaching Days are required"),
+    startTime: yup
+        .string()
+        .required("Start time is required"),
+    endTime: yup
+        .string()
+        .required("End time is required")
+        .test(
+            'is-after-start-time',
+            'End time must be after start time',
+            function (endTimeValue, context) {
+                const { startTime } = context.parent;
+
+                if (!startTime || !endTimeValue || typeof startTime !== 'string' || typeof endTimeValue !== 'string') {
+                    return true; 
+                }
+
+                return endTimeValue > startTime;
+            }
+        ),
+    locationId: yup
+        .string()
+        .required("Location is required")
+})
