@@ -18,12 +18,10 @@ interface ScheduleItem {
     coachingDays: string;
     startTime: string;
     endTime: string;
-    locationId: number; // Added locationId based on your data structure
-    location: { // Added specific type for the nested location object
+    locationId: number;
+    location: { 
         name: string;
-        // Add other location fields if needed from your fetch
     };
-    // Add other schedule fields if present
 }
 
 interface FilterLocation {
