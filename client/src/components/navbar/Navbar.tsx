@@ -36,10 +36,9 @@ function Navbar(){
         }
     }
 
-
     return(
         <>
-            <div className="flex flex-row justify-between items-center font-serif fixed top-0 bg-gray-800 min-w-screen p-3 z-10">
+            <div className="flex flex-row justify-between items-center font-serif fixed top-0 bg-gray-800 min-w-screen h-12 p-3 z-10">
                 
                 <div className="lg:text-2xl">
                    <Link to="/">Badminton Academy</Link>

@@ -158,7 +158,7 @@ function SignUp(){
                 </div>
 
                 {/* Second Column */}
-                <div>
+                <div> 
                     <div className="mt-0 md:mt-0">
                         <input
                         id="dob"

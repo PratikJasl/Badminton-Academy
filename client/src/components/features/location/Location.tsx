@@ -59,7 +59,7 @@ function Location(){
     return(
         <section id="Location" className="">
                 
-            <div className="flex flex-col md:gap-5 gap-2 items-center text-center md:p-5 p-3 shadow-2xl shadow-gray-400 rounded-2xl lg:h-120 h-130 lg:w-200 w-74 md:mt-18 mt-10">
+            <div className="flex flex-col md:gap-5 gap-2 items-center text-center md:p-5 p-3 shadow-2xl shadow-gray-400 rounded-2xl lg:h-130 h-130 lg:w-200 w-74 md:mt-18 mt-10">
                 <h2 className="text-3xl font-bold text-blue-600 mb-2 ">Locations we serve</h2>
 
                 <div className="h-full overflow-auto space-y-4 scroll-smooth [scrollbar-width:none] border-white border-1 md:p-5 p-2 rounded-2xl lg:min-w-78 min-w-64"> 

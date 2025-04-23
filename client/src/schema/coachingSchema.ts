@@ -29,5 +29,8 @@ export const scheduleSchema = yup.object({
             .required("End time is required"),
     locationId: yup
             .number()
+            .transform((value, originalValue) => {
+                return originalValue === "" ? null : value;
+            })
             .required("Location is required")
 })

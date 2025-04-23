@@ -38,8 +38,18 @@ model User {
   isVerified              Boolean @default(false)
   otpResetCode            String @default("")
   otpResetExpiry          DateTime @default(now())
-
 }
+
+// model UserPlan {
+//   userPlanId              Int @id @default(autoincrement())
+//   userId                  Int
+//   user                    User @relation(fields: [userId], references: [userId])
+//   coachingPlanId          Int
+//   coachingPlan            CoachingPlan @relation(fields: [coachingPlanId], references: [coachingPlanId])
+//   planStartDate           DateTime
+//   planEndDate             DateTime
+//   expiryDate              DateTime
+// }
 
 model Location {
   locationId              Int @id @default(autoincrement())
