@@ -18,7 +18,7 @@ function SignUp(){
     const [coachingPlan, setCoachingPlan] = useState<{coachingPlanId: number; name: string}[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [redirect, setRedirect] = useState(false);
-    const { register, handleSubmit, formState: {errors} } = useForm({
+    const { register, handleSubmit, formState: {errors}, reset } = useForm({
         resolver: yupResolver(signUpSchema),
     });
     const today = new Date().toISOString().split('T')[0];
@@ -53,16 +53,18 @@ function SignUp(){
         const { confirmPassword, ...dataToSend} = data;
         dataToSend.role = "student";
         let response: any;
-        
+
         try {
             response = await signUpService(dataToSend);
-           if(response.status == 201){
+            if(response.status === 201){
                 setRedirect(true);
                 toast.success("SignUp Successful");
-           }else{
-                toast.error(response.data.message);
-           }  
+                reset();
+            }else{
+                toast.error(response.data.message || "Failed, Please try again.");
+            } 
         } catch (error) {
+            console.log("Reached catch block:", error);
             if (axios.isAxiosError(error) && error.response) {
                 toast.error(error.response.data.message);
             } else {
