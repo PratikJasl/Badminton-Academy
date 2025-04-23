@@ -14,7 +14,7 @@ export type LocationFormData = InferType<typeof locationSchema>
 
 function AddLocation(){
     const [isLoading, setIsLoading] = useState(false);
-    const { register, handleSubmit, formState: {errors} } = useForm({
+    const { register, handleSubmit, formState: {errors}, reset } = useForm({
             resolver: yupResolver(locationSchema),
     });
 
@@ -27,6 +27,7 @@ function AddLocation(){
             if(response){
                 if(response.status === 201){
                     toast.success("Location Added Successfully");
+                    reset();
                 }else{
                     toast.error(response.data.message || "Failed, Please try again.");
                 }

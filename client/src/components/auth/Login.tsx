@@ -16,7 +16,7 @@ export type LoginFormData = InferType<typeof loginSchema>;
 function LogIn(){
     const [redirect, setRedirect] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const { register, handleSubmit, formState: {errors} } = useForm({
+    const { register, handleSubmit, formState: {errors}, reset } = useForm({
             resolver: yupResolver(loginSchema),
     });
 
@@ -29,6 +29,7 @@ function LogIn(){
             if(response.status === 200){
                     setRedirect(true);
                     saveUserInfo(response.data.data); //@dev Save user info to local storage.
+                    reset();
                     toast.success("LogIn Successful");
             }else{
                     toast.error(response.data.message || "Login failed. Please try again.");
@@ -96,8 +97,7 @@ function LogIn(){
             >
                 {isLoading ? 'Logging In...' : 'LogIn'}
             </button>
-        </form>
-        
+        </form> 
     )
 }
 

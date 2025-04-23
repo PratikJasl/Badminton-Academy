@@ -2,54 +2,32 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { Link } from "react-router-dom";
 import { useRecoilValue } from 'recoil';
-import { useEffect, useState } from "react";
-import { deleteSchedule } from '../../../services/coachingScheduleService';
+import { useEffect, useState, useMemo } from "react";
+import { convertDays } from '../../../services/common';
 import { userInfoState } from "../../../atom/userAtom";
 import { FlagIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { ClockIcon } from "@heroicons/react/24/outline";
+import { ScheduleItem } from '../../../services/common';
 import { MapPinIcon } from "@heroicons/react/24/outline";
+// import { FilterLocation } from '../../../services/common';
 import { CalendarDaysIcon } from "@heroicons/react/24/outline";
+import { deleteSchedule } from '../../../services/coachingScheduleService';
 import { getCoachingSchedule } from '../../../services/coachingScheduleService';
 
-interface ScheduleItem {
-    coachingScheduleId: number;
-    coachingBatch: string;
-    coachingDays: string;
-    startTime: string;
-    endTime: string;
-    locationId: number;
-    location: { 
-        name: string;
-    };
-}
-
-interface FilterLocation {
-    locationId: number;
-    name: string;
-}
-
-//@dev: Function to fetch all the locations.
+//@dev: Function to fetch all the Schedules.
 function Schedule(){
     const [allSchedules, setAllSchedules] = useState<ScheduleItem[]>([]);
-    const [filteredSchedules, setFilteredSchedules] = useState<ScheduleItem[]>([]);
-    const [locationsForFilter, setLocationsForFilter] = useState<FilterLocation[]>([]);
     const [selectedLocationId, setSelectedLocationId] = useState<string>("");
     const [isloading, setIsLoading ] = useState(false);
     const userInfo = useRecoilValue(userInfoState);
- 
+    
+    //@dev: Function to fetch all the schedules and update the states.
     const fetchSchedule = async() => {
         setIsLoading(true);
         try {
             let response: ScheduleItem[] = await getCoachingSchedule();
             setAllSchedules(response);
-            setFilteredSchedules(response);
-
-            const uniqueLocations = Array.from(
-                new Map(response.map(item => [item.locationId, { locationId: item.locationId, name: item.location.name }]))
-                .values()
-            );
-            setLocationsForFilter(uniqueLocations);
         } catch (error) {
             console.log("Error Fetching Schedule", error);
             toast.error("Failed to fetch Schedule. Please try again");
@@ -62,52 +40,69 @@ function Schedule(){
         fetchSchedule();
     }, []);
 
-    useEffect(() => {
+    //@dev: Function to manage select schedules to display after filtering.
+    const schedulesToDisplay = useMemo(() => {
         if (selectedLocationId === "") {
-            setFilteredSchedules(allSchedules);
+            return allSchedules;
         } else {
             const locationIdNumber = parseInt(selectedLocationId, 10);
-            const filtered = allSchedules.filter(
-                schedule => schedule.locationId === locationIdNumber
+            if (isNaN(locationIdNumber)) {
+            console.log(`Invalid selectedLocationId: ${selectedLocationId}`);
+            return allSchedules;
+            }
+            return allSchedules.filter(schedule =>
+                schedule.locationId === locationIdNumber
             );
-            setFilteredSchedules(filtered);
         }
     }, [allSchedules, selectedLocationId]);
 
-    function convertDays(coachingDays: string): string {
-        const days: { [key: string]: string } = {
-            "1": "Monday",
-            "2": "Tuesday",
-            "3": "Wednesday",
-            "4": "Thursday",
-            "5": "Friday",
-            "6": "Saturday",
-            "7": "Sunday"
-        };
-        const convertedDayNames: string[] = [];
-
-       for (let i = 0; i < coachingDays.length; i++) {
-        const digit = coachingDays[i];
-        if (days[digit]) {
-            convertedDayNames.push(days[digit]);
+    //@dev: Function to get filter list.
+    const locationsForFilter = useMemo(() => {
+        if (!allSchedules || allSchedules.length === 0) {
+             return [];
         }
-    }
-        return convertedDayNames.join(", ");
-    };
+        const uniqueLocations = Array.from(
+            new Map(allSchedules.map(item => [item.locationId, { locationId: item.locationId, name: item.location.name }]))
+            .values()
+        );
+        return uniqueLocations;
+    }, [allSchedules]);
 
+    //@dev: Function to set the locationID from filter.
     const handleLocationFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedLocationId(event.target.value);
     };
-  
+    
+    //@dev: Function to handle schedule deletion and update filter states.
     const handleDeleteSchedule = async (scheduleId: number) => {
         let response: any
-        console.log("Schedule Id clicked is:", scheduleId);
         try {
             response = await deleteSchedule(scheduleId);
             if(response){
                 if(response.status === 200){
                     toast.success("Schedule Deleted Successfully");
-                    fetchSchedule();
+                    setAllSchedules(prevSchedules => {
+                        const newSchedules = prevSchedules.filter(schedule => schedule.coachingScheduleId !== scheduleId);
+ 
+                        if (selectedLocationId !== "") {
+                            const locationIdNumber = parseInt(selectedLocationId, 10);
+
+                            if (!isNaN(locationIdNumber)) {
+                                const remainingFilteredSchedules = newSchedules.filter(
+                                    schedule => schedule.locationId === locationIdNumber
+                                );
+ 
+                                if (remainingFilteredSchedules.length === 0) {
+                                    console.log(`Last schedule for location ${selectedLocationId} deleted. Resetting filter.`);
+                                    setSelectedLocationId("");
+                                }
+                            } else {
+                                console.warn(`Selected location ID is not a valid number: ${selectedLocationId}`);
+                                setSelectedLocationId("");
+                            }
+                        }
+                        return newSchedules;
+                    });
                 }else{
                     toast.error(response.data.message || "Failed, Please try again.");
                 }
@@ -121,18 +116,18 @@ function Schedule(){
                 toast.error("An unexpected error occurred. Please try again.");
             }
         }
-    };
+     };
 
     return(
         <section id="Schedule" className="">
                 
-            <div className="flex flex-col md:gap-3 gap-2 items-center text-center md:p-5 p-3 shadow-2xl shadow-gray-400 rounded-2xl lg:h-120 h-130 lg:w-200 w-74 md:mt-18 mt-10">
+            <div className="flex flex-col md:gap-3 gap-2 items-center text-center md:p-5 p-3 shadow-2xl shadow-gray-400 rounded-2xl lg:h-130 h-130 lg:w-200 w-74 md:mt-18 mt-10">
                 <h2 className="text-3xl font-bold text-blue-600">Schedules</h2>
 
                 <div className="">
                         <select
                             id="locationFilter"
-                            value={selectedLocationId} // Controlled component
+                            value={selectedLocationId}
                             onChange={handleLocationFilterChange}
                             disabled={isloading || locationsForFilter.length === 0}
                             className="w-full shadow-lg p-3 rounded-lg bg-white text-black"
@@ -151,8 +146,8 @@ function Schedule(){
                         (<p className="lg:mt-28 mt-40">Loading Schedules...</p>
 
                         ) : (
-                    filteredSchedules && filteredSchedules.length > 0 ? (
-                        filteredSchedules.map((schedule) => (
+                        schedulesToDisplay && schedulesToDisplay.length > 0 ? (
+                        schedulesToDisplay.map((schedule) => (
                             <div 
                                 key={schedule.coachingScheduleId} 
                                 className="p-5 bg-gray-50 rounded-xl flex flex-col justify-center relative text-black"

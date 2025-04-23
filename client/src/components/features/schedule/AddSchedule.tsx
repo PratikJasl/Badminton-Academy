@@ -17,7 +17,7 @@ export type ScheduleFormData = InferType<typeof scheduleSchema>
 function AddSchedule(){
     const [isLoading, setIsLoading] = useState(false);
     const [locations, setLocations] = useState<{locationId: number; name: string }[]>([]);
-    const { register, handleSubmit, formState: {errors}, control } = useForm({
+    const { register, handleSubmit, formState: {errors}, control, reset } = useForm({
             resolver: yupResolver(scheduleSchema),
     });
     
@@ -31,6 +31,7 @@ function AddSchedule(){
             if(response){
                 if(response.status === 201){
                     toast.success("Schedule Added Successfully");
+                    reset();
                 }else{
                     toast.error(response.data.message || "Failed, Please try again.");
                 }
@@ -82,7 +83,7 @@ function AddSchedule(){
 
     return(
         <section id="AddSchedule" className="">
-            <div className="flex flex-col lg:gap-2 gap-1 items-center lg:w-full w-72 lg:max-h-screen max-h-130 mt-20 lg:mb-1 mb-10 lg:mt-10 lg:p-8 p-5 overflow-auto shadow-lg shadow-whiteshadow-2xl shadow-gray-400 bg-gray-900 rounded-2xl">
+            <div className="flex flex-col lg:gap-2 gap-1 items-center lg:w-full w-72 lg:max-h-135 max-h-130 max-w-2xl mt-20 lg:mb-1 mb-10 lg:mt-10 lg:p-8 p-5 overflow-auto shadow-lg shadow-whiteshadow-2xl shadow-gray-400 bg-gray-900 rounded-2xl">
                     <h1 className="lg:text-3xl text-2xl font-bold text-blue-600 mb-2 ">Add new Schedule</h1>
                     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-8 p-5">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -107,7 +108,7 @@ function AddSchedule(){
                                             {typeof errors.coachingBatch?.message === "string" ? errors.coachingBatch.message : ""}
                                         </p>
                                     )}
-                                </div>
+                                </div> 
                                 
                                 <div>
                                     <Controller
