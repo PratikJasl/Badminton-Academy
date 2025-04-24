@@ -8,11 +8,13 @@ import { userInfoState } from "./atom/userAtom";
 import { ToastContainer } from 'react-toastify';
 import Home from './components/landingPage/Home';
 import { Route, Routes } from 'react-router-dom';
+import UserPlan from './components/features/plan/UserPlan';
+import { getInitialUserInfo } from './services/storeUserInfo';
 import Location from './components/features/location/Location';
 import Schedule from './components/features/schedule/Schedule';
-import { getInitialUserInfo } from './services/storeUserInfo';
 import AddLocation from './components/features/location/AddLocation';
 import AddSchedule from './components/features/schedule/AddSchedule';
+
 
 function App() {
   const setUserInfo = useSetRecoilState(userInfoState);
@@ -35,6 +37,7 @@ function App() {
           <Route path='/AddLocation' element= {<AddLocation/>}></Route>
           <Route path='/Schedule' element={<Schedule/>}></Route>
           <Route path='/AddSchedule' element={<AddSchedule/>}></Route>
+          <Route path='/UserPlan' element={<UserPlan/>}></Route>
       </Routes>
 
       <ToastContainer

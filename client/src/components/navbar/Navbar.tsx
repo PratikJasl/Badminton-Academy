@@ -74,7 +74,7 @@ function Navbar(){
                                         alt="User">
                                     </img>
                                     {userInfo?.fullName && <h1>{userInfo.fullName}</h1>}
-                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Plan</Link>
+                                    <Link to="/UserPlan" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Plan</Link>
                                     <Link to="/Schedule" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Schedule</Link>
                                     <Link to="/Location" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Locations</Link>
                                     <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Mark Payments</Link>
@@ -102,7 +102,7 @@ function Navbar(){
                                         alt="User">
                                     </img>
                                     {userInfo?.fullName && <h1>{userInfo.fullName}</h1>}
-                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Plan</Link>
+                                    <Link to="/UserPlan" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Plan</Link>
                                     <Link to="/Schedule" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Schedule</Link>
                                     <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Attendance</Link>
                                     <Link to="/Location" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Locations</Link>
