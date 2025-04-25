@@ -5,7 +5,9 @@ import { Request, Response, NextFunction } from "express"
 
 //@dev: Middleware to authenticate user role.
 export function coachAuth(req: Request, res: Response, next: NextFunction): void {
+    console.log("------Coach Auth------");
     const token = req.cookies.token;
+    console.log("Token received is:", token);
     if(!token){
         res.status(401).json(errorResponse(ERROR_MESSAGES.NOT_AUTH));
         return;
@@ -26,6 +28,7 @@ export function coachAuth(req: Request, res: Response, next: NextFunction): void
             return;
         }
         next();
+        
     } catch (error) {
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;

@@ -18,7 +18,7 @@ function SignUp(){
     const [coachingPlan, setCoachingPlan] = useState<{coachingPlanId: number; name: string}[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [redirect, setRedirect] = useState(false);
-    const { register, handleSubmit, formState: {errors} } = useForm({
+    const { register, handleSubmit, formState: {errors}, reset } = useForm({
         resolver: yupResolver(signUpSchema),
     });
     const today = new Date().toISOString().split('T')[0];
@@ -53,16 +53,18 @@ function SignUp(){
         const { confirmPassword, ...dataToSend} = data;
         dataToSend.role = "student";
         let response: any;
-        
+
         try {
             response = await signUpService(dataToSend);
-           if(response.status == 201){
+            if(response.status === 201){
                 setRedirect(true);
                 toast.success("SignUp Successful");
-           }else{
-                toast.error(response.data.message);
-           }  
+                reset();
+            }else{
+                toast.error(response.data.message || "Failed, Please try again.");
+            } 
         } catch (error) {
+            console.log("Reached catch block:", error);
             if (axios.isAxiosError(error) && error.response) {
                 toast.error(error.response.data.message);
             } else {
@@ -158,7 +160,7 @@ function SignUp(){
                 </div>
 
                 {/* Second Column */}
-                <div>
+                <div> 
                     <div className="mt-0 md:mt-0">
                         <input
                         id="dob"
@@ -258,7 +260,7 @@ function SignUp(){
             <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full mt-6 shadow-lg p-3 rounded-lg bg-blue-700 text-white font-bold hover:bg-blue-600"
+                className="w-full mt-6 shadow-lg p-3 rounded-lg bg-blue-700 text-white font-bold hover:bg-blue-600 hover:cursor-pointer"
             >
                 {isLoading ? 'Signing Up...' : 'SignUp'}
             </button>

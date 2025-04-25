@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { addNewLocation, checkValidLocation, getAllLocations } from "../repository/locationRepo";
+import { addNewLocation, checkValidLocation, getAllLocations, checkExistingLocation, removeLocation } from "../repository/locationRepo";
 import { addNewCoachingPlan, getAllCoachingPlan, getAllCoachingPlanName } from "../repository/coachingPlanRepo";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 import { errorResponse, successResponse } from "../common/apiResponse";
@@ -8,7 +8,7 @@ import { getCochingScheduleByLocation } from "../service/attendanceService";
 import { isValidCoachingSchedule } from "../service/ScheduleService";
 import { isSchedulesDatesValid } from "../service/ScheduleService";
 import { coachingScheduleInterface, scheduleResponseInterface } from "../common/interface";
-import { addNewCoachingSchedule, getAllCoachingSchedule } from "../repository/coachingScheduleRepo";
+import { addNewCoachingSchedule, getAllCoachingSchedule, removeSchedule, ValidCoachingSchedule } from "../repository/coachingScheduleRepo";
 
 const prisma = new PrismaClient();
 
@@ -17,6 +17,14 @@ export async function addLocation(req: Request, res: Response): Promise<void>{
     console.log("------Add Location Route------");
     const { name, address } = req.body;
     try {
+        //@dev: Check if existing location.
+        let existingLocation = await checkExistingLocation(name);
+        if (existingLocation) {
+            res.status(409).json(errorResponse(ERROR_MESSAGES.EXISTING_LOCATION));
+            return;
+        }
+
+        //@dev: Add new location.
         let newLocation = await addNewLocation(name, address);
         if (!newLocation) {
             res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
@@ -25,7 +33,7 @@ export async function addLocation(req: Request, res: Response): Promise<void>{
         res.status(201).json(successResponse(SUCCESS_MESSAGES.LOCATION_ADDED, newLocation));
         return;
     } catch (error) {
-        console.log(error);
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return; 
     }
@@ -183,7 +191,7 @@ export async function getCoachingSchedule(req: Request, res: Response): Promise<
 }
 
 //@dev: Fetch user attendance.
-export async  function getAttendence(req:Request, res:Response): Promise<void> {
+export async function getAttendence(req:Request, res:Response): Promise<void> {
     
     try {
         let scheduleByLocation = await getCochingScheduleByLocation();
@@ -211,4 +219,70 @@ export async  function getAttendence(req:Request, res:Response): Promise<void> {
     //     res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
     // }
 
+}
+
+//@dev: Delete Location.
+export async function deleteLocation(req:Request, res: Response): Promise<void> {
+    console.log("------Delete Location Route------");
+    const { locationId } = req.body;
+
+    try {
+        if(!locationId){
+            res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
+            return;
+        }
+    
+        //@dev: Check for valid locations.
+        let validLocation = await checkValidLocation(locationId);
+        if (!validLocation) {
+            res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_LOCATION_ID));
+            return;
+        }
+    
+        //@dev: Delete location.
+        let response = await removeLocation(locationId);
+        if (!response) {
+            res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
+            return;
+        }
+        res.status(200).json(successResponse(SUCCESS_MESSAGES.LOCATION_REMOVED, response));
+        return;
+    } catch (error) {
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
+        res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
+        return; 
+    }
+}
+
+//@dev: Delete Schedule.
+export async function deleteSchedule(req:Request, res: Response): Promise<void> {
+    console.log("------Delete Schedule Route------");
+    const { scheduleId } = req.body;
+
+    try {
+        if(!scheduleId){
+            res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
+            return;
+        }
+    
+        //@dev: Check for valid schedule.
+        let validLocation = await ValidCoachingSchedule(scheduleId);
+        if (!validLocation) {
+            res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_COACHING_SCHEDULE_ID));
+            return;
+        }
+    
+        //@dev: Delete location.
+        let response = await removeSchedule(scheduleId);
+        if (!response) {
+            res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
+            return;
+        }
+        res.status(200).json(successResponse(SUCCESS_MESSAGES.SCHEDULE_REMOVED, response));
+        return;
+    } catch (error) {
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
+        res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
+        return; 
+    }
 }
