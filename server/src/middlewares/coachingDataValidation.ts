@@ -4,7 +4,7 @@ import { ERROR_MESSAGES } from "../common/messages";
 import { errorResponse } from "../common/apiResponse";
 
 
-//Validate the data for the location send from the client.
+//@dev: Validate the data for the location send from the client.
 export async function locationDataValidation(req: Request, res: Response, next: NextFunction): Promise<void>{
     const {
         name,
@@ -13,26 +13,26 @@ export async function locationDataValidation(req: Request, res: Response, next: 
 
     try {
         if(!name || !address){
-         res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
-         return;
+            res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
+            return;
         }
-        //Validate Location data against JOI Schema.
+        //@dev: Validate Location data against JOI Schema.
         const {error, value} = await coachingSchema.location.validateAsync(req.body);
         if(error){
-            console.log(error);
+            console.log(ERROR_MESSAGES.VALIDATION_FAILED, error);
             res.status(400).json(errorResponse(ERROR_MESSAGES.VALIDATION_FAILED));
             return;
         }
         next();
 
     } catch (error) {
-        console.log(error);
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }
 }
 
-//Validate the data for the coaching plan send from the client.
+//@dev: Validate the data for the coaching plan send from the client.
 export async function coachingPlanDataValidation(req: Request, res: Response, next: NextFunction): Promise<void>{
     const {
         name,
@@ -48,17 +48,19 @@ export async function coachingPlanDataValidation(req: Request, res: Response, ne
         }
         const {error, value} = await coachingSchema.plan.validateAsync(req.body);
         if(error){
+            console.log(ERROR_MESSAGES.VALIDATION_FAILED, error);
             res.status(400).json(errorResponse(ERROR_MESSAGES.VALIDATION_FAILED));
             return;
         }
         next();
     } catch (error) {
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }
 }
 
-//Validate the data for the coaching schedule send from the client.
+//@dev: Validate the data for the coaching schedule send from the client.
 export async function coachingScheduleDataValidation(req: Request, res: Response, next: NextFunction): Promise<void>{
     const {
         coachingBatch,
@@ -76,7 +78,7 @@ export async function coachingScheduleDataValidation(req: Request, res: Response
         const {error} = await coachingSchema.schedule.validateAsync(req.body);
 
         if(error){
-            console.log(error);
+            console.log(ERROR_MESSAGES.VALIDATION_FAILED, error);
             res.status(400).json(errorResponse(ERROR_MESSAGES.VALIDATION_FAILED));
             return;
         }
@@ -84,7 +86,7 @@ export async function coachingScheduleDataValidation(req: Request, res: Response
         next();
         
     } catch (error) {
-        console.log(error);
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }

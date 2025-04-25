@@ -15,6 +15,7 @@ export const ERROR_MESSAGES = {
     INVALID_LOCATION_ID: 'Location ID Does Not Exists',
     INVALID_COACHING_PLAN_ID: 'Invalid Coaching Plan ID',
     INVALID_OTP: 'Invalid OTP',
+    INVALID_DAYS: `Selected Days are Invalid, Please select from 'MTWTFSS'`,
     OTP_EXPIRED: 'OTP Expired',
     NO_DATA_FOUND: 'No data found',
     DATA_NOT_INSERTED:'Data Insertion Failed'

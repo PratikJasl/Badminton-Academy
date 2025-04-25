@@ -1,15 +1,17 @@
 import axios from "axios";
-import { useForm } from "react-hook-form"
+import { InferType } from 'yup';
 import { useState } from "react";
+import { toast } from 'react-toastify';
+import { useForm } from "react-hook-form"
 import { Navigate } from "react-router-dom";
 import { loginSchema } from "../../schema/userSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { loginService } from "../../services/authService";
 import { saveUserInfo } from "../../services/storeUserInfo";
-import { toast } from 'react-toastify';
-import { InferType } from 'yup';
 
-//@dev Login Form Data Type.
-type LoginFormData = InferType<typeof loginSchema>;
+
+//@dev: Login Form Data Type.
+export type LoginFormData = InferType<typeof loginSchema>;
 
 function LogIn(){
     const [redirect, setRedirect] = useState(false);
@@ -21,16 +23,9 @@ function LogIn(){
     //@dev Function to handle the form submission, and store user information in local storage.
     const onSubmit = async (data: LoginFormData) => {
         setIsLoading(true)
-        let response;
+        let response: any;
         try {
-            response = await axios.post("http://localhost:3000/api/auth/login",
-            data,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-              withCredentials: true,
-            });
+            response = await loginService(data)
            if(response.status === 200){
                 setRedirect(true);
                 saveUserInfo(response.data.data); //@dev Save user info to local storage.

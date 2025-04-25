@@ -1,9 +1,10 @@
 import jwt from "jsonwebtoken"
 import { Request, Response, NextFunction } from "express"
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 import { errorResponse } from "../common/apiResponse";
+import { ERROR_MESSAGES } from "../common/messages";
 
-export function userAuth(req: Request, res: Response, next: NextFunction){
+//@dev: Middleware to authenticate user role.
+export function userAuth(req: Request, res: Response, next: NextFunction): void{
     const token = req.cookies.token;
     console.log("Token received is:", token);
     

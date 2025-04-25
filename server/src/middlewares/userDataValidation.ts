@@ -3,8 +3,9 @@ import { userSchema } from "../schema/userSchema";
 import { ERROR_MESSAGES } from "../common/messages";
 import { errorResponse } from "../common/apiResponse";
 
+//@dev: Middleware to validate user data.
 export async function userDataValidation(req: Request, res: Response, next: NextFunction): Promise<void>{
-    console.log("User Data Validation Middleware")
+    console.log("------User Data Validation Middleware------")
     const {
         fullName,
         email,
@@ -29,7 +30,7 @@ export async function userDataValidation(req: Request, res: Response, next: Next
         }
         next();
     } catch (error) {
-        console.log(error);
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR, (error as any).details));
         return;
     }
