@@ -28,7 +28,7 @@ function LogIn(){
             response = await loginService(data)
             if(response.status === 200){
                     setRedirect(true);
-                    saveUserInfo(response.data.data); //@dev Save user info to local storage.
+                    saveUserInfo(response.data.data); //@dev: Save user info to local storage.
                     reset();
                     toast.success("LogIn Successful");
             }else{

@@ -157,11 +157,8 @@ function SignUp(){
                         </p>
                         )}
                     </div>
-                </div>
 
-                {/* Second Column */}
-                <div> 
-                    <div className="mt-0 md:mt-0">
+                    <div className="mt-4">
                         <input
                         id="dob"
                         disabled={isLoading}
@@ -178,8 +175,11 @@ function SignUp(){
                         </p>
                         )}
                     </div>
+                </div>
 
-                    <div className="mt-4">
+                {/* Second Column */}
+                <div> 
+                    <div className="">
                         <select
                             id="locationId"
                             disabled={isLoading}
@@ -220,6 +220,23 @@ function SignUp(){
                         {errors.coachingPlanId && (
                         <p className="text-sm text-red-700 bg-red-100 p-2 rounded-md mt-1 w-full">
                             {errors.coachingPlanId?.message}
+                        </p>
+                        )}
+                    </div>
+
+                    <div className="mt-4">
+                        <input
+                        id="planStartDate"
+                        disabled={isLoading}
+                        type="text"
+                        placeholder="Plan Start Date"
+                        onFocus={(e) => (e.target.type = "date")}
+                        {...register("planStartDate")}
+                        className="w-full shadow-lg p-3 rounded-lg bg-white text-black"
+                        />
+                        {errors.dob && (
+                        <p className="text-sm text-red-700 bg-red-100 p-2 rounded-md mt-1 w-full">
+                            {errors.dob?.message}
                         </p>
                         )}
                     </div>

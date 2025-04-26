@@ -15,6 +15,8 @@ export async function addNewUser(
     locationId :number, 
     coachingPlanId :number,
     hashedPassword :string, 
+    planStartDate: Date,
+    planEndDate: Date | null,
     role :Roles,
     isKid :boolean
 ): Promise<User>{
@@ -32,6 +34,8 @@ export async function addNewUser(
                 coachingPlan: {
                     connect: {coachingPlanId: coachingPlanId}
                 },
+                planStartDate: planStartDate,
+                planEndDate: planEndDate,
                 password: hashedPassword,
                 role: role,
                 isKid: isKid

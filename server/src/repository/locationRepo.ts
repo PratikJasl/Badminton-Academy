@@ -20,7 +20,7 @@ export async function addNewLocation(name: string, address: string): Promise<Loc
     }
 }
 
-//@dev: Function to get all locatoins.
+//@dev: Function to get all locations.
 export async function getAllLocations(){
     try {
         let locations = await prisma.location.findMany({
@@ -34,6 +34,24 @@ export async function getAllLocations(){
     } catch (error) {
         console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         throw error
+    }
+}
+
+//@dev: Function to get location by Id.
+export async function getLocationById(locationId: number){
+    try {
+        let location = await prisma.location.findUnique({
+            where:{
+                locationId: locationId
+            },
+            select:{
+                name: true,
+            }
+        })
+        return location;
+    } catch (error) {
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
+        throw error;
     }
 }
 
