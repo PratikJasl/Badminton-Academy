@@ -37,6 +37,25 @@ export async function getAllCoachingPlan(): Promise<CoachingPlan[]| null>{
     }
 }
 
+//@dev: Function to fetch coaching plans by ID.
+export async function getCoachingPlanById(coachingPlanId: number): Promise<{ name: string; planDuration: string } | null> {
+    try {
+        let coachingPlan = await prisma.coachingPlan.findFirst({
+            where: {
+                coachingPlanId: coachingPlanId
+            },
+            select: {
+                name: true,
+                planDuration: true
+            }
+        });
+        return coachingPlan;
+    } catch (error) {
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
+        throw error;
+    }
+}
+
 //@dev: Function to fetch all coahcing plan names.
 export async function getAllCoachingPlanName(): Promise<{ coachingPlanId: number; name: string }[] | null> {
     try {

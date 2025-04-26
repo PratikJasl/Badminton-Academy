@@ -163,7 +163,7 @@ function Schedule(){
                                 </div>
                                 
                                 <div className="flex flex-row gap-2 items-center text-start">
-                                <MapPinIcon className="h-6 w-6 text-red-500 mt-0.5 flex-shrink-0" />
+                                    <MapPinIcon className="h-6 w-6 text-red-500 mt-0.5 flex-shrink-0" />
                                     <p className="p-2">{schedule.location.name}</p>
                                 </div>
 

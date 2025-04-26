@@ -1,14 +1,15 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { checkAge} from "../common/helperFunctions";
+import { checkAge, calculateEndDate} from "../common/helperFunctions";
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import transporter from "../config/nodeMailer";
-import { checkValidLocation } from "../repository/locationRepo";
+import { checkValidLocation, getLocationById } from "../repository/locationRepo";
 import { addNewUser, checkExistingUser, findUser } from "../repository/userRepo";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 import { errorResponse, successResponse } from "../common/apiResponse";
-import { checkValidCoachingPlan } from "../repository/coachingPlanRepo";
+import { checkValidCoachingPlan, getCoachingPlanById } from "../repository/coachingPlanRepo";
+import { getLocation } from "./coachController";
 
 const prisma = new PrismaClient();
 
@@ -23,36 +24,39 @@ export async function signUp(req: Request, res: Response): Promise<void> {
         dob, 
         locationId, 
         coachingPlanId,
-        password, 
+        planStartDate,
+        password,
         role,   
     } = req.body;
 
     console.log("Received request body:", req.body);
     
     try {
-        //@dev Check for existing users.
+        //@dev: Check for existing users.
         let existingUser = await checkExistingUser(email);
         if(existingUser){
             res.status(409).json(errorResponse(ERROR_MESSAGES.USER_ALREADY_EXISTS));
             return;
         }
 
-        //@dev Check for valid locations.
+        //@dev: Check for valid locations.
         let validLocation = await checkValidLocation(locationId);
         if (!validLocation) {
             res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_LOCATION_ID));
             return;
         }
 
-        //@dev Check for valid coaching plan.
+        //@dev: Check for valid coaching plan.
         let validCoachingPlan = await checkValidCoachingPlan(coachingPlanId);
-        if( !validCoachingPlan){
+        if(!validCoachingPlan){
             res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_COACHING_PLAN_ID));
             return;
         }
 
         //@dev Check user is kid or adult.
         let isKid = checkAge(dob);
+
+        let planEndDate = await calculateEndDate(planStartDate, coachingPlanId);
 
         //@dev Hash password.
         let hashedPassword = await bcrypt.hash(password, 10);
@@ -67,7 +71,9 @@ export async function signUp(req: Request, res: Response): Promise<void> {
             dob, 
             locationId, 
             coachingPlanId,
-            hashedPassword, 
+            hashedPassword,
+            planStartDate,
+            planEndDate,
             role,
             isKid
         )
@@ -93,12 +99,18 @@ export async function logIn(req: Request, res: Response): Promise<void> {
     }
 
     try {
-        //@dev Check existing user.
+        //@dev: Check existing user.
         let user = await findUser(email);
         if(!user){
             res.status(404).json({success: "false", message: ERROR_MESSAGES.USER_NOT_FOUND});
             return
         }
+
+        //@dev: Get coaching plan name.
+        let coachingPlan = await getCoachingPlanById(user.coachingPlanId);
+
+        //@dev: Get Location name.
+        let locationName = await getLocationById(user.locationId);
 
         //@dev Compare Password, and generate JWT token, and send it in cookies.
         if(user){
@@ -109,7 +121,7 @@ export async function logIn(req: Request, res: Response): Promise<void> {
             }
 
             const token = jwt.sign({ userName: user.fullName, id: user.userId, role: user.role}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
-            const data = {fullName: user.fullName, role: user.role, gender: user.gender};
+            const data = {fullName: user.fullName, role: user.role, gender: user.gender, planStartDate: user.planStartDate, planEndDate: user.planEndDate, planName: coachingPlan?.name, planDuration: coachingPlan?.planDuration, locationName: locationName?.name};
         
             res.status(200).cookie('token', token, {
                 httpOnly: true,

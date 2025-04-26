@@ -1,5 +1,15 @@
 import * as yup from "yup"
 
+const today = new Date();
+
+export const oneYearAgo = new Date(today);
+oneYearAgo.setFullYear(today.getFullYear() - 1);
+oneYearAgo.setHours(0, 0, 0, 0);
+
+export const oneYearFuture = new Date(today);
+oneYearFuture.setFullYear(today.getFullYear() + 1);
+oneYearFuture.setHours(23, 59, 59, 999)
+
 export const signUpSchema = yup.object({
     fullName: yup
         .string()
@@ -41,6 +51,22 @@ export const signUpSchema = yup.object({
         })
         .nullable()
         .required('Coaching Plan is required'),
+    planStartDate: yup
+        .date()
+        .transform((value, originalValue) => {
+            if (typeof originalValue === 'string' && originalValue === "") {
+                return null;
+            }
+            if (typeof originalValue === 'string') {
+                 const [year, month, day] = originalValue.split('-').map(Number);
+                 return new Date(Date.UTC(year, month - 1, day));
+            }
+            return value;
+        })
+        .nullable()
+        .required('Plan start date is required')
+        .min(oneYearAgo, `Plan start date cannot be more than one year in the past`)
+        .max(oneYearFuture, `Plan start date cannot be more than one year in the future`),
     password: yup
         .string()
         .min(4, 'Password must be at least 4 characters')
