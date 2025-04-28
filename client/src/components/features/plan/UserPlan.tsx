@@ -49,21 +49,7 @@ function UserPlan(){
         }
     }
 
-    let formattedStartDate = "N/A";
     let formattedEndDate = "N/A";
-    if (userInfo && userInfo.planStartDate) {
-        try {
-            const startDateObj = new Date(userInfo.planStartDate);
-            // Check if the date object is valid
-            if (!isNaN(startDateObj.getTime())) {
-                 const options = { day: "numeric", month: "long", year: "numeric" } as const;
-                 formattedStartDate = new Intl.DateTimeFormat('en-US', options).format(startDateObj);
-            }
-        } catch (error) {
-            console.error("Error formatting start date:", error);
-        }
-    }
-
     if (userInfo && userInfo.planEndDate) {
          try {
             const endDateObj = new Date(userInfo.planEndDate);
@@ -80,59 +66,60 @@ function UserPlan(){
     return(
         <section id="UserPlan" className="lg:mb-15">
             <div className="flex flex-col md:gap-3 gap-2 items-center text-center md:p-5 p-3  rounded-2xl lg:h-130 h-130 lg:w-200 w-74 md:mt-18 mt-10">
-            {userInfo === null ?
-                null:
-                <div 
-                    className=""
-                >
-                    <div className="flex flex-col items-center justify-center p-4 gap-5">
-                        <img
-                            className="rounded-full lg:h-25 lg:w-20 h-18 w-15" 
-                            src={userInfo?.gender==='male'?male : userInfo?.gender === 'female'? female : userInfo?.gender ==='other' || !userInfo?.gender? person : person}  
-                            alt="User">
-                        </img>
-                        {userInfo?.fullName && <h1 className="text-xl">{userInfo.fullName}</h1>}
-                        <div className="flex flex-row Lg:w-74 items-center justify-center gap-5">
-                            <div className="flex flex-row gap-1 w-25">
-                                <UserIcon className="h-6 w-6 text-gray-500" />
-                                <h3 className="text-lg text-gray-300">{userInfo?.role}</h3>
-                            </div>
-                            <div>
-                                <h3 className="text-xl font-bold text-gray-500"> | </h3>
-                            </div>
-                            <div className="flex flex-row gap-1 w-25">
-                                <MapPinIcon className="h-6 w-6 text-red-500 mt-0.5 flex-shrink-0" />
-                                <h3 className="text-lg text-gray-200">{userInfo?.locationName}</h3>
-                            </div>
-                        </div>
-                        
-                        <div className="flex flex-col gap-5 p-5 shadow-xl shadow-gray-400 rounded-2xl lg:w-94 lg:h-64">
-                            <div>
-                                <h2 className="text-2xl font-bold">{userInfo.planName}</h2>
-                            </div>
-                            
-                            <div>
-                                <h3>Ends on: {formattedEndDate}</h3>
-                            </div>
-
-                            {startDate && endDate && ( // Render progress bar only if dates are valid
-                                
-                                <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 overflow-hidden mt-2">
-                                    <div
-                                        className="bg-blue-600 h-2.5 rounded-full"
-                                        style={{ width: `${percentageElapsed}%` }}
-                                    ></div>
+                {userInfo === null ?
+                    null:
+                    <div className="">
+                        <div className="flex flex-col items-center justify-center p-4 gap-5 ">
+                            {/*First Section*/}
+                            <div className="flex flex-col items-center justify-center gap-5">
+                                <img
+                                    className="rounded-full lg:h-25 lg:w-20 h-18 w-15" 
+                                    src={userInfo?.gender==='male'?male : userInfo?.gender === 'female'? female : userInfo?.gender ==='other' || !userInfo?.gender? person : person}  
+                                    alt="User">
+                                </img>
+                                {userInfo?.fullName && <h1 className="text-xl">{userInfo.fullName}</h1>}
+                                <div className="flex flex-row Lg:w-74 items-center justify-center gap-5">
+                                    <div className="flex flex-row gap-1 w-25">
+                                        <UserIcon className="h-6 w-6 text-gray-500" />
+                                        <h3 className="text-lg text-gray-300">{userInfo?.role}</h3>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-xl font-bold text-gray-500"> | </h3>
+                                    </div>
+                                    <div className="flex flex-row gap-1 w-25">
+                                        <MapPinIcon className="h-6 w-6 text-red-500 mt-0.5 flex-shrink-0" />
+                                        <h3 className="text-lg text-gray-200">{userInfo?.locationName}</h3>
+                                    </div>
                                 </div>
-                            )}
-                            {startDate && endDate && (
-                                <p className="text-sm text-gray-500 mt-1">
-                                    {percentageElapsed.toFixed(1)}% elapsed
-                                </p>
-                            )}
+                            </div>
+                            {/*Second Section*/}
+                            <div className="flex flex-col justify-center gap-15 p-5 bg-gray-900 rounded-2xl lg:w-94 lg:h-64 border-2 border-sky-400 relative">
+                                <div className="flex flex-col justify-start items-start gap-1">
+                                    <h4 className="font-bold text-green-500"> | {userInfo?.membershipStatus?"Active": "InActive"}</h4>
+                                    <h2 className="lg:text-2xl text-xl font-bold">{userInfo.planName}</h2>
+                                </div>
+                                
+                                <div className="flex flex-col items-start">
+                                    <h3 className="">Ends on: {formattedEndDate}</h3>
+                                    {startDate && endDate && ( //@dev: Render progress bar only if dates are valid
+                                    
+                                    <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 overflow-hidden mt-2">
+                                        <div
+                                            className="bg-sky-500 h-2.5 rounded-full"
+                                            style={{ width: `${percentageElapsed}%` }}
+                                        ></div>
+                                    </div>
+                                    )}
+                                    {startDate && endDate && (
+                                        <p className=" text-gray-500 mt-3 self-center">
+                                            {percentageElapsed.toFixed(1)}% Elapsed
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>    
-            }
+                }
             </div>
         </section>
     )
