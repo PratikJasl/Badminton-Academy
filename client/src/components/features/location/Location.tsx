@@ -60,10 +60,10 @@ function Location(){
         <section id="Location" className="">
                 
             <div className="flex flex-col md:gap-5 gap-2 items-center text-center md:p-5 p-3 rounded-2xl lg:h-130 h-130 lg:w-200 w-74 md:mt-18 mt-10">
-                <h2 className="text-3xl font-bold text-blue-600 mb-2 ">Locations we serve</h2>
+                <h2 className="text-3xl font-bold text-white mb-2 ">Locations we serve</h2>
 
-                <div className="h-full overflow-auto space-y-4 scroll-smooth [scrollbar-width:none] border-white border-1 md:p-5 p-2 rounded-2xl lg:min-w-78 min-w-64"> 
-                    { isloading ? (<p className="lg:mt-28 mt-40">Loading loactions...</p>) : (
+                <div className="h-full overflow-auto space-y-4 scroll-smooth [scrollbar-width:none] border-white border-1 md:p-5 p-2 rounded-2xl lg:h-120 lg:w-190 w-68"> 
+                    { isloading ? (<p className="lg:mt-35 mt-40">Loading loactions...</p>) : (
                     locations && locations.length > 0 ? (
                         locations.map((location) => (
                             <div 
@@ -88,7 +88,7 @@ function Location(){
                             </div>
                         ))
                     ) : (
-                        <p className="lg:mt-28 mt-40">No Locations added, add new location</p>
+                        <p className="lg:mt-35 mt-40">No Locations added, add new location</p>
                     ))}
                 </div>
 

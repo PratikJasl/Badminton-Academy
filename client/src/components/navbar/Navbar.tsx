@@ -38,7 +38,7 @@ function Navbar(){
 
     return(
         <>
-            <div className="flex flex-row justify-between items-center font-serif fixed top-0 bg-gray-800 min-w-screen h-12 p-3 z-10">
+            <div className="flex flex-row justify-between items-center font-serif fixed top-0 bg-gray-900 min-w-screen h-12 p-3 z-10">
                 
                 <div className="lg:text-2xl">
                    <Link to="/">Badminton Academy</Link>
@@ -74,11 +74,11 @@ function Navbar(){
                                         alt="User">
                                     </img>
                                     {userInfo?.fullName && <h1>{userInfo.fullName}</h1>}
-                                    <Link to="/UserPlan" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Plan</Link>
-                                    <Link to="/Schedule" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Schedule</Link>
+                                    <Link to="/UserPlan" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">User Details</Link>
+                                    <Link to="/Schedule" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Schedule</Link>
                                     <Link to="/Location" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Locations</Link>
-                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Mark Payments</Link>
-                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Mark Attendance</Link>
+                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Payments</Link>
+                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Attendance</Link>
                                     
                                     <button 
                                         className="flex flex-row p-2 rounded-xl hover:text-red-500 hover:scale-130 active:scale-120 transition transform duration-500 ease-in-out"
@@ -102,11 +102,11 @@ function Navbar(){
                                         alt="User">
                                     </img>
                                     {userInfo?.fullName && <h1>{userInfo.fullName}</h1>}
-                                    <Link to="/UserPlan" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Plan</Link>
-                                    <Link to="/Schedule" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Coaching Schedule</Link>
-                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Attendance</Link>
+                                    <Link to="/UserPlan" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">User Details</Link>
+                                    <Link to="/Schedule" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Schedule</Link>
                                     <Link to="/Location" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Locations</Link>
-                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Contacts</Link>
+                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Payments</Link>
+                                    <Link to="" className="p-2 rounded-xl md:w-62 w-56 hover:bg-blue-500 bg-white text-black">Attendance</Link>
                                    
                                     <button 
                                         className="flex flex-row p-2 rounded-xl hover:text-red-500 hover:scale-130 active:scale-120 transition transform duration-500 ease-in-out"

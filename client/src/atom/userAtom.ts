@@ -9,6 +9,7 @@ export interface UserInfoType {
     planName: string;
     planDuration: string;
     locationName: string;
+    membershipStatus: boolean
 }
   
 export const userInfoState = atom<UserInfoType | null>({

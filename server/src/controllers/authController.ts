@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { checkAge, calculateEndDate} from "../common/helperFunctions";
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { membershipStatus, PrismaClient } from "@prisma/client";
 import transporter from "../config/nodeMailer";
 import { checkValidLocation, getLocationById } from "../repository/locationRepo";
 import { addNewUser, checkExistingUser, findUser } from "../repository/userRepo";
@@ -121,7 +121,7 @@ export async function logIn(req: Request, res: Response): Promise<void> {
             }
 
             const token = jwt.sign({ userName: user.fullName, id: user.userId, role: user.role}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
-            const data = {fullName: user.fullName, role: user.role, gender: user.gender, planStartDate: user.planStartDate, planEndDate: user.planEndDate, planName: coachingPlan?.name, planDuration: coachingPlan?.planDuration, locationName: locationName?.name};
+            const data = {fullName: user.fullName, role: user.role, gender: user.gender, planStartDate: user.planStartDate, planEndDate: user.planEndDate, planName: coachingPlan?.name, planDuration: coachingPlan?.planDuration, locationName: locationName?.name, membershipStatus: user.membershipStatus};
         
             res.status(200).cookie('token', token, {
                 httpOnly: true,
