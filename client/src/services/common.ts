@@ -15,7 +15,7 @@ export interface FilterLocation {
     name: string;
 }
 
-
+//@dev: Function to convert days to number string.
 export function convertDays(coachingDays: string): string {
     const days: { [key: string]: string } = {
         "1": "Monday",
