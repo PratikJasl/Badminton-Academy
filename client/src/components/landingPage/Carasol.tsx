@@ -66,7 +66,7 @@ function Carousel() {
             <img
               src={imageLinks[currentIndex]}
               alt="carousel"
-              className={`w-screen h-72 md:h-170 xl:h-220 object-cover transition-opacity duration-1000 ease-in-out ${
+              className={`w-screen h-72 md:h-170 object-cover transition-opacity duration-1000 ease-in-out ${
                 isFading ? "opacity-0" : "opacity-100"
               }`}
               key={currentIndex}

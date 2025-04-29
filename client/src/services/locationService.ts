@@ -10,8 +10,8 @@ export async function getLocation(){
             },
             withCredentials: true,
         });
-        console.log("Full response:", response.status);
-        console.log("Data received:", response);
+        // console.log("Full response:", response.status);
+        // console.log("Data received:", response);
 
         if (response.data && response.data.data && Array.isArray(response.data.data)) {
             return response.data.data;
@@ -22,7 +22,7 @@ export async function getLocation(){
         }
     } catch (error) {
         console.error("Error fetching locations", error);
-        return [];
+        throw error;
     }
 }
 
@@ -56,6 +56,6 @@ export async function deleteLocation(locationId: number){
         return response;
     } catch (error) {
         console.error("Error adding locations", error);
-        throw error;
+        return null;
     }
 }

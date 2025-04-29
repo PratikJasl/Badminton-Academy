@@ -8,12 +8,13 @@ import { userInfoState } from "./atom/userAtom";
 import { ToastContainer } from 'react-toastify';
 import Home from './components/landingPage/Home';
 import { Route, Routes } from 'react-router-dom';
-import UserPlan from './components/features/plan/UserPlan';
+import UserPlan from './components/features/user/UserPlan';
 import { getInitialUserInfo } from './services/storeUserInfo';
 import Location from './components/features/location/Location';
 import Schedule from './components/features/schedule/Schedule';
 import AddLocation from './components/features/location/AddLocation';
 import AddSchedule from './components/features/schedule/AddSchedule';
+import UserPayment from './components/features/payment/UserPayment';
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
           <Route path='/Schedule' element={<Schedule/>}></Route>
           <Route path='/AddSchedule' element={<AddSchedule/>}></Route>
           <Route path='/UserPlan' element={<UserPlan/>}></Route>
+          <Route path='/Payments' element={<UserPayment/>}></Route>
       </Routes>
 
       <ToastContainer

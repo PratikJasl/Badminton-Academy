@@ -85,3 +85,4 @@
 3) TabNapping: In frontend avoid tab napping errors in href tags to external links.
 4) Load Carausel Image: Load the first carousel image early to avoid delay.
 5) Reloading of the website while 
+6) Remove delete button from locations where there are users associated. 

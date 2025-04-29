@@ -16,7 +16,7 @@ export async function loginService(data: LoginFormData) {
         return response;
     } catch (error) {
         console.log("Error Logging In", error);
-        return null;
+        throw error
     }
 }
 
@@ -35,7 +35,7 @@ export async function signUpService(dataToSend: any){
           return response;
     } catch (error) {
         console.log("Error Signing Up", error);
-        return null;
+        throw error;
     }
 }
 
@@ -51,6 +51,6 @@ export async function logOutService(){
         return response;
     } catch (error) {
         console.log("Error Logging Out", error);
-        return null;
+        throw error;
     }
 }
