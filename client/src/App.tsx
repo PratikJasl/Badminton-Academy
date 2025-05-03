@@ -15,6 +15,8 @@ import Schedule from './components/features/schedule/Schedule';
 import AddLocation from './components/features/location/AddLocation';
 import AddSchedule from './components/features/schedule/AddSchedule';
 import UserPayment from './components/features/payment/UserPayment';
+import UserDetails from './components/features/user/UserDetails';
+import UserAttendance from './components/features/attendance/UserAttendance';
 
 
 function App() {
@@ -28,7 +30,7 @@ function App() {
   },[]);
 
   return (
-    <div className='h-screen flex flex-col items-center justify-center'>
+    <div className='h-screen flex flex-col items-center justify-center overflow-auto scroll-smooth [scrollbar-width:none]'>
       <Navbar/>
       <Routes>
           <Route path='/' element= {<Home/>}></Route>
@@ -39,7 +41,9 @@ function App() {
           <Route path='/Schedule' element={<Schedule/>}></Route>
           <Route path='/AddSchedule' element={<AddSchedule/>}></Route>
           <Route path='/UserPlan' element={<UserPlan/>}></Route>
+          <Route path='/UserDetails' element={<UserDetails/>}></Route>
           <Route path='/Payments' element={<UserPayment/>}></Route>
+          <Route path='/Attendance' element={<UserAttendance/>}></Route>
       </Routes>
 
       <ToastContainer

@@ -124,3 +124,69 @@ export const scheduleSchema = yup.object({
         .string()
         .required("Location is required")
 })
+
+export const userDetailSchema = yup.object({
+    fullName: yup
+        .string()
+        .min(3, 'Full Name must be at least 3 characters')
+        .max(50, 'Full Name must be at most 50 characters')
+        .required('Full Name is required'),
+    email: yup
+        .string()
+        .email('Invalid email format')
+        .required('Email is required'),
+    phone: yup
+        .string()
+        .length(10, 'Phone number must be 10 digits')
+        .matches(/^[0-9]+$/, 'Phone number must contain only digits')
+        .required('Phone number is required'),
+    gender: yup
+        .string()
+        .oneOf(['male', 'female', 'other'])
+        .required('Gender is required'),
+    dob: yup
+        .date()
+        .transform((value, originalValue) => {
+            if (typeof originalValue === 'string' && originalValue === "") {
+                return null;
+            }
+            if (typeof originalValue === 'string') {
+                 const [year, month, day] = originalValue.split('-').map(Number);
+                 return new Date(Date.UTC(year, month - 1, day));
+            }
+            return value;
+        })
+        .nullable()
+        .required('Date of Birth is required')
+        .max(new Date(), 'Date of Birth must be in the past'),
+    locationId: yup
+        .number()
+        .transform((value, originalValue) => {
+            return originalValue === "" ? null : value;
+        })
+        .nullable()
+        .required('Location is required'),
+    coachingPlanId: yup
+        .number()
+        .transform((value, originalValue) => {
+            return originalValue === "" ? null : value;
+        })
+        .nullable()
+        .required('Coaching Plan is required'),
+    planStartDate: yup
+        .date()
+        .transform((value, originalValue) => {
+            if (typeof originalValue === 'string' && originalValue === "") {
+                return null;
+            }
+            if (typeof originalValue === 'string') {
+                 const [year, month, day] = originalValue.split('-').map(Number);
+                 return new Date(Date.UTC(year, month - 1, day));
+            }
+            return value;
+        })
+        .nullable()
+        .required('Plan start date is required')
+        .min(oneYearAgo, `Plan start date cannot be more than one year in the past`)
+        .max(oneYearFuture, `Plan start date cannot be more than one year in the future`),
+});

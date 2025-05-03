@@ -17,7 +17,7 @@ app.use(cors({
 }));
 
 //Routes:
-app.use('/api', userRouter);
+app.use('/api/user', userRouter);
 app.use('/api', authRouter);
 app.use('/api/coach', coachRouter);
 // app.use('/api/admin',adminRouter);

@@ -36,3 +36,19 @@ export function convertDays(coachingDays: string): string {
 }
     return convertedDayNames.join(", ");
 };
+
+//@dev: Function to Formate Date Time to Date.
+export const formatDateToYYYYMMDD = (date: Date | string | null | undefined): string | undefined => {
+    if (!date) return undefined;
+    try {
+        const d = new Date(date);
+        if (isNaN(d.getTime())) return undefined;
+        const year = d.getFullYear();
+        const month = ('0' + (d.getMonth() + 1)).slice(-2);
+        const day = ('0' + d.getDate()).slice(-2);
+        return `${year}-${month}-${day}`;
+    } catch (e) {
+        console.error("Failed to format date:", date, e);
+        return undefined;
+    }
+};
