@@ -121,7 +121,21 @@ export async function logIn(req: Request, res: Response): Promise<void> {
             }
 
             const token = jwt.sign({ userName: user.fullName, id: user.userId, role: user.role}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
-            const data = {fullName: user.fullName, role: user.role, gender: user.gender, planStartDate: user.planStartDate, planEndDate: user.planEndDate, planName: coachingPlan?.name, planDuration: coachingPlan?.planDuration, locationName: locationName?.name, membershipStatus: user.membershipStatus};
+            const data = {
+                userId: user.userId,
+                fullName: user.fullName,
+                email: user.email,
+                phone: user.phone,
+                dob: user.dob,
+                role: user.role, 
+                gender: user.gender, 
+                planStartDate: user.planStartDate, 
+                planEndDate: user.planEndDate, 
+                planName: coachingPlan?.name, 
+                planDuration: coachingPlan?.planDuration, 
+                locationName: locationName?.name, 
+                membershipStatus: user.membershipStatus
+            };
         
             res.status(200).cookie('token', token, {
                 httpOnly: true,
@@ -154,6 +168,8 @@ export async function logOut(req: Request, res: Response): Promise<void> {
     }
 }
 
+
+///-------------------Have to refactor the auth fields-------------------------
 //Verify email routes:
 export async function sendVerifyOTP(req: Request, res: Response): Promise<void> {
     console.log("------Send Verify OTP Route------");

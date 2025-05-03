@@ -5,7 +5,7 @@ import { gender, existingUserCheckResult } from "../common/interface";
 
 const prisma = new PrismaClient();
 
-//@dev Function to add new user.
+//@dev: Function to add new user.
 export async function addNewUser(
     fullName :string,
     email :string, 
@@ -49,7 +49,7 @@ export async function addNewUser(
     }
 }
 
-//@dev Function to check existing user.
+//@dev: Function to check existing user.
 export async function checkExistingUser(email:string):Promise<existingUserCheckResult | null>{
     try {
         const existingUser = await prisma.user.findUnique({
@@ -67,7 +67,7 @@ export async function checkExistingUser(email:string):Promise<existingUserCheckR
     }
 }
 
-//@dev Function to find user and return user-object.
+//@dev: Function to find user and return user-object.
 export async function findUser(email:string):Promise<User | null>{
     try {
         const user = await prisma.user.findUnique({
@@ -80,4 +80,19 @@ export async function findUser(email:string):Promise<User | null>{
         console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         throw error
     }
+}
+
+//@dev: Function to fetch all users.
+export async function getUsersById(userId: number){
+    try {
+            let user = await prisma.user.findMany({
+                where:{
+                    userId: userId
+                },
+            });
+            return user;
+        } catch (error) {
+            console.log(ERROR_MESSAGES.SERVER_ERROR, error);
+            throw error
+        }
 }

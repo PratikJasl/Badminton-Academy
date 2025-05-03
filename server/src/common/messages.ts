@@ -36,6 +36,7 @@ export const ERROR_MESSAGES = {
     EMAIL_VERIFIED: 'Email verified succeddsully',
     PASSWORD_RESET_SUCCESS: 'Password has been reset successfully',
     LOCATION_DATA_FETCHED: 'Location data fetched successfully',
+    USER_DATA_FETCHED: 'User data fetched successfully',
     PLAN_DATA_FETCHED: 'Coaching plan data fetched successfully',
     SCHEDULE_DATA_FETCHED: 'Coaching schedule data fetched successfully',
     NO_DATA_FOUND:'Data Not Available',

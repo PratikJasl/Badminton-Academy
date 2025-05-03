@@ -15,6 +15,7 @@ import Schedule from './components/features/schedule/Schedule';
 import AddLocation from './components/features/location/AddLocation';
 import AddSchedule from './components/features/schedule/AddSchedule';
 import UserPayment from './components/features/payment/UserPayment';
+import UserDetails from './components/features/user/UserDetails';
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Route path='/Schedule' element={<Schedule/>}></Route>
           <Route path='/AddSchedule' element={<AddSchedule/>}></Route>
           <Route path='/UserPlan' element={<UserPlan/>}></Route>
+          <Route path='/UserDetails' element={<UserDetails/>}></Route>
           <Route path='/Payments' element={<UserPayment/>}></Route>
       </Routes>
 
