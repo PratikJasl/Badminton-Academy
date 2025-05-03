@@ -131,9 +131,11 @@ export async function logIn(req: Request, res: Response): Promise<void> {
                 gender: user.gender, 
                 planStartDate: user.planStartDate, 
                 planEndDate: user.planEndDate, 
-                planName: coachingPlan?.name, 
+                coachingPlanName: coachingPlan?.name,
+                coachingPlanId: user.coachingPlanId,
                 planDuration: coachingPlan?.planDuration, 
-                locationName: locationName?.name, 
+                locationName: locationName?.name,
+                locationId: user.locationId,
                 membershipStatus: user.membershipStatus
             };
         

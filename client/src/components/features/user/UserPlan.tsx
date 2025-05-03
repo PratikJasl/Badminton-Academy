@@ -96,7 +96,7 @@ function UserPlan(){
                         <div className="flex flex-col justify-center gap-15 p-5 bg-gray-900 rounded-2xl lg:w-94 lg:h-64 border-2 border-sky-400 relative">
                             <div className="flex flex-col justify-start items-start gap-1">
                                 <h4 className="font-bold text-green-500"> | {userInfo?.membershipStatus?"Active": "InActive"}</h4>
-                                <h2 className="lg:text-2xl text-xl font-bold">{userInfo.planName}</h2>
+                                <h2 className="lg:text-2xl text-xl font-bold">{userInfo.coachingPlanName}</h2>
                             </div>
                             
                             <div className="flex flex-col items-start">
