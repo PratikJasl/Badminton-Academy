@@ -34,3 +34,15 @@ export interface existingCoachingPlanCheckResult {
 export interface existingScheduleCheckResult {
     coachingScheduleId: number;
 }
+
+export interface fetchAttendanceInterface{
+    locationId:number,
+    isKid:boolean,
+    attendanceDate:Date
+}
+
+export interface updateAttendanceInterface{
+    userId:number,
+    attendanceDate:Date,
+    isStatus:boolean,
+}

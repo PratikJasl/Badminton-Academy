@@ -11,7 +11,7 @@ import { errorResponse, successResponse } from "../common/apiResponse";
 import { checkValidCoachingPlan } from "../repository/coachingPlanRepo";
 
 const prisma = new PrismaClient();
-
+// let bcrypt:any;
 //@dev: Add a new user to database.
 export async function signUp(req: Request, res: Response): Promise<void> {
     console.log("------SignUp Route------");

@@ -64,13 +64,16 @@ export async function checkValidCoachingSchedule(locationId: number): Promise<Co
 }
 
 //@dev: Function to check existing coaching schedule with scheduleID.
-export async function ValidCoachingSchedule(scheduleId: number): Promise<existingScheduleCheckResult | null>{
+export async function ValidCoachingSchedule(scheduleId: number): Promise<boolean>{
     try {
         const validCoachingSchedule = await prisma.coachingSchedule.findFirst({
             where: { coachingScheduleId: scheduleId },
             select: { coachingScheduleId: true }
-        });
-        return validCoachingSchedule as existingScheduleCheckResult | null;
+        }); 
+        if(validCoachingSchedule===null)
+            return false;
+        else
+            return true;
     } catch (error) {
         console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         throw error;

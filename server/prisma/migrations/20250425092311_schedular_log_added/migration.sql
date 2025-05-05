@@ -14,7 +14,7 @@ CREATE TYPE "Gender" AS ENUM ('male', 'female', 'other');
 CREATE TYPE "paymentStatus" AS ENUM ('paid', 'pending');
 
 -- CreateEnum
-CREATE TYPE "coachingBatch" AS ENUM ('kidsStandard', 'kidsPremium', 'adultsStandard', 'adultsPremium');
+CREATE TYPE "coachingBatch" AS ENUM ('Kids_Standard', 'Kids_Premium', 'Adults_Standard', 'Adults_Premium');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -40,6 +40,15 @@ CREATE TABLE "User" (
     "otpResetExpiry" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("userId")
+);
+
+-- CreateTable
+CREATE TABLE "SchedularLog" (
+    "schedularLogId" SERIAL NOT NULL,
+    "schedularId" INTEGER NOT NULL,
+    "executedDate" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "SchedularLog_pkey" PRIMARY KEY ("schedularLogId")
 );
 
 -- CreateTable
@@ -99,6 +108,9 @@ CREATE TABLE "Payment" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "SchedularLog_executedDate_key" ON "SchedularLog"("executedDate");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Location_name_key" ON "Location"("name");

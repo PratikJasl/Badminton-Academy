@@ -12,3 +12,11 @@ export function checkAge(dob: Date): boolean {
     const adultAge = 18;
     return age < adultAge;
 }
+
+
+ export function getTodaysDate():string{
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+    console.log(today.toISOString()); // Output: 2025-04-23
+    return  today.toISOString();
+}

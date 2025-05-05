@@ -20,7 +20,9 @@ export const ERROR_MESSAGES = {
     OTP_EXPIRED: 'OTP Expired',
     NO_DATA_FOUND: 'No data found',
     DATA_NOT_INSERTED:'Data Insertion Failed',
-    EXISTING_LOCATION: 'Location with same name already exists'
+    EXISTING_LOCATION: 'Location with same name already exists',
+    NOT_ABLE_TO_FETCH_USERS_ATTENDANCE_DATA:'Not able to fetch users data for attendance ',
+    UPDATION_FAILED:'Upadation Failed...., try again.'
   };
 
   export const SUCCESS_MESSAGES = {
@@ -42,4 +44,6 @@ export const ERROR_MESSAGES = {
     ACCOUNT_ALREADY_VERIFIED: 'Account already verified',
     LOCATION_REMOVED: 'Location removed successfully',
     SCHEDULE_REMOVED: 'Coaching Schedule removed successfully',
+    ATTENDANCE_DATA_FETCHED:'Attendence Data Fetched Successfully',
+    UPDATE_SUCCESSFUL:'Updation Successful'
   }
