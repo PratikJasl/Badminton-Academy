@@ -34,3 +34,24 @@ export interface existingCoachingPlanCheckResult {
 export interface existingScheduleCheckResult {
     coachingScheduleId: number;
 }
+
+export interface existingUserParams {
+    email?: string;
+    userId?: number;
+}
+
+export interface userDataType {
+    fullName: string;
+    email: string;
+    phone: string;
+    gender: 'male' | 'female' | 'other' | null;
+    dob: Date;
+    locationId: number;
+    coachingPlanId: number;
+    planStartDate: Date | null
+}
+
+export interface UpdateUserRequestBody {
+    userId?: number;
+    userData?: userDataType;
+}

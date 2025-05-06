@@ -1,4 +1,5 @@
 import axios from "axios";
+import { UpdateFormData } from "../components/features/user/UserDetails";
 
 export async function getUserInfo(){
     try {
@@ -22,4 +23,21 @@ export async function getUserInfo(){
       console.error("Error fetching locations", error);
       throw error;
   }
+}
+
+export async function updateUserInfo(data: {userId: number, userData: UpdateFormData}){
+    try {
+        const response = await axios.put('http://localhost:3000/api/user/update',
+            data,
+           {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+        });
+        return response;
+    } catch (error) {
+        console.error("Error fetching locations", error);
+        throw error;
+    }
 }

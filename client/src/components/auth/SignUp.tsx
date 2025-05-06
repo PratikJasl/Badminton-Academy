@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import { InferType } from 'yup';
 import { signUpService } from "../../services/authService";
 
-//@dev: Login Form Data Type.
+//@dev: SignUp Form Data Type.
 export type SignUpFormData = InferType<typeof signUpSchema>;
 
 function SignUp(){

@@ -7,7 +7,7 @@ import { Navigate } from "react-router-dom";
 import { loginSchema } from "../../schema/userSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginService } from "../../services/authService";
-import { saveUserInfo } from "../../services/storeUserInfo";
+// import { saveUserInfo } from "../../services/storeUserInfo";
 
 
 //@dev: Login Form Data Type.
@@ -20,7 +20,7 @@ function LogIn(){
             resolver: yupResolver(loginSchema),
     });
 
-    //@dev: Function to handle the form submission, and store user information in local storage.
+    //@dev: Function to handle the form submission.
     const onSubmit = async (data: LoginFormData) => {
         setIsLoading(true)
         let response: any;
@@ -28,7 +28,7 @@ function LogIn(){
             response = await loginService(data)
             if(response.status === 200){
                     setRedirect(true);
-                    saveUserInfo(response.data.data); //@dev: Save user info to local storage.
+                    // saveUserInfo(response.data.data); //@dev: Save user info to local storage.
                     reset();
                     toast.success("LogIn Successful");
             }else{

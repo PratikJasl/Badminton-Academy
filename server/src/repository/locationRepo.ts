@@ -63,7 +63,7 @@ export async function checkValidLocation(locationId: number): Promise<validLocat
             select:{locationId: true}
         })
         return validLocation;
-    } catch (error) {
+    } catch (error){
         console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         throw error;
     }

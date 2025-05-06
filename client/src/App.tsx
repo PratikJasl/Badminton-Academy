@@ -1,15 +1,15 @@
 import './App.css'
-import { useEffect } from 'react';
-import { useSetRecoilState } from "recoil";
+// import { useEffect } from 'react';
+// import { useSetRecoilState } from "recoil";
 import LogIn from './components/auth/Login';
 import SignUp from './components/auth/SignUp';
 import Navbar from './components/navbar/Navbar';
-import { userInfoState } from "./atom/userAtom";
+// import { userInfoState } from "./atom/userAtom";
 import { ToastContainer } from 'react-toastify';
 import Home from './components/landingPage/Home';
 import { Route, Routes } from 'react-router-dom';
 import UserPlan from './components/features/user/UserPlan';
-import { getInitialUserInfo } from './services/storeUserInfo';
+// import { getInitialUserInfo } from './services/storeUserInfo';
 import Location from './components/features/location/Location';
 import Schedule from './components/features/schedule/Schedule';
 import AddLocation from './components/features/location/AddLocation';
@@ -20,14 +20,14 @@ import UserAttendance from './components/features/attendance/UserAttendance';
 
 
 function App() {
-  const setUserInfo = useSetRecoilState(userInfoState);
+  // const setUserInfo = useSetRecoilState(userInfoState);
 
-  useEffect(()=>{
-    let localData = getInitialUserInfo();
-    if(localData){
-        setUserInfo(localData);
-    }
-  },[]);
+  // useEffect(()=>{
+  //   let localData = getInitialUserInfo();
+  //   if(localData){
+  //       setUserInfo(localData);
+  //   }
+  // },[]);
 
   return (
     <div className='h-screen flex flex-col items-center justify-center overflow-auto scroll-smooth [scrollbar-width:none]'>

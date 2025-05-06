@@ -1,17 +1,23 @@
 import { useRecoilValue } from 'recoil';
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 import { useForm, useController } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { userInfoState } from "../../../atom/userAtom";
+import { InferType } from "yup";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { userDetailSchema } from "../../../schema/userSchema";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { getLocation } from "../../../services/locationService";
 import { getCoachingPlan } from "../../../services/coachingPlanService";
 import { formatDateToYYYYMMDD } from '../../../services/common';
+import { updateUserInfo } from '../../../services/userService';
+import { saveUserInfo } from "../../../services/storeUserInfo";
 
-
+//@dev: Update Form Data Type.
+export type UpdateFormData = InferType<typeof userDetailSchema>;
 
 function UserDetails(){
     const userInfo = useRecoilValue(userInfoState);
@@ -39,10 +45,10 @@ function UserDetails(){
         if (userInfo) {
             reset({
                 fullName: userInfo.fullName,
-                email: userInfo.email,
-                phone: userInfo.phone,
+                // email: userInfo.email,
+                // phone: userInfo.phone,
                 gender: userInfo.gender as "male" | "female" | "other",
-                dob: userInfo.dob ? new Date(userInfo.dob) : undefined,
+                // dob: userInfo.dob ? new Date(userInfo.dob) : undefined,
                 locationId: userInfo.locationId ?? null, 
                 coachingPlanId: userInfo.coachingPlanId ?? null,
                 planStartDate: userInfo.planStartDate ? new Date(userInfo.planStartDate) : undefined
@@ -74,8 +80,40 @@ function UserDetails(){
         fetchCoachingPlan();
     }, [])
 
-    function updateUser(){
+    async function updateUser(data: UpdateFormData){
         setIsLoading(true);
+        let response: any;
+        const userId = userInfo?.userId;
+        if (!userId) {
+            toast.error("User ID is missing. Unable to update user details.");
+            setIsLoading(false);
+            return;
+        }
+        const userData = {...data}
+        const dataToSend = { userId,  userData};
+
+        try {
+            response = await updateUserInfo(dataToSend);
+            if(response.status === 200){
+                console.log("User updated Response:",response)
+                console.log("User updated Response object:",response.data.data)
+                saveUserInfo(response.data.data);
+                toast.success("User Data Updated Successfully");
+                reset();
+            }else{
+                toast.error(response.data.message || "Failed, Please try again.");
+            } 
+        } catch (error) {
+            console.error("Reached catch block:", error);
+            if (axios.isAxiosError(error) && error.response) {
+                toast.error(error.response.data.message);
+            } else {
+                console.error("An unexpected error occurred:", error);
+                toast.error("An unexpected error occurred. Please try again.");
+            }
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return(
