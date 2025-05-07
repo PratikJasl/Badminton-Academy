@@ -124,9 +124,6 @@ export async function logIn(req: Request, res: Response): Promise<void> {
             const data = {
                 userId: user.userId,
                 fullName: user.fullName,
-                email: user.email,
-                phone: user.phone,
-                dob: user.dob,
                 role: user.role, 
                 gender: user.gender, 
                 planStartDate: user.planStartDate, 
@@ -144,7 +141,7 @@ export async function logIn(req: Request, res: Response): Promise<void> {
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
                 maxAge: 7 * 24 * 60 * 60 * 1000
-            }).json(successResponse(SUCCESS_MESSAGES.USER_LOGIN,data));
+            }).json(successResponse(SUCCESS_MESSAGES.USER_LOGIN, data));
             return;
         }
     } catch (error) {
