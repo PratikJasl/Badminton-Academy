@@ -248,6 +248,7 @@ function SignUp(){
                         type="password"
                         placeholder="Password"
                         {...register("password")}
+                        autoComplete="true"
                         className="w-full shadow-lg p-3 rounded-lg bg-white text-black"
                         />
                         {errors.password && (
@@ -263,6 +264,7 @@ function SignUp(){
                         disabled={isLoading}
                         type="password"
                         placeholder="Re-Enter Password"
+                        autoComplete="true"
                         {...register("confirmPassword")}
                         className="w-full shadow-lg p-3 rounded-lg bg-white text-black"
                         />

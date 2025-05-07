@@ -14,7 +14,7 @@ import { getLocation } from "../../../services/locationService";
 import { getCoachingPlan } from "../../../services/coachingPlanService";
 import { formatDateToYYYYMMDD } from '../../../services/common';
 import { updateUserInfo } from '../../../services/userService';
-import { saveUserInfo } from "../../../services/storeUserInfo";
+//import { saveUserInfo } from "../../../services/storeUserInfo";
 
 //@dev: Update Form Data Type.
 export type UpdateFormData = InferType<typeof userDetailSchema>;
@@ -40,15 +40,15 @@ function UserDetails(){
         control,
     });
 
-    //@dev: Populate form fields with userInfo data
+    //@dev: Populate form fields with userInfo data.
     useEffect(() => {
         if (userInfo) {
             reset({
                 fullName: userInfo.fullName,
-                // email: userInfo.email,
-                // phone: userInfo.phone,
+                email: userInfo.email,
+                phone: userInfo.phone,
                 gender: userInfo.gender as "male" | "female" | "other",
-                // dob: userInfo.dob ? new Date(userInfo.dob) : undefined,
+                dob: userInfo.dob ? new Date(userInfo.dob) : undefined,
                 locationId: userInfo.locationId ?? null, 
                 coachingPlanId: userInfo.coachingPlanId ?? null,
                 planStartDate: userInfo.planStartDate ? new Date(userInfo.planStartDate) : undefined
@@ -97,7 +97,6 @@ function UserDetails(){
             if(response.status === 200){
                 console.log("User updated Response:",response)
                 console.log("User updated Response object:",response.data.data)
-                saveUserInfo(response.data.data);
                 toast.success("User Data Updated Successfully");
                 reset();
             }else{

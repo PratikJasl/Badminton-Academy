@@ -96,6 +96,19 @@ export async function getUsersById(userId: number){
                 where:{
                     userId: userId
                 },
+                select:{
+                    fullName: true,
+                    email: true,
+                    phone: true,
+                    gender: true,
+                    dob: true,
+                    locationId: true,
+                    coachingPlan: true,
+                    coachingPlanId: true,
+                    planStartDate: true,
+                    planEndDate: true,
+                    membershipStatus: true
+                }
             });
             return user;
         } catch (error) {

@@ -6,7 +6,7 @@ import { Prisma } from "@prisma/client";
 import { UpdateUserRequestBody } from "../common/interface";
 
 //@dev: Function to fetch user details by ID.
-export async function getUserDetail(req: Request, res: Response ): Promise<void>{
+export async function getUserDetailById(req: Request, res: Response ): Promise<void>{
     console.log("-----User Details-----");
     const { userId } = req.body;
     try {

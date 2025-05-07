@@ -3,6 +3,9 @@ import { atom } from "recoil";
 export interface UserInfoType {
     userId: number;
     fullName: string;
+    email: string;
+    phone: string;
+    dob: string;
     gender: string;
     role: "student" | "coach" | "admin";
     planStartDate: string;
