@@ -4,7 +4,7 @@ import { ToastContainer } from 'react-toastify';
 import { Route, Routes } from 'react-router-dom';
 const LogIn = lazy(() => import("./components/auth/Login"));
 const SignUp = lazy(() => import('./components/auth/SignUp'));
-const Navbar = lazy(() => import('./components/navbar/Navbar'));
+import Navbar from './components/navbar/Navbar';
 const Home = lazy(() => import('./components/landingPage/Home'));
 const UserPlan = lazy(() => import('./components/features/user/UserPlan'));
 const Location = lazy(() => import('./components/features/location/Location'));

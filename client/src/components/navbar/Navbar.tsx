@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { logInStatus } from "../../atom/logInAtom";
 import male from "../../assets/male.png";
 import person from "../../assets/person.png";
 import female from "../../assets/female.png";
@@ -8,11 +9,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { Bars3Icon} from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { logOutService } from "../../services/authService";
-import { clearUserInfo } from "../../services/storeUserInfo";
+import { clearLoginStatus } from "../../services/storeUserInfo";
 import { ArrowRightStartOnRectangleIcon } from "@heroicons/react/24/outline";
 
 function Navbar(){
     const [menuOpen, setMenuOpen] = useState(false);
+    const currentLoginStatus = useRecoilValue(logInStatus);
+    const setGlobalLoginStatus = useSetRecoilState(logInStatus);
     const [userInfo, setUserInfo] = useRecoilState(userInfoState);
     const navigate = useNavigate();
 
@@ -22,30 +25,39 @@ function Navbar(){
 
     async function handleLogOut(): Promise<void>{ 
         try {
-            console.log("----- Handle Log OUT-----");
             const response = await logOutService();
-            console.log("Response of Logout:", response);
             if(response?.status === 200){ 
-                await clearUserInfo();
+                await clearLoginStatus();
+                setGlobalLoginStatus(false);
                 setUserInfo(null);
                 navigate("/");
-                console.log("Logged Out");
-            }
+            }else {
+                console.warn("Logout service did not return status 200, response:", response);
+                await clearLoginStatus();
+                setGlobalLoginStatus(false);
+                setUserInfo(null);
+                navigate("/");
+           }
         } catch (error) {
-            console.log("Error Logging Out", error);
+            console.error("Error Logging Out", error);
+            await clearLoginStatus();
+            setGlobalLoginStatus(false);
+            setUserInfo(null);
+            navigate("/");
         }
     }
 
+    console.log("User Info in Navbar is:", userInfo);
     return(
         <>
             <div className="flex flex-row justify-between items-center font-serif fixed top-0 bg-gray-900 min-w-screen h-12 p-3 z-10">
                 
                 <div className="lg:text-2xl">
-                   <Link to="/">Badminton Academy</Link>
+                   <Link to="/">Badminton Academy</Link> 
                    {/* <img src={Logo} alt="" className="h-15 w-20" /> */}
                 </div>
 
-                {userInfo === null ?
+                {!currentLoginStatus ?
                     <div className="flex items-center gap-5">
                         <Link to="/Login" className="hover:text-blue-500  lg:text-xl">Login</Link>
                         <Link to="/Signup" className="hover:text-blue-500  lg:text-xl">SignUp</Link>
