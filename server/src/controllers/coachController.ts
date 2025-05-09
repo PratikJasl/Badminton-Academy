@@ -9,7 +9,8 @@ import { isValidCoachingSchedule } from "../service/ScheduleService";
 import { isSchedulesDatesValid } from "../service/ScheduleService";
 import { coachingScheduleInterface, fetchAttendanceInterface, scheduleResponseInterface, updateAttendanceInterface } from "../common/interface";
 import { addNewCoachingSchedule, getAllCoachingSchedule, removeSchedule, ValidCoachingSchedule } from "../repository/coachingScheduleRepo";
-import e from "cors";
+import { addSchedularExecEntry, isSchedularTriggeredToday } from "../repository/schedularLogRepo";
+import { checkSchedule } from "../tasks/attendanceDataInsertions";
 
 const prisma = new PrismaClient();
 
@@ -216,6 +217,20 @@ export async function getAttendance(req:Request, res:Response): Promise<void> {
         }
     //@dev: fetching usersData for Attendance
     try {
+        if(await isSchedularTriggeredToday()){
+                console.log("no");
+                
+        }
+        else{
+           try {
+            await checkSchedule("scheduledByController");
+            console.log("User Attendance data created with controller.");
+            await addSchedularExecEntry("scheduledByController");
+           } catch (error) {
+            
+           }
+        }
+        console.log("DATA: ",data)
         const userData=await getAllUsersAttendanceDetails(data);
         if(userData===null || userData.length===0){
             console.log("No Users Found");

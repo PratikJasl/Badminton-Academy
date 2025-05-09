@@ -4,9 +4,14 @@ import cookieParser from 'cookie-parser';
 import { userRouter } from "./routes/userRoutes";
 import { authRouter } from "./routes/authRoutes";
 import { coachRouter } from "./routes/coachRoutes";
+import { taskSchedular } from "./tasks/attendanceDataInsertions";
 
 const port = 3000;
 const app = express();
+
+//Schedulars
+taskSchedular();
+
 
 //Middlewares:
 app.use(express.json());

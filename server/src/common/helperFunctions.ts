@@ -13,10 +13,12 @@ export function checkAge(dob: Date): boolean {
     return age < adultAge;
 }
 
-
- export function getTodaysDate():string{
+//@raj: date-formate=YYYY-MM-DD 00:00:00
+export function getTodaysDate(): string {
     const today = new Date();
-    today.setUTCHours(0, 0, 0, 0);
-    console.log(today.toISOString()); // Output: 2025-04-23
-    return  today.toISOString();
-}
+    const istOffset = 5.5 * 60 * 60000; // IST is UTC+5:30
+    const istTime = new Date(today.getTime() + istOffset);
+    const istDateString = istTime.toISOString().split('T')[0];// Get YYYY-MM-DD
+    const isoDate=new Date(istDateString).toISOString();
+    return isoDate;
+  }

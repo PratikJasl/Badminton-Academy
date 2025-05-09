@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+// import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { checkAge} from "../common/helperFunctions";
 import { Request, Response } from "express";
@@ -11,7 +11,7 @@ import { errorResponse, successResponse } from "../common/apiResponse";
 import { checkValidCoachingPlan } from "../repository/coachingPlanRepo";
 
 const prisma = new PrismaClient();
-// let bcrypt:any;
+let bcrypt:any;
 //@dev: Add a new user to database.
 export async function signUp(req: Request, res: Response): Promise<void> {
     console.log("------SignUp Route------");

@@ -77,3 +77,21 @@ export async function findUser(email:string):Promise<User | null>{
         throw error
     }
 }
+
+
+export async function getAllActiveUserIds():Promise<number[]> {
+    try {
+        const users=await prisma.user.findMany({
+            where:
+            {membershipStatus:'active',
+            },
+            select:{
+                userId:true,
+            }
+        })
+        return users.map(user=>user.userId);
+    } catch (error) {
+        throw error
+    }
+    
+}

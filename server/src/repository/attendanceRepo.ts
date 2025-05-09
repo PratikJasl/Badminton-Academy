@@ -1,3 +1,4 @@
+import { getTodaysDate } from "../common/helperFunctions";
 import { fetchAttendanceInterface, updateAttendanceInterface } from "../common/interface";
 import { PrismaClient } from "@prisma/client";
 
@@ -70,4 +71,27 @@ export async function updateUserPresenceByUserId_Attendance(scheduleId:number,da
         
         
     }
+}
+
+
+export async function insertUsersDataForAttendance(users:number[]) {
+    const date=getTodaysDate();
+
+    const newData=users.map(userId=>({
+        userId:userId,
+        attendanceDate:date
+    }))
+    try {
+           const result=await prisma.attendance.createMany({
+            data:newData
+           })
+    console.log("Data insertion for attendance successful.");
+    
+        
+    }
+     catch (error) {
+        console.log("Data insertion for  attendance failed.");
+        throw error
+    }
+    
 }
