@@ -42,6 +42,7 @@ function UserDetails(){
 
     //@dev: Populate form fields with userInfo data.
     useEffect(() => {
+        console.log("Data in User Deatils Atom:", userInfo);
         if (userInfo) {
             reset({
                 fullName: userInfo.fullName,

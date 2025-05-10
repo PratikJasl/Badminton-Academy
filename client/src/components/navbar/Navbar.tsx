@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getUserInfo } from "../../services/userService";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { logInStatus } from "../../atom/logInAtom";
 import male from "../../assets/male.png";
@@ -18,6 +19,20 @@ function Navbar(){
     const setGlobalLoginStatus = useSetRecoilState(logInStatus);
     const [userInfo, setUserInfo] = useRecoilState(userInfoState);
     const navigate = useNavigate();
+    
+        useEffect(() => {
+            const fetchUserInfo = async () => {
+                try {
+                    const response = await getUserInfo();
+                    console.log("User Info:", response);
+                    setUserInfo(response);
+                } catch (error) {
+                    console.error("Error fetching locations:", error);
+                }
+            };
+            fetchUserInfo();
+        }, [])
+    
 
     const toggleMenu = () =>{
         setMenuOpen(!menuOpen);
@@ -53,7 +68,7 @@ function Navbar(){
             <div className="flex flex-row justify-between items-center font-serif fixed top-0 bg-gray-900 min-w-screen h-12 p-3 z-10">
                 
                 <div className="lg:text-2xl">
-                   <Link to="/">Badminton Academy</Link> 
+                   <Link to="/">RJ Badminton</Link>
                    {/* <img src={Logo} alt="" className="h-15 w-20" /> */}
                 </div>
 
@@ -75,7 +90,7 @@ function Navbar(){
 
                         {userInfo?.role != "student" ?
                             <div 
-                                className={`fixed right-0 top-13 z-10 p-10 h-screen md:w-72 w-64 bg-gray-800 text-white
+                                className={`fixed right-0 top-12 z-10 p-10 h-screen md:w-72 w-64 bg-gray-900 text-white
                                 transform transition-all duration-500 ease-in-out
                                 ${menuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"}`}
                             >
@@ -103,7 +118,7 @@ function Navbar(){
                             </div> 
                             : 
                             <div 
-                                className={`fixed right-0 top-13 z-10 p-10 h-screen md:w-72 w-64 bg-gray-800 text-white
+                                className={`fixed right-0 top-12 z-10 p-10 h-screen md:w-72 w-64 bg-gray-900 text-white
                                 transform transition-all duration-500 ease-in-out
                                 ${menuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"}`}
                             >

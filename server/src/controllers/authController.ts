@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 import { membershipStatus, PrismaClient } from "@prisma/client";
 import transporter from "../config/nodeMailer";
 import { checkValidLocation, getLocationById } from "../repository/locationRepo";
-import { addNewUser, checkExistingUser, findUser } from "../repository/userRepo";
+import { addNewUser, checkExistingUser, getUserByEmail } from "../repository/userRepo";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 import { errorResponse, successResponse } from "../common/apiResponse";
 import { checkValidCoachingPlan, getCoachingPlanById } from "../repository/coachingPlanRepo";
@@ -100,7 +100,7 @@ export async function logIn(req: Request, res: Response): Promise<void> {
 
     try {
         //@dev: Check existing user.
-        let user = await findUser(email);
+        let user = await getUserByEmail(email);
         if(!user){
             res.status(404).json({success: "false", message: ERROR_MESSAGES.USER_NOT_FOUND});
             return

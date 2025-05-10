@@ -75,7 +75,7 @@ export async function checkExistingUser(params: existingUserParams):Promise<exis
 }
 
 //@dev: Function to find user and return user-object.
-export async function findUser(email:string):Promise<User | null>{
+export async function getUserByEmail(email:string):Promise<User | null>{
     try {
         const user = await prisma.user.findUnique({
             where:{
@@ -92,24 +92,11 @@ export async function findUser(email:string):Promise<User | null>{
 //@dev: Function to fetch all users.
 export async function getUsersById(userId: number){
     try {
-            let user = await prisma.user.findMany({
+            let user = await prisma.user.findUnique({
                 where:{
                     userId: userId
                 },
-                select:{
-                    fullName: true,
-                    email: true,
-                    phone: true,
-                    gender: true,
-                    dob: true,
-                    locationId: true,
-                    coachingPlan: true,
-                    coachingPlanId: true,
-                    planStartDate: true,
-                    planEndDate: true,
-                    membershipStatus: true
-                }
-            });
+            })
             return user;
         } catch (error) {
             console.error(ERROR_MESSAGES.SERVER_ERROR, error);

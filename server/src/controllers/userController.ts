@@ -4,6 +4,8 @@ import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 import { errorResponse, successResponse } from "../common/apiResponse";
 import { Prisma } from "@prisma/client";
 import { UpdateUserRequestBody } from "../common/interface";
+import { getCoachingPlanById } from "../repository/coachingPlanRepo";
+import { getLocationById } from "../repository/locationRepo";
 
 //@dev: Function to fetch user details by ID.
 export async function getUserDetailById(req: Request, res: Response ): Promise<void>{
@@ -17,14 +19,39 @@ export async function getUserDetailById(req: Request, res: Response ): Promise<v
             return;
         }
 
+        //@dev: Get user details.
         let user = await getUsersById(userId);
         if(!user) {
             res.status(204).json(successResponse(SUCCESS_MESSAGES.NO_DATA_FOUND));
             return;
         }
 
-        console.log("Data to send:", user);
-        res.status(200).json(successResponse(SUCCESS_MESSAGES.USER_DATA_FETCHED, user));
+        //@dev: Get coaching plan name.
+        let coachingPlan = await getCoachingPlanById(user.coachingPlanId);
+
+        //@dev: Get Location name.
+        let locationName = await getLocationById(user.locationId);
+
+        //@dev: Construct the data to send.
+        const data = {
+            userId: user.userId,
+            fullName: user.fullName,
+            email: user.email,
+            phone: user.phone,
+            dob: user.dob,
+            role: user.role, 
+            gender: user.gender, 
+            planStartDate: user.planStartDate, 
+            planEndDate: user.planEndDate, 
+            coachingPlanName: coachingPlan?.name,
+            coachingPlanId: user.coachingPlanId,
+            planDuration: coachingPlan?.planDuration, 
+            locationName: locationName?.name,
+            locationId: user.locationId,
+            membershipStatus: user.membershipStatus
+        };
+        console.log("Data to send:", data);
+        res.status(200).json(successResponse(SUCCESS_MESSAGES.USER_DATA_FETCHED, data));
         return;
     } catch (error) {
         console.log(ERROR_MESSAGES.SERVER_ERROR, error);
