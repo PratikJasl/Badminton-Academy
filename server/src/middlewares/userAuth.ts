@@ -23,6 +23,7 @@ export function userAuth(req: Request, res: Response, next: NextFunction): void{
         const tokenDecode = jwt.verify(token, secret);
         if (tokenDecode && typeof tokenDecode === 'object' && 'id' in tokenDecode) {
             req.body.userId = tokenDecode.id;
+            console.log("Stored user Id in req.body is:", tokenDecode.id);
         }else{
             res.status(401).json(errorResponse(ERROR_MESSAGES.NOT_AUTH));
             return;

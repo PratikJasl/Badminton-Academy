@@ -4,7 +4,6 @@ const About = lazy(() => import("./About")) ;
 const Service = lazy(() => import("./Services"));
 const Contact = lazy(() => import("./Contact"));
 
-
 function LandingPage(){
     return(
         <>  
