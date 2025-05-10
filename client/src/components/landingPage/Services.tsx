@@ -1,8 +1,8 @@
-import design1 from "../../assets/Standard Pack.png";
-import packDetails1 from "../../assets/packDetails.png";
+import design1 from "../../assets/StandardPack.png";
+import packDetails1 from "../../assets/packDetails1.png";
 import packDetails2 from "../../assets/packDetails2.png";
-import priceChart1 from "../../assets/priceChart1.png";
-import priceChart2 from "../../assets/priceChart2.png";
+// import priceChart1 from "../../assets/priceChart1.png";
+// import priceChart2 from "../../assets/priceChart2.png";
 
 function Service(){
     return(
@@ -15,13 +15,13 @@ function Service(){
                     <img src={packDetails1} alt="" className="h-60"/>
                 </div>
 
-                <div className="text-center">
+                {/* <div className="text-center">
                     <h1 className="md:text-5xl text-2xl text-gray-400 font-serif">*Effective Price including all charges</h1>
                 </div>
 
                 <div className="flex items-center md:mb-40 mb-20">
                     <img src={priceChart1} alt="" className="md:h-100 h-60" />
-                </div>
+                </div> */}
             </div>
 
             {/* Premium pac details */}
@@ -32,13 +32,13 @@ function Service(){
                     <img src={packDetails2} alt="" className="h-60"/>
                 </div>
                 
-                <div className="text-center">
+                {/* <div className="text-center">
                     <h1 className="md:text-5xl text-2xl text-gray-400 font-serif">*Effective Price including all charges</h1>
                 </div>
                 
                 <div className="flex items-center mb-10">
                     <img src={priceChart2} alt="" className="md:h-100 h-60" />
-                </div>
+                </div> */}
             </div>
            
             <button 
