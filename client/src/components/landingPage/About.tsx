@@ -14,7 +14,7 @@ function About(){
         const stateCount = 100;
         const nationalCount = 50;
 
-        // Count up animation for Players Trained
+        //@dev: Count up animation for Players Trained
         const countUpPlayers = setInterval(() => {
             setPlayersTrained((prev) => {
                 if (prev < playersCount) return prev + 1;
@@ -23,7 +23,7 @@ function About(){
             });
         }, 20); // Update every 20ms
 
-        // Count up animation for State Tournaments
+        //@dev: Count up animation for State Tournaments
         const countUpState = setInterval(() => {
             setStateTournaments((prev) => {
                 if (prev < stateCount) return prev + 1;
@@ -32,7 +32,7 @@ function About(){
             });
         }, 30); // Update every 30ms
 
-        // Count up animation for National Tournaments
+        //@dev: Count up animation for National Tournaments
         const countUpNational = setInterval(() => {
             setNationalTournaments((prev) => {
                 if (prev < nationalCount) return prev + 1;

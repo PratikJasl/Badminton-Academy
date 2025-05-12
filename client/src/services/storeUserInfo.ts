@@ -1,39 +1,34 @@
-import { UserInfoType } from "../atom/userAtom";
-export const USER_INFO_STORAGE_KEY = 'app_user_info';
-
+export const USER_LOGIN_STATUS = 'user_login_status';
 
 //@dev: Function to save data in Local Storage.
-export function saveUserInfo(userInfo: UserInfoType){
-    if (userInfo) {
-        try {
-          localStorage.setItem(USER_INFO_STORAGE_KEY, JSON.stringify(userInfo));
-          console.log("User Info data stored");
-        } catch (error) {
-          console.error("Error saving user info to localStorage:", error);
-        }
-      } else {
-        localStorage.removeItem(USER_INFO_STORAGE_KEY);
-      }
+export function saveLoginStatus(){
+      try {
+        localStorage.setItem(USER_LOGIN_STATUS, JSON.stringify(true));
+        console.log("User Logged In Status:", true);
+      } catch (error) {
+        console.error("Error saving user info to localStorage:", error);
+      }  
 }
 
 //@dev: Function to remove data from the Local Storage.
-export const clearUserInfo = async () => {
-  localStorage.removeItem(USER_INFO_STORAGE_KEY);
+export const clearLoginStatus = async () => {
+  localStorage.removeItem(USER_LOGIN_STATUS);
 }
 
 //@dev: Function to initialize atom with local storage data.
-export function getInitialUserInfo() {
-    if (typeof window !== 'undefined') { // Ensure code runs only in browser
+export function getLoginStatus() {
+    if (typeof window !== 'undefined') { // @dev: Ensure code runs only in browser
       try {
-        const storedData = localStorage.getItem(USER_INFO_STORAGE_KEY);
+        const storedData = localStorage.getItem(USER_LOGIN_STATUS);
         if (storedData) {
-          return JSON.parse(storedData) as UserInfoType;
+          return JSON.parse(storedData);
         }
       } catch (error) {
-        //if error remove old data form local storage.
+        //@dev: If error remove old data form local storage.
         console.error("Error reading user info from localStorage:", error);
-        localStorage.removeItem(USER_INFO_STORAGE_KEY);
+        localStorage.removeItem(USER_LOGIN_STATUS);
       }
     }
     return null;
 };
+

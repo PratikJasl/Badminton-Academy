@@ -1,14 +1,15 @@
 // import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { checkAge} from "../common/helperFunctions";
+import { checkAge, calculateEndDate} from "../common/helperFunctions";
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { membershipStatus, PrismaClient } from "@prisma/client";
 import transporter from "../config/nodeMailer";
-import { checkValidLocation } from "../repository/locationRepo";
-import { addNewUser, checkExistingUser, findUser } from "../repository/userRepo";
+import { checkValidLocation, getLocationById } from "../repository/locationRepo";
+import { addNewUser, checkExistingUser, getUserByEmail } from "../repository/userRepo";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 import { errorResponse, successResponse } from "../common/apiResponse";
-import { checkValidCoachingPlan } from "../repository/coachingPlanRepo";
+import { checkValidCoachingPlan, getCoachingPlanById } from "../repository/coachingPlanRepo";
+import { getLocation } from "./coachController";
 
 const prisma = new PrismaClient();
 let bcrypt:any;
@@ -23,36 +24,39 @@ export async function signUp(req: Request, res: Response): Promise<void> {
         dob, 
         locationId, 
         coachingPlanId,
-        password, 
+        planStartDate,
+        password,
         role,   
     } = req.body;
 
     console.log("Received request body:", req.body);
     
     try {
-        //@dev Check for existing users.
+        //@dev: Check for existing users.
         let existingUser = await checkExistingUser(email);
         if(existingUser){
             res.status(409).json(errorResponse(ERROR_MESSAGES.USER_ALREADY_EXISTS));
             return;
         }
 
-        //@dev Check for valid locations.
+        //@dev: Check for valid locations.
         let validLocation = await checkValidLocation(locationId);
         if (!validLocation) {
             res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_LOCATION_ID));
             return;
         }
 
-        //@dev Check for valid coaching plan.
+        //@dev: Check for valid coaching plan.
         let validCoachingPlan = await checkValidCoachingPlan(coachingPlanId);
-        if( !validCoachingPlan){
+        if(!validCoachingPlan){
             res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_COACHING_PLAN_ID));
             return;
         }
 
         //@dev Check user is kid or adult.
         let isKid = checkAge(dob);
+
+        let planEndDate = await calculateEndDate(planStartDate, coachingPlanId);
 
         //@dev Hash password.
         let hashedPassword = await bcrypt.hash(password, 10);
@@ -67,7 +71,9 @@ export async function signUp(req: Request, res: Response): Promise<void> {
             dob, 
             locationId, 
             coachingPlanId,
-            hashedPassword, 
+            hashedPassword,
+            planStartDate,
+            planEndDate,
             role,
             isKid
         )
@@ -93,12 +99,18 @@ export async function logIn(req: Request, res: Response): Promise<void> {
     }
 
     try {
-        //@dev Check existing user.
-        let user = await findUser(email);
+        //@dev: Check existing user.
+        let user = await getUserByEmail(email);
         if(!user){
             res.status(404).json({success: "false", message: ERROR_MESSAGES.USER_NOT_FOUND});
             return
         }
+
+        //@dev: Get coaching plan name.
+        let coachingPlan = await getCoachingPlanById(user.coachingPlanId);
+
+        //@dev: Get Location name.
+        let locationName = await getLocationById(user.locationId);
 
         //@dev Compare Password, and generate JWT token, and send it in cookies.
         if(user){
@@ -109,14 +121,27 @@ export async function logIn(req: Request, res: Response): Promise<void> {
             }
 
             const token = jwt.sign({ userName: user.fullName, id: user.userId, role: user.role}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
-            const data = {fullName: user.fullName, role: user.role, gender: user.gender};
+            const data = {
+                userId: user.userId,
+                fullName: user.fullName,
+                role: user.role, 
+                gender: user.gender, 
+                planStartDate: user.planStartDate, 
+                planEndDate: user.planEndDate, 
+                coachingPlanName: coachingPlan?.name,
+                coachingPlanId: user.coachingPlanId,
+                planDuration: coachingPlan?.planDuration, 
+                locationName: locationName?.name,
+                locationId: user.locationId,
+                membershipStatus: user.membershipStatus
+            };
         
             res.status(200).cookie('token', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
                 maxAge: 7 * 24 * 60 * 60 * 1000
-            }).json(successResponse(SUCCESS_MESSAGES.USER_LOGIN,data));
+            }).json(successResponse(SUCCESS_MESSAGES.USER_LOGIN, data));
             return;
         }
     } catch (error) {
@@ -142,6 +167,8 @@ export async function logOut(req: Request, res: Response): Promise<void> {
     }
 }
 
+
+///-------------------Have to refactor the auth fields-------------------------
 //Verify email routes:
 export async function sendVerifyOTP(req: Request, res: Response): Promise<void> {
     console.log("------Send Verify OTP Route------");

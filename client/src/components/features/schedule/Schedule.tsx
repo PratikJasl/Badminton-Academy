@@ -121,8 +121,8 @@ function Schedule(){
     return(
         <section id="Schedule" className="">
                 
-            <div className="flex flex-col md:gap-3 gap-2 items-center text-center md:p-5 p-3  rounded-2xl lg:h-130 h-130 lg:w-200 w-74 md:mt-18 mt-10">
-                <h2 className="text-3xl font-bold text-blue-600">Schedules</h2>
+            <div className="flex flex-col md:gap-3 gap-2 items-center text-center md:p-5 p-3 rounded-2xl lg:h-130 h-130 lg:w-200 w-74 md:mt-18 mt-10">
+                <h2 className="text-3xl font-bold">Schedules</h2>
 
                 <div className="">
                         <select
@@ -163,7 +163,7 @@ function Schedule(){
                                 </div>
                                 
                                 <div className="flex flex-row gap-2 items-center text-start">
-                                <MapPinIcon className="h-6 w-6 text-red-500 mt-0.5 flex-shrink-0" />
+                                    <MapPinIcon className="h-6 w-6 text-red-500 mt-0.5 flex-shrink-0" />
                                     <p className="p-2">{schedule.location.name}</p>
                                 </div>
 

@@ -21,6 +21,6 @@ export async function getCoachingPlan(){
         }
     } catch (error) {
         console.error("Error fetching Coaching Plan", error);
-        return [];
+        throw error;
     }
 }

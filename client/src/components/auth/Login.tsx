@@ -2,13 +2,15 @@ import axios from "axios";
 import { InferType } from 'yup';
 import { useState } from "react";
 import { toast } from 'react-toastify';
-import { useForm } from "react-hook-form"
+import { useForm } from "react-hook-form";
+import { useSetRecoilState } from "recoil";
 import { Navigate } from "react-router-dom";
+import { logInStatus } from "../../atom/logInAtom";
+import { userInfoState } from "../../atom/userAtom";
 import { loginSchema } from "../../schema/userSchema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginService } from "../../services/authService";
-import { saveUserInfo } from "../../services/storeUserInfo";
-
+import { saveLoginStatus } from "../../services/storeUserInfo";
 
 //@dev: Login Form Data Type.
 export type LoginFormData = InferType<typeof loginSchema>;
@@ -16,19 +18,23 @@ export type LoginFormData = InferType<typeof loginSchema>;
 function LogIn(){
     const [redirect, setRedirect] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const setUserInfo = useSetRecoilState(userInfoState);
+    const setGlobalLoginStatus = useSetRecoilState(logInStatus);
     const { register, handleSubmit, formState: {errors}, reset } = useForm({
             resolver: yupResolver(loginSchema),
     });
 
-    //@dev: Function to handle the form submission, and store user information in local storage.
+    //@dev: Function to handle the form submission.
     const onSubmit = async (data: LoginFormData) => {
         setIsLoading(true)
         let response: any;
         try {
             response = await loginService(data)
-            if(response.status === 200){
+            if(response.status === 200){ 
                     setRedirect(true);
-                    saveUserInfo(response.data.data); //@dev Save user info to local storage.
+                    setUserInfo(response.data.data);     //@dev: Set user info to Recoil state.
+                    saveLoginStatus();                   //@dev: Save user login to local storage.
+                    setGlobalLoginStatus(true);          //@dev: Save login Status.
                     reset();
                     toast.success("LogIn Successful");
             }else{

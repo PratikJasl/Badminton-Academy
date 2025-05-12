@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 import { InferType } from 'yup';
 import { signUpService } from "../../services/authService";
 
-//@dev: Login Form Data Type.
+//@dev: SignUp Form Data Type.
 export type SignUpFormData = InferType<typeof signUpSchema>;
 
 function SignUp(){
@@ -157,11 +157,8 @@ function SignUp(){
                         </p>
                         )}
                     </div>
-                </div>
 
-                {/* Second Column */}
-                <div> 
-                    <div className="mt-0 md:mt-0">
+                    <div className="mt-4">
                         <input
                         id="dob"
                         disabled={isLoading}
@@ -178,8 +175,11 @@ function SignUp(){
                         </p>
                         )}
                     </div>
+                </div>
 
-                    <div className="mt-4">
+                {/* Second Column */}
+                <div> 
+                    <div className="">
                         <select
                             id="locationId"
                             disabled={isLoading}
@@ -226,11 +226,29 @@ function SignUp(){
 
                     <div className="mt-4">
                         <input
+                        id="planStartDate"
+                        disabled={isLoading}
+                        type="text"
+                        placeholder="Plan Start Date"
+                        onFocus={(e) => (e.target.type = "date")}
+                        {...register("planStartDate")}
+                        className="w-full shadow-lg p-3 rounded-lg bg-white text-black"
+                        />
+                        {errors.dob && (
+                        <p className="text-sm text-red-700 bg-red-100 p-2 rounded-md mt-1 w-full">
+                            {errors.dob?.message}
+                        </p>
+                        )}
+                    </div>
+
+                    <div className="mt-4">
+                        <input
                         id="password"
                         disabled={isLoading}
                         type="password"
                         placeholder="Password"
                         {...register("password")}
+                        autoComplete="true"
                         className="w-full shadow-lg p-3 rounded-lg bg-white text-black"
                         />
                         {errors.password && (
@@ -246,6 +264,7 @@ function SignUp(){
                         disabled={isLoading}
                         type="password"
                         placeholder="Re-Enter Password"
+                        autoComplete="true"
                         {...register("confirmPassword")}
                         className="w-full shadow-lg p-3 rounded-lg bg-white text-black"
                         />

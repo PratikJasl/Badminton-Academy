@@ -22,7 +22,7 @@ export async function getCoachingSchedule(){
         }
     } catch (error) {
         console.error("Error fetching Coaching Plan", error);
-        return [];
+        throw error;
     }
 }
 
