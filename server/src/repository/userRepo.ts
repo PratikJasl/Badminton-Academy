@@ -129,3 +129,21 @@ export async function updateUser(userId: number, userData: userDataType): Promis
         throw error
     }
 }
+
+
+export async function getAllActiveUserIds():Promise<number[]> {
+    try {
+        const users=await prisma.user.findMany({
+            where:
+            {membershipStatus:'active',
+            },
+            select:{
+                userId:true,
+            }
+        })
+        return users.map(user=>user.userId);
+    } catch (error) {
+        throw error
+    }
+    
+}

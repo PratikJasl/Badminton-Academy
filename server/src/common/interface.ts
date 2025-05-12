@@ -55,3 +55,15 @@ export interface UpdateUserRequestBody {
     userId?: number;
     userData?: userDataType;
 }
+
+export interface fetchAttendanceInterface{
+    locationId:number,
+    isKid:boolean,
+    attendanceDate:Date
+}
+
+export interface updateAttendanceInterface{
+    userId:number,
+    attendanceDate:Date,
+    isStatus:boolean,
+}

@@ -1,12 +1,14 @@
-// module.exports = {
-//     theme: {
-//       extend: {
-//         screens: {
-//           sm: '50px',
-//           md: '600px',
-//           lg: '800px',
-//           xl: '1280px',
-//         },
-//       },
-//     },
-// };
+module.exports = {
+    content: [
+      "./src/**/*.{js,jsx,ts,tsx}",
+      // ...any other files that contain your HTML/JSX
+    ],
+    safelist: [
+      'active:text-blue-500',
+      'focus:text-blue-500',
+    ],
+    theme: {
+      extend: {},
+    },
+    plugins: [],
+  };

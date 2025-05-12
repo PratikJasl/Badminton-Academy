@@ -1,14 +1,25 @@
-import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+import { fetchAttendanceInterface, updateAttendanceInterface } from "../common/interface";
+import { getAllUserAttendanceByLocation, updateUserPresenceByUserId_Attendance } from "../repository/attendanceRepo";
 
 
-export async function getCochingScheduleByLocation(){
-    try {
-        let data= await prisma.coachingSchedule.findMany();
-        console.log(data);
-        return data;
-    } catch (error) {
-        console.log(error);
-    }  
+
+
+export async function getAllUsersAttendanceDetails(data:fetchAttendanceInterface) {
+   try {
+    const result=await getAllUserAttendanceByLocation(data);
+    return result
+   } catch (error) {
+    throw error;
+   }
+    
+}
+
+export async function updateUserAttendance(scheduleId:number,data:updateAttendanceInterface[]){
+   try {
+    const result =await updateUserPresenceByUserId_Attendance(scheduleId,data);
+      return result;
+   } catch (error) {
+      throw error
+   }
 }

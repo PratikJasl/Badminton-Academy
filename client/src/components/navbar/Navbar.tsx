@@ -20,18 +20,18 @@ function Navbar(){
     const [userInfo, setUserInfo] = useRecoilState(userInfoState);
     const navigate = useNavigate();
     
-        useEffect(() => {
-            const fetchUserInfo = async () => {
-                try {
-                    const response = await getUserInfo();
-                    console.log("User Info:", response);
-                    setUserInfo(response);
-                } catch (error) {
-                    console.error("Error fetching locations:", error);
-                }
-            };
-            fetchUserInfo();
-        }, [])
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            try {
+                const response = await getUserInfo();
+                console.log("User Info:", response);
+                setUserInfo(response);
+            } catch (error) {
+                console.error("Error fetching locations:", error);
+            }
+        };
+        fetchUserInfo();
+    }, [])
     
 
     const toggleMenu = () =>{

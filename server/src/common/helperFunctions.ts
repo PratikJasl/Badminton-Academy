@@ -58,3 +58,13 @@ export async function calculateEndDate(planStartDate: Date, coachingPlanId: numb
         return null
     }
 }
+
+//@raj: date-formate=YYYY-MM-DD 00:00:00
+export function getTodaysDate(): string {
+    const today = new Date();
+    const istOffset = 5.5 * 60 * 60000; // IST is UTC+5:30
+    const istTime = new Date(today.getTime() + istOffset);
+    const istDateString = istTime.toISOString().split('T')[0];// Get YYYY-MM-DD
+    const isoDate=new Date(istDateString).toISOString();
+    return isoDate;
+  }

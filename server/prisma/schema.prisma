@@ -40,6 +40,15 @@ model User {
   otpResetExpiry          DateTime @default(now())
 }
 
+
+
+model SchedularLog{
+  schedularLogId Int @id @default(autoincrement())
+  schedularId String 
+  executedDate DateTime @unique
+}
+
+
 // model UserPlan {
 //   userPlanId              Int @id @default(autoincrement())
 //   userId                  Int
@@ -76,18 +85,16 @@ model CoachingSchedule {
   endTime                 String
   location                Location? @relation(fields: [locationId], references: [locationId])
   locationId              Int
-  attendance              Attendance[]
 }
 
 model Attendance {
   attendanceId            Int @id @default(autoincrement())
-  isStatus                AttendanceStatus
+  isStatus                Boolean @default(false)
   attendanceDate          DateTime
   userId                  Int
-  coachingScheduleId      Int
+  coachingScheduleId      Int?
   user                    User @relation(fields: [userId], references: [userId])
-  coachingSchedule        CoachingSchedule @relation(fields: [coachingScheduleId], references: [coachingScheduleId])
-  @@unique([userId, coachingScheduleId, attendanceDate])
+  @@unique([userId, attendanceDate])
 }
 
 model Payment {
@@ -98,11 +105,6 @@ model Payment {
   paymentAmount           Int
   isPaymentDone           paymentStatus @default(pending)
   transactionDetails      String
-}
-
-enum AttendanceStatus {
-  present
-  absent
 }
 
 enum Roles {
