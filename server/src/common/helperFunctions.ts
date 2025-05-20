@@ -67,4 +67,4 @@ export function getTodaysDate(): string {
     const istDateString = istTime.toISOString().split('T')[0];// Get YYYY-MM-DD
     const isoDate=new Date(istDateString).toISOString();
     return isoDate;
-  }
+}

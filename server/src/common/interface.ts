@@ -63,7 +63,7 @@ export interface fetchAttendanceInterface{
 }
 
 export interface updateAttendanceInterface{
-    userId:number,
-    attendanceDate:Date,
-    isStatus:boolean,
+    userId: number,
+    attendanceDate: Date,
+    isStatus: boolean,
 }

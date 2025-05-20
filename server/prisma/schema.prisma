@@ -40,8 +40,6 @@ model User {
   otpResetExpiry          DateTime @default(now())
 }
 
-
-
 model SchedularLog{
   schedularLogId Int @id @default(autoincrement())
   schedularId String 
