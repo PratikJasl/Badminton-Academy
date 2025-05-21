@@ -37,9 +37,9 @@ export async function getAllUserAttendanceByLocation(data: fetchAttendanceInterf
 }
 
 
-export async function updateUserPresenceByUserId_Attendance(scheduleId:number,data:updateAttendanceInterface[]){
+export async function updateUserPresenceByUserId_Attendance(data:updateAttendanceInterface[]){
     prisma.$transaction
-    if(data.length===0 || scheduleId===null)
+    if(data.length===0)
     {
         console.log("No data for update");
         return {count:0};
@@ -56,7 +56,6 @@ export async function updateUserPresenceByUserId_Attendance(scheduleId:number,da
             where:whereCondition,
             data:{
                 isStatus:item.isStatus,
-                coachingScheduleId:scheduleId
             }
         })
         });

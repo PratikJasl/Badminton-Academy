@@ -23,8 +23,6 @@ model User {
   gender                  Gender?
   locationId              Int
   Location                Location @relation(fields: [locationId], references: [locationId]) //one-to-Many, one location many users
-  coachingPlanId          Int
-  coachingPlan            CoachingPlan @relation(fields: [coachingPlanId], references: [coachingPlanId]) //one-to-Many, one Plan many Users
   password                String
   role                    Roles
   joinDate                DateTime @default(now())
@@ -38,6 +36,7 @@ model User {
   isVerified              Boolean @default(false)
   otpResetCode            String @default("")
   otpResetExpiry          DateTime @default(now())
+  UserPlanInfo UserPlanInfo[]
 }
 
 
@@ -49,16 +48,17 @@ model SchedularLog{
 }
 
 
-// model UserPlan {
-//   userPlanId              Int @id @default(autoincrement())
-//   userId                  Int
-//   user                    User @relation(fields: [userId], references: [userId])
-//   coachingPlanId          Int
-//   coachingPlan            CoachingPlan @relation(fields: [coachingPlanId], references: [coachingPlanId])
-//   planStartDate           DateTime
-//   planEndDate             DateTime
-//   expiryDate              DateTime
-// }
+model UserPlanInfo {
+  userPlanId              Int @id @default(autoincrement())
+  userId                  Int
+  user                    User @relation(fields: [userId], references: [userId])
+  coachingPlanId          Int
+  coachingPlan            CoachingPlan @relation(fields: [coachingPlanId], references: [coachingPlanId])
+  planStatus              Boolean
+  paymentId               Int
+  planStartDate           DateTime
+  planEndDate             DateTime
+}
 
 model Location {
   locationId              Int @id @default(autoincrement())
@@ -74,7 +74,7 @@ model CoachingPlan {
   description             String
   planDuration            String 
   price                   Decimal
-  users                   User[]
+  UserPlanInfo UserPlanInfo[]
 }
 
 model CoachingSchedule {
@@ -92,7 +92,6 @@ model Attendance {
   isStatus                Boolean @default(false)
   attendanceDate          DateTime
   userId                  Int
-  coachingScheduleId      Int?
   user                    User @relation(fields: [userId], references: [userId])
   @@unique([userId, attendanceDate])
 }

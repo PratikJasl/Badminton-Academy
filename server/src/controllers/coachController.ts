@@ -228,6 +228,7 @@ export async function getAttendance(req:Request, res:Response): Promise<void> {
             await addSchedularExecEntry("scheduledByController");
            } catch (error) {
             
+            throw error
            }
         }
         console.log("DATA: ",data)
