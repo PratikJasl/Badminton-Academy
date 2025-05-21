@@ -10,6 +10,15 @@ export interface ScheduleItem {
     };
 }
 
+export interface AttendanceItem {
+    attendanceDate: string;
+    isStatus: boolean;
+    user: {
+        fullName: string;
+        userId: number;
+    }
+}
+
 export interface FilterLocation {
     locationId: number;
     name: string;
@@ -52,3 +61,4 @@ export const formatDateToYYYYMMDD = (date: Date | string | null | undefined): st
         return undefined;
     }
 };
+

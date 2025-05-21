@@ -3,15 +3,17 @@ import { getTodaysDate } from "../common/helperFunctions";
 
 const prisma=new PrismaClient();
 
+//@dev: Function to check if scheduler was triggered.
 export async function isSchedularTriggeredToday():Promise<boolean> {
     try {
-        const toadayDate=getTodaysDate();
-        const result:number=await prisma.schedularLog.count({
+        const toadayDate = getTodaysDate();
+        const result:number = await prisma.schedularLog.count({
             where:{
                 executedDate:toadayDate
             }
         })
         console.log("Schedular_Result: ",result);
+
         if(result===0)
         {
             console.log("Not Triggered...")
@@ -22,7 +24,6 @@ export async function isSchedularTriggeredToday():Promise<boolean> {
     } catch (error) {
       console.log("Unable to fetch attendance schedular status. ");
       throw error;
-        
     }
 }
 
