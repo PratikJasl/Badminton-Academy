@@ -21,7 +21,7 @@ coachRouter.post('/delete-coaching-schedule', coachAuth, deleteSchedule);
 coachRouter.get('/coaching-schedule', getCoachingSchedule);
 
 //@dev: Attendence Related Routes:
-coachRouter.post('/attendance',getAttendance);
+coachRouter.post('/attendance',coachAuth ,getAttendance);
 
 //@raj_comment: attendance correction for some user will be handled from clien-side.
 //@raj_comment: By passing the objects have change in the "isStatus" value.

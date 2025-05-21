@@ -192,19 +192,18 @@ export async function getCoachingSchedule(req: Request, res: Response): Promise<
     }
 }
 
-
-
 //@dev: Fetch user attendance.
 export async function getAttendance(req:Request, res:Response): Promise<void> {
-    const {locationId,isKid,attendanceDate}=req.body;
-    let data : fetchAttendanceInterface = {
-        locationId:locationId,
-        isKid:isKid,
-        attendanceDate:new Date(attendanceDate)// expected date formate (YYYY-MM-DD)
+    const { locationId, isKid, attendanceDate } = req.body;
 
+    let data : fetchAttendanceInterface = {
+        locationId: locationId,
+        isKid: isKid,
+        attendanceDate: new Date(attendanceDate)// expected date formate (YYYY-MM-DD)
     }
+
     try {
-        if(data.locationId===null){
+        if(data.locationId === null){
             res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
             return;
         }
@@ -215,77 +214,68 @@ export async function getAttendance(req:Request, res:Response): Promise<void> {
             res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_LOCATION_ID));
             return;
         }
-    //@dev: fetching usersData for Attendance
-    try {
-        if(await isSchedularTriggeredToday()){
-                console.log("no");
-                
-        }
-        else{
-           try {
-            await checkSchedule("scheduledByController");
-            console.log("User Attendance data created with controller.");
-            await addSchedularExecEntry("scheduledByController");
-           } catch (error) {
-            
-            throw error
-           }
-        }
-        console.log("DATA: ",data)
-        const userData=await getAllUsersAttendanceDetails(data);
-        if(userData===null || userData.length===0){
-            console.log("No Users Found");
-            res.status(200).json(successResponse(SUCCESS_MESSAGES.NO_DATA_FOUND,userData));
-            return;
-        }
-        else{
-            res.status(200).json(successResponse(SUCCESS_MESSAGES.ATTENDANCE_DATA_FETCHED,userData))
-        }
-    } catch (error) {
-        console.log("ERROR: Not able to fetch users data for attendence.");
-        console.log(error);
-        res.status(500).json(errorResponse(ERROR_MESSAGES.NOT_ABLE_TO_FETCH_USERS_ATTENDANCE_DATA));
-        return;  
-    }   
+
+        //@dev: fetching usersData for Attendance
+        try {
+            if(await isSchedularTriggeredToday()){
+                console.log("Controller: schedular triggered today.");     
+            }
+            else{
+                try {
+                    await checkSchedule("scheduledByController");
+                    console.log("User Attendance data created with controller.");
+                    await addSchedularExecEntry("scheduledByController");
+                } catch (error) {
+                    console.error(error);
+                    throw error;
+                }
+            }
+            const userData = await getAllUsersAttendanceDetails(data);
+            if(userData===null || userData.length===0){
+                console.log("No Users Found");
+                res.status(200).json(successResponse(SUCCESS_MESSAGES.NO_DATA_FOUND,userData));
+                return;
+            }
+            else{
+                res.status(200).json(successResponse(SUCCESS_MESSAGES.ATTENDANCE_DATA_FETCHED,userData));
+                return;
+            }
+        } catch (error) {
+            console.log("ERROR: Not able to fetch users data for attendence.");
+            console.log(error);
+            res.status(500).json(errorResponse(ERROR_MESSAGES.NOT_ABLE_TO_FETCH_USERS_ATTENDANCE_DATA));
+            return;  
+        }   
     } catch (error) {
        console.log("Error: Something went wrong! ");
        console.log(error);
        res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
        return;
-       
-        
     } 
 }
 
-
-
 //@dev: Update Attendance
 //@dev: Type-Safety during runtime pending....zod
-export async function updateAttendance(req:Request,res:Response):Promise<void>{
-     const {coachingScheduleId,userData} =req.body;
-    let data:updateAttendanceInterface[] =[];
-    userData.forEach((element:updateAttendanceInterface) => {
-        let tempData={
-            userId:element.userId,
-            attendanceDate:new Date(element.attendanceDate),
-            isStatus:element.isStatus
+export async function updateAttendance(req:Request,res:Response): Promise<void>{
+    const { userData } = req.body;
+    let data: updateAttendanceInterface[] =[];
+
+    userData.forEach((element: updateAttendanceInterface) => {
+        let tempData = {
+            userId: element.userId,
+            attendanceDate: new Date(element.attendanceDate),
+            isStatus: element.isStatus
         }
         data.push(tempData);
     });
-    const scheduleId:number=coachingScheduleId;
     try {
-    //  @dev: Check for Valid Schedule.
-    if(!(await ValidCoachingSchedule(coachingScheduleId))){
-        res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_COACHING_SCHEDULE_ID));
-            return;
-    }
+        //  @dev: Check for Valid Schedule.
         try {
-            const updatedData=await updateUserAttendance(scheduleId,data);
-            if(updatedData===null){
+            const updatedData = await updateUserAttendance(data);
+            if(updatedData === null){
                 console.log("Try Again, Something went wrong...");
                 res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
                 return;
-                
             }
             else{
                 res.status(200).json(successResponse(SUCCESS_MESSAGES.UPDATE_SUCCESSFUL,updatedData));
@@ -294,21 +284,14 @@ export async function updateAttendance(req:Request,res:Response):Promise<void>{
         } catch (error) {
             console.log("Updation Failed.... try Again.");
             res.status(400).json(errorResponse(ERROR_MESSAGES.UPDATION_FAILED));
-            return;
-            
-            
+            return; 
         }
     } catch (error) {
         console.log("ERROR: Somethin went wrong",error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
-        
     }
-
-
-
 }
-
 
 //@dev: Delete Location.
 export async function deleteLocation(req:Request, res: Response): Promise<void> {

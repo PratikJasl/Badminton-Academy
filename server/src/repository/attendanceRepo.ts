@@ -4,8 +4,8 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+//@dev: Function to fetch user attendance details from DB using location.
 export async function getAllUserAttendanceByLocation(data: fetchAttendanceInterface){
-
     try {
             let attendanceData = await prisma.attendance.findMany({
                 select:{
@@ -20,10 +20,10 @@ export async function getAllUserAttendanceByLocation(data: fetchAttendanceInterf
                     }
                 },
                 where: {
-                    attendanceDate:data.attendanceDate,
+                    attendanceDate: data.attendanceDate,
                     user: {
-                        locationId:data.locationId,
-                        isKid:data.isKid
+                        locationId: data.locationId,
+                        isKid: data.isKid
                     }
                 }
             });
@@ -33,7 +33,6 @@ export async function getAllUserAttendanceByLocation(data: fetchAttendanceInterf
             console.log(error);
             throw(error);
         }
-
 }
 
 

@@ -15,9 +15,9 @@ export async function getAllUsersAttendanceDetails(data:fetchAttendanceInterface
     
 }
 
-export async function updateUserAttendance(scheduleId:number,data:updateAttendanceInterface[]){
+export async function updateUserAttendance(data:updateAttendanceInterface[]){
    try {
-    const result =await updateUserPresenceByUserId_Attendance(scheduleId,data);
+    const result =await updateUserPresenceByUserId_Attendance(data);
       return result;
    } catch (error) {
       throw error
