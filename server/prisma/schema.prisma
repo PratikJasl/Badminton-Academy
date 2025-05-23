@@ -45,7 +45,6 @@ model SchedularLog{
   executedDate DateTime @unique
 }
 
-
 model UserPlanInfo {
   userPlanId              Int @id @default(autoincrement())
   userId                  Int
