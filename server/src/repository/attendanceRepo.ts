@@ -38,28 +38,28 @@ export async function getAllUserAttendanceByLocation(data: fetchAttendanceInterf
 
 export async function updateUserPresenceByUserId_Attendance(data:updateAttendanceInterface[]){
     prisma.$transaction
-    if(data.length===0)
-    {
+    if(data.length === 0){
         console.log("No data for update");
         return {count:0};
     }
     try {
-        const updateAttendanceTransaction=data.map(item=>{
-            const whereCondition={
+        const updateAttendanceTransaction = data.map( item => {
+            const whereCondition = {
                 userId_attendanceDate:{
-                    userId:item.userId,
-                    attendanceDate:item.attendanceDate
+                    userId: item.userId,
+                    attendanceDate: item.attendanceDate
                 }
             };
-        return prisma.attendance.update({
-            where:whereCondition,
-            data:{
-                isStatus:item.isStatus,
-            }
-        })
+
+            return prisma.attendance.update({
+                where: whereCondition,
+                data:{
+                    isStatus: item.isStatus,
+                }
+            })
         });
 
-        const results=await prisma.$transaction(updateAttendanceTransaction);
+        const results = await prisma.$transaction(updateAttendanceTransaction);
         console.log(`Transaction Successful: Updated ${results.length} records `);
         return {count:results.length};
         

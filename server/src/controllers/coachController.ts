@@ -257,19 +257,27 @@ export async function getAttendance(req:Request, res:Response): Promise<void> {
 //@dev: Update Attendance
 //@dev: Type-Safety during runtime pending....zod
 export async function updateAttendance(req:Request,res:Response): Promise<void>{
-    const { userData } = req.body;
-    let data: updateAttendanceInterface[] =[];
+    const { userData  } = req.body;
+    console.log("-----Update Attendance Route-----");
+    console.log("Data received:", userData);
+    let data: updateAttendanceInterface[] = [];
 
-    userData.forEach((element: updateAttendanceInterface) => {
-        let tempData = {
-            userId: element.userId,
-            attendanceDate: new Date(element.attendanceDate),
-            isStatus: element.isStatus
-        }
-        data.push(tempData);
-    });
     try {
-        //  @dev: Check for Valid Schedule.
+        if(!userData){
+            res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
+            return;
+        }
+
+        userData.forEach((element: updateAttendanceInterface) => {
+            let tempData = {
+                userId: element.userId,
+                attendanceDate: new Date(element.attendanceDate),
+                isStatus: element.isStatus
+            }
+            data.push(tempData);
+            console.log("Temp data created:",tempData);
+        });
+        
         try {
             const updatedData = await updateUserAttendance(data);
             if(updatedData === null){
@@ -282,7 +290,7 @@ export async function updateAttendance(req:Request,res:Response): Promise<void>{
                 return;
             }
         } catch (error) {
-            console.log("Updation Failed.... try Again.");
+            console.log("Updation Failed.... try Again.", error);
             res.status(400).json(errorResponse(ERROR_MESSAGES.UPDATION_FAILED));
             return; 
         }
