@@ -83,12 +83,12 @@ function SignUp(){
     return(
         <form onSubmit={handleSubmit(registerUser)} className="lg:w-full w-72 max-w-2xl max-h-screen mt-20 mb-10 lg:mt-10 lg:p-8 p-5 overflow-auto rounded-2xl shadow-lg shadow-white">
     
-            <h1 className="text-3xl font-bold text-blue-600 mb-6 text-center ">SignUp</h1>
+            <h1 className="text-3xl font-bold text-green-500 mb-6 text-center ">Welcome 😊</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* First Column */}
                 <div>
-                    <div>
+                    <div className="">
                         <input
                         id="fullName"
                         disabled={isLoading}
@@ -279,7 +279,7 @@ function SignUp(){
             <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full mt-6 shadow-lg p-3 rounded-lg bg-blue-700 text-white font-bold hover:bg-blue-600 hover:cursor-pointer"
+                className="w-full mt-6 shadow-lg p-3 rounded-lg bg-green-600 text-white font-semibold text-xl hover:bg-green-500 hover:cursor-pointer"
             >
                 {isLoading ? 'Signing Up...' : 'SignUp'}
             </button>

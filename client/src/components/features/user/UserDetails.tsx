@@ -117,8 +117,8 @@ function UserDetails(){
     }
 
     return(
-        <form onSubmit={handleSubmit(updateUser)} className="lg:w-full w-72 max-w-2xl max-h-screen mt-20 mb-5 lg:mt-15 lg:p-8 p-5 rounded-2xl bg-gray-900 border-1 border-sky-500  overflow-auto scroll-smooth [scrollbar-width:none]">
-            <h1 className="text-3xl font-bold text-blue-600 mb-6 text-center ">User Details</h1>
+        <form onSubmit={handleSubmit(updateUser)} className="lg:w-full w-72 max-w-2xl max-h-screen mt-20 mb-5 lg:mt-15 lg:p-8 p-5 rounded-2xl bg-gray-900 border-1 border-green-500  overflow-auto scroll-smooth [scrollbar-width:none]">
+            <h1 className="text-3xl font-bold text-green-400 mb-6 text-center ">User Details</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* First Column */}
@@ -308,14 +308,14 @@ function UserDetails(){
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full mt-6 shadow-lg p-3 rounded-lg bg-blue-700 text-white font-bold hover:bg-blue-600 hover:cursor-pointer"
+                            className="w-full mt-6 shadow-lg p-3 rounded-lg bg-green-700 text-white font-bold hover:bg-green-600 hover:cursor-pointer"
                         >
                             {isLoading ? 'Updating Details...' : 'Update Details'}
                         </button>
                     ) :
                     (<div
                         onClick={() => !isLoading && setIsUpdate(true)}
-                        className={`flex flex-row justify-center gap-2 w-full mt-6 shadow-lg p-3 rounded-lg bg-blue-700 text-white font-bold hover:bg-blue-600 ${isLoading ? 'pointer-events-none opacity-50' : 'hover:cursor-pointer'}`}
+                        className={`flex flex-row justify-center gap-2 w-full mt-6 shadow-lg p-3 rounded-lg bg-green-700 text-white font-bold hover:bg-green-600 ${isLoading ? 'pointer-events-none opacity-50' : 'hover:cursor-pointer'}`}
                     >
                         <PencilSquareIcon className="h-6 w-6 text-white" /> Edit Details
                     </div>)

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getUserInfo } from "../../services/userService";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import logo from "../../assets/Logo2.png";
 import { logInStatus } from "../../atom/logInAtom";
 import male from "../../assets/male.png";
 import person from "../../assets/person.png";
@@ -65,17 +66,16 @@ function Navbar(){
     console.log("User Info in Navbar is:", userInfo);
     return(
         <>
-            <div className="flex flex-row justify-between items-center font-serif fixed top-0 bg-gray-900 min-w-screen h-12 p-3 z-10">
+            <div className="flex flex-row justify-between items-center fixed top-0 bg-black min-w-screen md:h-15 h-15 p-3 z-10">
                 
                 <div className="lg:text-2xl">
-                   <Link to="/">RJ Badminton</Link>
-                   {/* <img src={Logo} alt="" className="h-15 w-20" /> */}
+                   <Link to="/"> <img src={logo} alt="" className="md:h-12 md:w-50 md:mt-2 h-10 w-35" /> </Link>
                 </div>
 
                 {!currentLoginStatus ?
-                    <div className="flex items-center gap-5">
-                        <Link to="/Login" className="hover:text-blue-500  lg:text-xl">Login</Link>
-                        <Link to="/Signup" className="hover:text-blue-500  lg:text-xl">SignUp</Link>
+                    <div className="flex items-center gap-5 font-semibold">
+                        <Link to="/Login" className="hover:text-green-500  lg:text-xl">Login</Link>
+                        <Link to="/Signup" className="hover:text-green-500  lg:text-xl">SignUp</Link>
                     </div> :
                     <div>
                         <div className="flex items-center">

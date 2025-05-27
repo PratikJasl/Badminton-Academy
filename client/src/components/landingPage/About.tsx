@@ -50,8 +50,8 @@ function About(){
     
     return(
         <section id="about" className="md:max-w-300 max-w-74 p-5">
-            <div className="lg:flex lg:flex-row lg:items-center lg:gap-5">
-                <div className="lg:h-120 lg:w-250 mb-10 border-10 border-white rounded-lg shadow-xl shadow-gray-600">
+            <div className="lg:flex lg:flex-row lg:items-center lg:gap-10">
+                <div className="lg:h-120 lg:w-250 mb-10 rounded-lg">
                     <img 
                         src={profileImage}
                         alt="profile-pic" 
@@ -59,14 +59,17 @@ function About(){
                     />
                 </div>
 
-                <div className="text-center font-serif flex flex-col gap-5 items-center">
+                <div className="text-center flex flex-col gap-5 items-center">
                     <div className="flex flex-col items-center gap-5">
-                        <p className="lg:text-3xl text-xl">Meet</p>
-                        <p className="lg:text-5xl text-2xl">Ranjit Subramaniyam</p>
-                        <p className="lg:text-2xl text-xl italic">National's Player & International Certified Badminton Coach</p>
+                        <div>
+                            <p className="lg:text-3xl text-xl">Meet</p>
+                            <p className="lg:text-5xl text-2xl text-green-600 italic">Ranjit Subramaniyam</p>
+                        </div>
+                        
+                        <p className="lg:text-2xl text-xl font-semibold">National's Player & International Certified Badminton Coach</p>
                         <p className="text-justify lg:text-lg"> 
                             Ranjit is an internationally certified badminton coach, having earned his certification in Thailand. He was ranked 16th nationally in India and held a state ranking of 2nd.
-                            With over 200 students mentored, Ranjit has successfully guided players at both state and national levels.
+                            With over 300 students mentored, Ranjit has successfully guided players at both state and national levels.
                         </p>
 
                         <div className="flex flex-row gap-5 w-full justify-center">
@@ -90,7 +93,7 @@ function About(){
                         </div>
 
                         <button 
-                            className="w-fit bg-yellow-500 text-white text-xl p-2 rounded-lg hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out">
+                            className="w-fit bg-green-600 font-semibold text-white text-xl p-2 rounded-lg hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out">
                             <a 
                                 href="" 
                                 target="blank">

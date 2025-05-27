@@ -93,6 +93,30 @@ export const loginSchema = yup.object({
         .required('Password is required'),
 })
 
+export const forgotPasswordSchema = yup.object({
+    email: yup 
+        .string()
+        .email('Invalid email format')
+        .required('Email is required'),
+})
+
+export const verificationSchema = yup.object({
+    password: yup
+        .string()
+        .min(4, 'Password must be at least 4 characters')
+        .max(20, 'Password must be at most 20 characters')
+        .required('Password is required'),
+    confirmPassword: yup
+        .string()
+        .oneOf([yup.ref('password'), undefined], 'Passwords must match')
+        .required('Confirm Password is required'), 
+    otp: yup
+        .string()
+        .length(6, 'OTP must be 6 digits')
+        .matches(/^[0-9]+$/, 'OTP must contain only digits')
+        .required('OTP is required')
+})
+
 export const scheduleSchema = yup.object({
     batch: yup
         .string()
