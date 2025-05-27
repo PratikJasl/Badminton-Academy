@@ -125,7 +125,7 @@ function UserAttendance(){
                         </div>
 
                         <button
-                            className="bg-blue-600 text-white flex items-center justify-center md:p-3 p-1 rounded-lg hover:cursor-pointer hover:bg-blue-500"
+                            className="bg-green-600 text-white flex items-center justify-center md:p-3 p-1 rounded-lg hover:cursor-pointer hover:bg-green-500"
                             onClick={() => {
                                 handleSearch();
                                 console.log("Search clicked");
@@ -175,7 +175,7 @@ function UserAttendance(){
                 </div>
 
                 <button
-                    className="bg-blue-600 text-white flex items-center justify-center md:p-2 p-1 rounded-lg hover:cursor-pointer hover:bg-blue-500"
+                    className="bg-green-600 text-white flex items-center justify-center md:p-2 p-1 rounded-lg hover:cursor-pointer hover:bg-green-500"
                     onClick={handleSubmit}
                 >
                     Submit

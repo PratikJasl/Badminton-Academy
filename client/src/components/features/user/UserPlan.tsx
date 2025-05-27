@@ -92,7 +92,7 @@ function UserPlan(){
                             </div>
                         </div>
                         {/*Second Section*/}
-                        <div className="flex flex-col justify-center gap-15 p-5 bg-gray-900 rounded-2xl lg:w-94 lg:h-64 border-2 border-sky-400 relative">
+                        <div className="flex flex-col justify-center gap-15 p-5 bg-gray-900 rounded-2xl lg:w-94 lg:h-64 border-2 border-green-500 relative">
                             <div className="flex flex-col justify-start items-start gap-1">
                                 <h4 className="font-bold text-green-500"> | {userInfo?.membershipStatus?"Active": "InActive"}</h4>
                                 <h2 className="lg:text-2xl text-xl font-bold">{userInfo.coachingPlanName}</h2>
@@ -104,7 +104,7 @@ function UserPlan(){
                                 
                                 <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 overflow-hidden mt-2">
                                     <div
-                                        className="bg-sky-500 h-2.5 rounded-full"
+                                        className="bg-green-500 h-2.5 rounded-full"
                                         style={{ width: `${percentageElapsed}%` }}
                                     ></div>
                                 </div>

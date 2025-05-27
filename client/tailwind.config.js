@@ -8,7 +8,11 @@ module.exports = {
       'focus:text-blue-500',
     ],
     theme: {
-      extend: {},
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'sans-serif']
+        }
+      },
     },
     plugins: [],
   };

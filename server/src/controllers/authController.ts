@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 import { membershipStatus, PrismaClient } from "@prisma/client";
 import transporter from "../config/nodeMailer";
 import { checkValidLocation, getLocationById } from "../repository/locationRepo";
-import { addNewUser, checkExistingUser, getUserByEmail } from "../repository/userRepo";
+import { addNewUser, checkExistingUser, getUserByEmail, updateResetOtp } from "../repository/userRepo";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 import { errorResponse, successResponse } from "../common/apiResponse";
 import { checkValidCoachingPlan, getCoachingPlanById } from "../repository/coachingPlanRepo";
@@ -288,62 +288,52 @@ export async function verifyEmail(req: Request, res: Response): Promise<void> {
     }
 }
 
-//Reset password routes:
+//------------------------Reset password routes-----------------------------
 export async function sendResetPasswordOTP(req: Request, res: Response): Promise<void> {
     console.log("------Send Reset Password OTP Route------");
     try{
+        console.log("Request Body", req.body);
         const { email } = req.body;
-
         if (!email) {
             res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
             return;
         }
 
-        //Check if the user exists.
-        const user = await prisma.user.findUnique({
-            where:{
-                email: email,
-            }
-        });
-        
+        //@dev: Check if the user exists.
+        const user = await checkExistingUser({email: email});
         if(!user){
             res.status(204).json(successResponse(SUCCESS_MESSAGES.USER_NOT_FOUND));
             return;
         }
 
-        //Generate OTP and Expiry and store it in DB.
-        const OTP = String(Math.floor(100000 + Math.random() * 900000));
+        //@dev: Generate OTP and Expiry and store it in DB.
+        const otp = String(Math.floor(100000 + Math.random() * 900000));
         const otpExpiry = new Date(Date.now() + 15 * 60 * 1000);
         
-        await prisma.user.update({
-            where:{
-                email: email,
-            },
-            data:{
-                otpResetCode: OTP,
-                otpResetExpiry: otpExpiry,
-            }
-        });
-        
-        //Send Reset OTP over the mail.
+        let updateOtp = await updateResetOtp({email: email, otp: otp, otpExpiry: otpExpiry});
+        if(!updateOtp){
+            res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
+            return;
+        }
+
+        //@dev: Send Reset OTP over the mail.
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
-            to: user.email,
+            to: email,
             subject: 'Reset Password OTP',
             text: 
-            `Hi ${user.fullName}👋, 
-             Your password reset OTP is: ${OTP}.
+            `Hi ${user.fullName}, 
+             Your password reset OTP is: ${otp}.
             
              Best Regards
              Pratik Jussal`
         }
 
         await transporter.sendMail(mailOptions);
-
         res.status(200).json(successResponse(SUCCESS_MESSAGES.RESET_PASSWORD_EMAIL_SEND));
         return;
     }catch(error){
-        console.log(error);
+        console.error(ERROR_MESSAGES.SERVER_ERROR, error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }
