@@ -76,10 +76,11 @@ export async function sendVerifyOtp(data: forgotPasswordData){
 }
 
 //@dev: Function for changing password.
-export async function changePassword(data: verificationData){
+export async function changePassword(data: verificationData, email: string){
     try {
-        let response = await axios.post("http://localhost:3000/api/auth/",
-        data,
+        let payload = {password: data.password,email: email, otp: data.otp};
+        let response = await axios.post("http://localhost:3000/api/auth/reset-password",
+        payload,
         {
             headers: {
             "Content-Type": "application/json",

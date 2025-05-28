@@ -9,12 +9,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ArrowLeftIcon} from "@heroicons/react/24/outline";
 import { verificationSchema } from "../../schema/userSchema";
 import { changePassword } from "../../services/authService";
+import { useRecoilValue } from "recoil";
+import { emailAtom } from "../../atom/emailAtom";
 
 export type verificationData = InferType < typeof verificationSchema>
 
 function VerifyOTP(){
-    const [isLoading, setIsLoading] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(false);
     const [ redirect, setRedirect ] = useState(false);
+    const email = useRecoilValue(emailAtom);
     const { register, handleSubmit, formState: {errors}, reset } = useForm({
         resolver: yupResolver(verificationSchema),
     });
@@ -22,8 +25,9 @@ function VerifyOTP(){
     async function onSubmit(data: verificationData){
         setIsLoading(true);
         console.log("Data Received from form:", data);
+        console.log("Email In verify:", email);
         try {
-            let response = await changePassword(data);
+            let response = await changePassword(data, email);
             if(response.status === 200){
                 setRedirect(true);
                 toast.success("Password Changed Successfully");
@@ -57,7 +61,7 @@ function VerifyOTP(){
 
                 <div className="flex flex-col gap-5">
                     <div className="flex flex-col gap-1">
-                        <label htmlFor="">Enter New Password:</label>
+                        <label htmlFor="">Enter New Password</label>
                         <input 
                             type="text"
                             placeholder="At least 6 digits"
@@ -73,7 +77,7 @@ function VerifyOTP(){
                         )}
                     </div>
                     <div className="flex flex-col gap-1">
-                        <label htmlFor="">Confirm Password:</label>
+                        <label htmlFor="">Confirm Password</label>
                         <input 
                             type="text"
                             placeholder="******"
@@ -89,7 +93,7 @@ function VerifyOTP(){
                         )}
                     </div>
                     <div className="flex flex-col gap-1">
-                        <label htmlFor="">Enter verification Otp:</label>
+                        <label htmlFor="">Enter verification Otp</label>
                         <input 
                             type="text"
                             placeholder="OTP"
@@ -105,7 +109,7 @@ function VerifyOTP(){
                         )}
                     </div>
 
-                    <div>
+                    <div className="text-blue-500">
                         <h3>If you didn't receive a code, resend</h3>
                     </div>
 
@@ -122,7 +126,7 @@ function VerifyOTP(){
                 
                 <Link 
                     to="/Login" 
-                    className="flex flex-row mt-1 items-center justify-center gap-1 text-white hover:text-green-500"
+                    className="flex flex-row mt-1 items-center justify-center gap-1 text-green-500 hover:text-green-400"
                 > 
                     <ArrowLeftIcon className="h-5 w-5" />Back
                 </Link>
