@@ -1,7 +1,7 @@
 import { Roles, User } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
 import { ERROR_MESSAGES } from "../common/messages";
-import { gender, existingUserCheckResult, existingUserParams, userDataType, updateResetOtpParams } from "../common/interface";
+import { gender, existingUserCheckResult, existingUserParams, userDataType, updateResetOtpParams, updatePasswordParams } from "../common/interface";
 
 const prisma = new PrismaClient();
 
@@ -64,7 +64,9 @@ export async function checkExistingUser(params: existingUserParams):Promise<exis
             where: userId ? { userId: userId } : { email: email },
             select: {
                 userId: true,
-                fullName: true
+                fullName: true,
+                otpResetCode: true,
+                otpResetExpiry: true
             }
         });
 
@@ -149,6 +151,7 @@ export async function getAllActiveUserIds():Promise<number[]> {
     
 }
 
+//@dev: Function to update Password Reset OTP.
 export async function updateResetOtp(params: updateResetOtpParams): Promise<User | null>{
     try {
         const {email, otp, otpExpiry } = params;
@@ -172,5 +175,32 @@ export async function updateResetOtp(params: updateResetOtpParams): Promise<User
     } catch (error) {
         console.error(ERROR_MESSAGES.SERVER_ERROR, error);
         return null;
+    }
+}
+
+//@dev: Function to update Password
+export async function updatePassword(params: updatePasswordParams): Promise<User | null>{
+    try {
+        const { otpResetExpiry, newPassword, email } = params;
+        if(!otpResetExpiry || !newPassword){
+            console.error(ERROR_MESSAGES.MISSING_FIELD);
+            return null;
+        }
+
+        let user = await prisma.user.update({
+            where:{
+                email: email,
+            },
+            data:{
+                otpResetCode: "",
+                otpResetExpiry: otpResetExpiry,
+                password: newPassword,
+            }
+        })
+
+        return user
+    } catch (error) {
+       console.error(ERROR_MESSAGES.SERVER_ERROR, error);
+        return null; 
     }
 }

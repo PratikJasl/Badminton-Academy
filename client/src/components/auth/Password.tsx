@@ -9,11 +9,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ArrowLeftIcon} from "@heroicons/react/24/outline";
 import { forgotPasswordSchema } from "../../schema/userSchema";
 import { sendVerifyOtp } from "../../services/authService";
+import { useSetRecoilState } from "recoil";
+import { emailAtom } from "../../atom/emailAtom";
 
-export type forgotPasswordData = InferType < typeof forgotPasswordSchema>
+export type forgotPasswordData = InferType <typeof forgotPasswordSchema>
 
 function ForgotPassword(){
-    const [isLoading, setIsLoading] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(false);
+    const setEmail = useSetRecoilState(emailAtom);
     const [ redirect, setRedirect ] = useState(false);
     const { register, handleSubmit, formState: {errors}, reset } = useForm({
         resolver: yupResolver(forgotPasswordSchema),
@@ -21,6 +24,7 @@ function ForgotPassword(){
 
     async function onSubmit(data: forgotPasswordData){
         setIsLoading(true);
+        setEmail(data.email);
         console.log("Data Received from form:", data);
         try {
             let response = await sendVerifyOtp(data);
@@ -60,6 +64,7 @@ function ForgotPassword(){
                             placeholder="example@gmail.com"
                             autoComplete="email"
                             {...register("email")}
+
                             disabled = {isLoading}
                             className="shadow-lg p-2 rounded-lg bg-white text-black min-w-64 mb-1"
                         />

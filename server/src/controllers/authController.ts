@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 import { membershipStatus, PrismaClient } from "@prisma/client";
 import transporter from "../config/nodeMailer";
 import { checkValidLocation, getLocationById } from "../repository/locationRepo";
-import { addNewUser, checkExistingUser, getUserByEmail, updateResetOtp } from "../repository/userRepo";
+import { addNewUser, checkExistingUser, getUserByEmail, updatePassword, updateResetOtp } from "../repository/userRepo";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 import { errorResponse, successResponse } from "../common/apiResponse";
 import { checkValidCoachingPlan, getCoachingPlanById } from "../repository/coachingPlanRepo";
@@ -292,7 +292,6 @@ export async function verifyEmail(req: Request, res: Response): Promise<void> {
 export async function sendResetPasswordOTP(req: Request, res: Response): Promise<void> {
     console.log("------Send Reset Password OTP Route------");
     try{
-        console.log("Request Body", req.body);
         const { email } = req.body;
         if (!email) {
             res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
@@ -341,56 +340,47 @@ export async function sendResetPasswordOTP(req: Request, res: Response): Promise
 
 export async function resetPassword(req: Request, res: Response): Promise<void> {
     console.log("------Reset Password Route------");
-    const {email, OTP, password} = req.body;
+    console.log(" The Request Body Received is:", req.body);
+    const {email, otp, password} = req.body;
 
-    if(!email || !OTP || !password){
+    if(!email || !otp || !password){
         res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
         return;
     }
 
     try {
-        //Check if user exists.
-        let user = await prisma.user.findUnique({
-            where:{
-                email: email
-            }
-        })
-    
+        //@dev: Check if the user exists.
+        const user = await checkExistingUser({email: email});
         if(!user){
             res.status(204).json(successResponse(SUCCESS_MESSAGES.USER_NOT_FOUND));
             return;
         }
         
-        //Check if the OTP is valid and not expired.
-        if(user.otpResetCode === "" || user.otpResetCode !== OTP){
+        
+        //@dev: Check if the OTP is valid and not expired.
+        if(user.otpResetCode === "" || user.otpResetCode !== otp){
             res.status(401).json(errorResponse(ERROR_MESSAGES.INVALID_OTP));
             return;
         }
-
+        
         if(user.otpResetExpiry.getTime() < Date.now()){
             res.status(401).json(errorResponse(ERROR_MESSAGES.OTP_EXPIRED));
             return;
         }
         
-        //Reset the password and store it in DB.
+        //@dev: Reset the password and store it in DB.
         const date = new Date (Date.now());
         const newPassword = await bcrypt.hash(password, 10);
-    
-        await prisma.user.update({
-            where:{
-                email: email,
-            },
-            data:{
-                otpResetCode: "",
-                otpResetExpiry: date,
-                password: newPassword,
-            }
-        });
-        
+        let updatedDetails = await updatePassword({email: email, otpResetExpiry: date, newPassword: newPassword});
+        if(!updatedDetails){
+            res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
+            return;
+        }
+
         res.status(200).json(successResponse(SUCCESS_MESSAGES.PASSWORD_RESET_SUCCESS));
         return; 
     } catch (error) {
-        console.log(error);
+        console.error(ERROR_MESSAGES.SERVER_ERROR, error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }

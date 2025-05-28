@@ -18,6 +18,8 @@ export type gender = "male" | "female" | "other";
 export interface existingUserCheckResult {
     userId: number;
     fullName: string;
+    otpResetCode: string;
+    otpResetExpiry: Date;
 }
 
 export interface validLocationCheckResult {
@@ -45,6 +47,12 @@ export interface updateResetOtpParams {
     email: string;
     otp: string;
     otpExpiry: Date;
+}
+
+export interface updatePasswordParams {
+    email: string;
+    otpResetExpiry: Date;
+    newPassword: string
 }
 
 export interface userDataType {
