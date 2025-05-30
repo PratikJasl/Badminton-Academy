@@ -84,6 +84,6 @@
 2) Decoupling: Create a service layer to de-couple controllers. 
 3) TabNapping: In frontend avoid tab napping errors in href tags to external links.
 4) Load Carausel Image: Load the first carousel image early to avoid delay.
-5) 
+5) In UI check re-rendering due to various states.
 6) Remove delete button from locations where there are users associated or give appropriate message.
 7) Check case where JWT is expired, prompt the user to login again. 

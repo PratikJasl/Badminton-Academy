@@ -9,14 +9,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ArrowLeftIcon} from "@heroicons/react/24/outline";
 import { forgotPasswordSchema } from "../../schema/userSchema";
 import { sendVerifyOtp } from "../../services/authService";
-import { useSetRecoilState } from "recoil";
-import { emailAtom } from "../../atom/emailAtom";
 
 export type forgotPasswordData = InferType <typeof forgotPasswordSchema>
 
 function ForgotPassword(){
     const [ isLoading, setIsLoading ] = useState(false);
-    const setEmail = useSetRecoilState(emailAtom);
     const [ redirect, setRedirect ] = useState(false);
     const { register, handleSubmit, formState: {errors}, reset } = useForm({
         resolver: yupResolver(forgotPasswordSchema),
@@ -24,10 +21,11 @@ function ForgotPassword(){
 
     async function onSubmit(data: forgotPasswordData){
         setIsLoading(true);
-        setEmail(data.email);
+        localStorage.setItem("email", JSON.stringify(data.email));
         console.log("Data Received from form:", data);
         try {
             let response = await sendVerifyOtp(data);
+            console.log(response);
             if(response.status === 200){
                 setRedirect(true);
                 toast.success("OTP has been send");
@@ -35,13 +33,15 @@ function ForgotPassword(){
             }else{
                 toast.error(response.data.message || "OTP generation failed. Please try again.");
             }
-        } catch (error) {
+        } catch (error) { 
             if (axios.isAxiosError(error) && error.response) {
                 toast.error(error.response.data.message);
             } else {
                 console.error("An unexpected error occurred:", error);
                 toast.error("An unexpected error occurred. Please try again.");
             }
+        }finally {
+            setIsLoading(false);
         }
     }
 
