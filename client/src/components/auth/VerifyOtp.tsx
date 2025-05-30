@@ -1,6 +1,6 @@
 import axios from "axios";
 import { InferType } from "yup";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { toast } from 'react-toastify';
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -9,28 +9,99 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ArrowLeftIcon} from "@heroicons/react/24/outline";
 import { verificationSchema } from "../../schema/userSchema";
 import { changePassword } from "../../services/authService";
-import { useRecoilValue } from "recoil";
-import { emailAtom } from "../../atom/emailAtom";
+import { sendVerifyOtp } from "../../services/authService";
 
 export type verificationData = InferType < typeof verificationSchema>
 
 function VerifyOTP(){
     const [ isLoading, setIsLoading ] = useState(false);
     const [ redirect, setRedirect ] = useState(false);
-    const email = useRecoilValue(emailAtom);
+    const [ isResending, setIsResending ] = useState(false);
+    const [coolDownTimer, setCoolDownTimer] = useState(0);
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
+    
     const { register, handleSubmit, formState: {errors}, reset } = useForm({
         resolver: yupResolver(verificationSchema),
     });
 
+    //@dev: useEffect for handling the countdown logic
+    useEffect(() => {
+        if (coolDownTimer > 0) {
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+            }
+            timerRef.current = setInterval(() => {
+                setCoolDownTimer((prev) => prev - 1);
+            }, 1000);
+        } else {
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+                timerRef.current = null;
+            }
+            setIsResending(false); //@dev: Enable resend button when timer runs out
+        }
+
+        //@dev: Clean-up function
+        return () => {
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+            }
+        };
+    }, [coolDownTimer]);
+
+    async function sendOTP(){
+        if (isResending) {
+            return;
+        }
+
+        const emailStr = localStorage.getItem("email");
+        const email = emailStr ? JSON.parse(emailStr) : null;
+        if (!email) {
+            toast.error("Email not found. Please go back to reset password.");
+            setIsResending(false);
+            setCoolDownTimer(0);
+            return;
+        }
+
+        //@dev: Set isResending and coolDownTimer.
+        setIsResending(true);
+        setCoolDownTimer(30);
+
+        try {
+            let response = await sendVerifyOtp({email: email});
+            if(response.status === 200){
+                toast.success("OTP has been send");
+            }else{
+                toast.error(response.data.message || "OTP generation failed. Please try again.");
+            }
+        } catch (error) { 
+            if (axios.isAxiosError(error) && error.response) {
+                toast.error(error.response.data.message);
+            } else {
+                console.error("An unexpected error occurred:", error);
+                toast.error("An unexpected error occurred. Please try again.");
+            }
+        }
+    }
+
     async function onSubmit(data: verificationData){
         setIsLoading(true);
+        const emailStr = localStorage.getItem("email");
+        const email = emailStr ? JSON.parse(emailStr) : null;
+        console.log("Email Received from Local storage is:", email)
         console.log("Data Received from form:", data);
         console.log("Email In verify:", email);
         try {
+            if (!email) {
+                toast.error("Email not found. Please try the password reset process again.");
+                setIsLoading(false);
+                return;
+            }
             let response = await changePassword(data, email);
             if(response.status === 200){
                 setRedirect(true);
                 toast.success("Password Changed Successfully");
+                localStorage.removeItem("email");
                 reset();
             }else{
                 toast.error(response.data.message || "Password reset failed. Please try again.");
@@ -42,6 +113,8 @@ function VerifyOTP(){
                 console.error("An unexpected error occurred:", error);
                 toast.error("An unexpected error occurred. Please try again.");
             }
+        }finally {
+            setIsLoading(false);
         }
     }
 
@@ -81,7 +154,7 @@ function VerifyOTP(){
                         <input 
                             type="text"
                             placeholder="******"
-                            id="password"
+                            id="confirmPassword"
                             {...register("confirmPassword")}
                             disabled = {isLoading}
                             className="shadow-lg p-2 rounded-lg bg-white text-black min-w-64 mb-1"
@@ -109,8 +182,18 @@ function VerifyOTP(){
                         )}
                     </div>
 
-                    <div className="text-blue-500">
-                        <h3>If you didn't receive a code, resend</h3>
+                    <div className="">
+                        <h3>If you didn't receive a code,  
+                            <a 
+                                onClick={sendOTP} 
+                                className={`
+                                    text-green-500 p-1
+                                    ${isResending ? 'cursor-not-allowed opacity-60' : 'hover:text-green-300 hover:cursor-pointer'}
+                                `}
+                            >
+                                {isResending ? `resend (${coolDownTimer}s)` : 'resend'}
+                            </a>
+                        </h3>
                     </div>
 
                     <div>
@@ -126,7 +209,7 @@ function VerifyOTP(){
                 
                 <Link 
                     to="/Login" 
-                    className="flex flex-row mt-1 items-center justify-center gap-1 text-green-500 hover:text-green-400"
+                    className="flex flex-row md:mt-2 mt-1 items-center justify-center gap-1 text-green-500 hover:text-green-300"
                 > 
                     <ArrowLeftIcon className="h-5 w-5" />Back
                 </Link>

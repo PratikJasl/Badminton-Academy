@@ -301,7 +301,7 @@ export async function sendResetPasswordOTP(req: Request, res: Response): Promise
         //@dev: Check if the user exists.
         const user = await checkExistingUser({email: email});
         if(!user){
-            res.status(204).json(successResponse(SUCCESS_MESSAGES.USER_NOT_FOUND));
+            res.status(400).json(successResponse(ERROR_MESSAGES.EMAIL_NOT_FOUND));
             return;
         }
 
@@ -322,7 +322,7 @@ export async function sendResetPasswordOTP(req: Request, res: Response): Promise
             subject: 'Reset Password OTP',
             text: 
             `Hi ${user.fullName}, 
-             Your password reset OTP is: ${otp}.
+             Your password reset OTP is: ${otp}
             
              Best Regards
              Pratik Jussal`
@@ -352,7 +352,7 @@ export async function resetPassword(req: Request, res: Response): Promise<void> 
         //@dev: Check if the user exists.
         const user = await checkExistingUser({email: email});
         if(!user){
-            res.status(204).json(successResponse(SUCCESS_MESSAGES.USER_NOT_FOUND));
+            res.status(400).json(successResponse(ERROR_MESSAGES.EMAIL_NOT_FOUND));
             return;
         }
         

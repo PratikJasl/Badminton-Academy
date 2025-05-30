@@ -6,6 +6,7 @@ export const ERROR_MESSAGES = {
     ACCOUNT_ALREADY_VERIFIED: 'Account already verified',
     USER_ALREADY_EXISTS: 'A user with this Id already exists.',
     USER_NOT_FOUND: 'User not found.',
+    EMAIL_NOT_FOUND: 'Email is not registered with any user, Try again with valid email',
     INVALID_USER:'User With Given Id Not Exist',
     NOT_AUTH: 'Not Authorized Login Again',
     JWT_SECRET_ERROR: 'Jwt secret not defined',
