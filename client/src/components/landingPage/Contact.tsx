@@ -2,7 +2,7 @@ import { PhoneIcon } from "@heroicons/react/24/outline";
 
 function Contact(){
     return(
-        <section id="contacts" className="bg-black p-5 w-full text-cente">
+        <section id="contacts" className="bg-black p-5 w-full text-center lg:mt-50 mt-10">
             <div className="flex flex-col gap-8 items-center">
                 <h1 className="md:text-5xl text-3xl text-yellow-500">Reach out to us</h1>
                 <p className="text-center lg:text-xl text-lg">🏸 Our mission is to nurture talent and develop players capable of competing at state and national levels. We 
