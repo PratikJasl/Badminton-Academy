@@ -6,18 +6,21 @@ function About(){
         <section id="about" className="flex md:max-w-300 max-w-82 lg:p-5 mt-30">
             <div className="flex lg:flex-row flex-col items-center justify-center lg:gap-10 gap-5">
                 <div className="flex flex-col order-2 lg:order-none gap-5">
-                    <div className="flex flex-col gap-5 sm:items-center lg:items-start lg:text-left text-center">
-                        <div className=" flex flex-col lg:items-start items-center md:gap-3 gap-2">
+                    <div className="flex flex-col md:gap-8 gap-5 sm:items-center lg:items-start lg:text-left text-center">
+                        <div className=" flex flex-col lg:items-start items-center md:gap-5 gap-2">
                             <p className="lg:text-4xl text-2xl">Meet</p>
-                            <p className="lg:text-5xl text-4xl font-semibold">Ranjit Subramaniyam</p>
+                            <div className="flex flex-col gap-1">
+                                <p className="lg:text-7xl text-4xl font-semibold">Ranjit </p>
+                                <p className="lg:text-7xl text-4xl font-semibold">Subramaniyam</p>
+                            </div>
                         </div>
                         
                         <p className="lg:text-xl text-xl">National Level Player and International Certified Badminton Coach</p>
 
-                        <div className="flex lg:flex-row flex-col gap-5 w-full items-center">
+                        <div className="lg:mt-5 flex lg:flex-row flex-col gap-5 w-full items-center">
                             <div>
                                  <button 
-                                    className="w-fit bg-green-600 text-white lg:text-xl text-md p-2 px-4 lg:px-5  rounded-3xl hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out">
+                                    className="w-fit font-semibold bg-green-600 text-white lg:text-xl text-md p-2 px-4 lg:px-5  rounded-3xl hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out">
                                     <a 
                                         href="" 
                                         target="blank">

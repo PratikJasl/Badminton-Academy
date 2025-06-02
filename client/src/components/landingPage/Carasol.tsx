@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
-import slide1 from "../../assets/carasol-6.png";
+import slide1 from "../../assets/carasol-8.png";
 import slide2 from "../../assets/carasol-1.png";
 import slide3 from "../../assets/carasol-3.jpg";
 
@@ -23,7 +23,7 @@ function Carousel() {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % imageLinks.length);
         setIsFading(false); 
       }, 500); 
-    }, 10000);
+    }, 50000);
     return () => clearInterval(interval);
   }, [imageLinks]);
 
