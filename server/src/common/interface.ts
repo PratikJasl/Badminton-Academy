@@ -62,8 +62,6 @@ export interface userDataType {
     gender: 'male' | 'female' | 'other' | null;
     dob: Date;
     locationId: number;
-    coachingPlanId: number;
-    planStartDate: Date | null
 }
 
 export interface UpdateUserRequestBody {

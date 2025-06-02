@@ -31,11 +31,6 @@ export async function addNewUser(
                 Location: {
                     connect: {locationId: locationId}
                 },
-                coachingPlan: {
-                    connect: {coachingPlanId: coachingPlanId}
-                },
-                planStartDate: planStartDate,
-                planEndDate: planEndDate,
                 password: hashedPassword,
                 role: role,
                 isKid: isKid
@@ -122,8 +117,6 @@ export async function updateUser(userId: number, userData: userDataType): Promis
                 gender: true,
                 dob: true,
                 locationId: true,
-                coachingPlanId: true,
-                planStartDate: true
             }
         })
         return updateUserDetail;
@@ -138,7 +131,7 @@ export async function getAllActiveUserIds():Promise<number[]> {
     try {
         const users=await prisma.user.findMany({
             where:
-            {membershipStatus:'active',
+            {membershipStatus:true,
             },
             select:{
                 userId:true,
