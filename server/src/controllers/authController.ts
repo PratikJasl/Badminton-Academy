@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { checkAge, calculateEndDate} from "../common/helperFunctions";
 import { Request, Response } from "express";
-import { membershipStatus, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import transporter from "../config/nodeMailer";
 import { checkValidLocation, getLocationById } from "../repository/locationRepo";
 import { addNewUser, checkExistingUser, getUserByEmail } from "../repository/userRepo";
@@ -108,7 +108,7 @@ export async function logIn(req: Request, res: Response): Promise<void> {
         }
 
         //@dev: Get coaching plan name.
-        let coachingPlan = await getCoachingPlanById(user.coachingPlanId);
+        // let coachingPlan = await getCoachingPlanById(user.coachingPlanId);
 
         //@dev: Get Location name.
         let locationName = await getLocationById(user.locationId);
@@ -126,12 +126,7 @@ export async function logIn(req: Request, res: Response): Promise<void> {
                 userId: user.userId,
                 fullName: user.fullName,
                 role: user.role, 
-                gender: user.gender, 
-                planStartDate: user.planStartDate, 
-                planEndDate: user.planEndDate, 
-                coachingPlanName: coachingPlan?.name,
-                coachingPlanId: user.coachingPlanId,
-                planDuration: coachingPlan?.planDuration, 
+                gender: user.gender,  
                 locationName: locationName?.name,
                 locationId: user.locationId,
                 membershipStatus: user.membershipStatus
