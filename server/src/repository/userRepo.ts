@@ -1,7 +1,7 @@
 import { Roles, User } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
 import { ERROR_MESSAGES } from "../common/messages";
-import { gender, existingUserCheckResult, existingUserParams, userDataType } from "../common/interface";
+import { gender, existingUserCheckResult, existingUserParams, userDataType, updateResetOtpParams, updatePasswordParams } from "../common/interface";
 
 const prisma = new PrismaClient();
 
@@ -52,13 +52,16 @@ export async function checkExistingUser(params: existingUserParams):Promise<exis
         if(!email && !userId){
             console.error(ERROR_MESSAGES.MISSING_FIELD);
             return null;
-        }
+        } 
 
         //@dev: Determine which is available of the two parameters and query based on it.
         const existingUser = await prisma.user.findUnique({
             where: userId ? { userId: userId } : { email: email },
             select: {
-                userId: true
+                userId: true,
+                fullName: true,
+                otpResetCode: true,
+                otpResetExpiry: true
             }
         });
 
@@ -123,7 +126,7 @@ export async function updateUser(userId: number, userData: userDataType): Promis
     }
 }
 
-
+//@dev: Function to get all active users.
 export async function getAllActiveUserIds():Promise<number[]> {
     try {
         const users=await prisma.user.findMany({
@@ -139,4 +142,58 @@ export async function getAllActiveUserIds():Promise<number[]> {
         throw error
     }
     
+}
+
+//@dev: Function to update Password Reset OTP.
+export async function updateResetOtp(params: updateResetOtpParams): Promise<User | null>{
+    try {
+        const {email, otp, otpExpiry } = params;
+
+        if(!email || !otp || !otpExpiry){
+            console.error(ERROR_MESSAGES.MISSING_FIELD);
+            return null;
+        }
+
+        let user = await prisma.user.update({
+            where:{
+                email: email,
+            },
+            data:{
+                otpResetCode: otp,
+                otpResetExpiry: otpExpiry,
+            }
+        });
+
+        return user
+    } catch (error) {
+        console.error(ERROR_MESSAGES.SERVER_ERROR, error);
+        return null;
+    }
+}
+
+//@dev: Function to update Password
+export async function updatePassword(params: updatePasswordParams): Promise<User | null>{
+    try {
+        const { otpResetExpiry, newPassword, email } = params;
+        if(!otpResetExpiry || !newPassword){
+            console.error(ERROR_MESSAGES.MISSING_FIELD);
+            return null;
+        }
+
+        let user = await prisma.user.update({
+            where:{
+                email: email,
+            },
+            data:{
+                otpResetCode: "",
+                otpResetExpiry: otpResetExpiry,
+                password: newPassword,
+            }
+        })
+
+        return user
+    } catch (error) {
+       console.error(ERROR_MESSAGES.SERVER_ERROR, error);
+        return null; 
+    }
 }

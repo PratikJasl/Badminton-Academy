@@ -12,7 +12,7 @@ authRouter.post('/auth/login', logIn);
 authRouter.post('/auth/logout',userAuth, logOut);
 authRouter.post('/auth/verify-otp', userAuth, sendVerifyOTP);
 authRouter.post('/auth/verify-email', userAuth, verifyEmail);
-authRouter.post('/auth/send-reset-otp', userAuth, sendResetPasswordOTP);
-authRouter.post('/auth/reset-password', userAuth, resetPassword);
+authRouter.post('/auth/send-reset-otp', sendResetPasswordOTP);
+authRouter.post('/auth/reset-password', resetPassword);
 
 export {authRouter}

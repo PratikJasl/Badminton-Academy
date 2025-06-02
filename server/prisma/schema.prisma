@@ -33,7 +33,7 @@ model User {
   isVerified              Boolean @default(false)
   otpResetCode            String @default("")
   otpResetExpiry          DateTime @default(now())
-  UserPlanInfo UserPlanInfo[]
+  UserPlanInfo            UserPlanInfo[]
 }
 
 model SchedularLog{
@@ -41,7 +41,6 @@ model SchedularLog{
   schedularId String 
   executedDate DateTime @unique
 }
-
 
 model UserPlanInfo {
   userPlanId              Int @id @default(autoincrement())
