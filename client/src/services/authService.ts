@@ -5,7 +5,7 @@ import { forgotPasswordData } from "../components/auth/Password";
 import { verificationData } from "../components/auth/VerifyOtp";
 
 //@dev: Function to login user.
-export async function loginService(data: LoginFormData) {
+export async function loginService(data: LoginFormData) { 
     try {
         let response = await axios.post("http://localhost:3000/api/auth/login",
         data,
