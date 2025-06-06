@@ -1,11 +1,12 @@
 import axios from "axios";
 // import { SignUpFormData } from "../components/auth/SignUp";
 import { LoginFormData } from "../components/auth/Login";
-import { forgotPasswordData } from "../components/auth/Password";
-import { verificationData } from "../components/auth/VerifyOtp";
+import { forgotPasswordData } from "../components/auth/ForgotPassword";
+import { verificationData } from "../components/auth/VerifyResetPasswordOtp";
+import { emailVerificationData } from "../components/auth/VerifyEmail";
 
 //@dev: Function to login user.
-export async function loginService(data: LoginFormData) {
+export async function loginService(data: LoginFormData) { 
     try {
         let response = await axios.post("http://localhost:3000/api/auth/login",
         data,
@@ -61,6 +62,23 @@ export async function logOutService(){
 export async function sendVerifyOtp(data: forgotPasswordData){
     try {
         let response = await axios.post("http://localhost:3000/api/auth/send-reset-otp",
+        data,
+        {
+            headers: {
+            "Content-Type": "application/json",
+            },
+            withCredentials: true,
+        });
+        return response;
+    } catch (error) {
+        console.error("Error Logging In", error);
+        throw error
+    }
+}
+
+export async function sendEmailVerificationOtp(data: emailVerificationData){
+    try {
+        let response = await axios.post("http://localhost:3000/api/auth/verify-otp",
         data,
         {
             headers: {

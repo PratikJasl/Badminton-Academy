@@ -2,24 +2,27 @@ import axios from "axios";
 import { InferType } from "yup";
 import { useState, useRef, useEffect } from "react";
 import { toast } from 'react-toastify';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ArrowLeftIcon} from "@heroicons/react/24/outline";
 import { verificationSchema } from "../../schema/userSchema";
+import { forgotPasswordEmailState } from "../../atom/emailAtom";
 import { changePassword } from "../../services/authService";
 import { sendVerifyOtp } from "../../services/authService";
+import { useRecoilValue } from "recoil";
 
 export type verificationData = InferType < typeof verificationSchema>
 
-function VerifyOTP(){
+function VerifyResetPasswordOTP(){
     const [ isLoading, setIsLoading ] = useState(false);
     const [ redirect, setRedirect ] = useState(false);
     const [ isResending, setIsResending ] = useState(false);
     const [coolDownTimer, setCoolDownTimer] = useState(0);
+    const emailFromRecoil = useRecoilValue(forgotPasswordEmailState);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
-    
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: {errors}, reset } = useForm({
         resolver: yupResolver(verificationSchema),
     });
@@ -49,12 +52,20 @@ function VerifyOTP(){
         };
     }, [coolDownTimer]);
 
+    useEffect(() => {
+        if(emailFromRecoil === null){
+            toast.error("Your password reset session has expired or was interrupted. Please start over.");
+            navigate("/forgot-password");
+        }
+    }, [emailFromRecoil, navigate]);
+
     async function sendOTP(){
         if (isResending) {
             return;
         }
 
-        const emailStr = localStorage.getItem("email");
+        //const emailStr = localStorage.getItem("email");
+        const emailStr = emailFromRecoil;
         const email = emailStr ? JSON.parse(emailStr) : null;
         if (!email) {
             toast.error("Email not found. Please go back to reset password.");
@@ -218,4 +229,4 @@ function VerifyOTP(){
     )
 }
 
-export default VerifyOTP
+export default VerifyResetPasswordOTP

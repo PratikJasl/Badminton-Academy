@@ -87,3 +87,4 @@
 5) In UI check re-rendering due to various states.
 6) Remove delete button from locations where there are users associated or give appropriate message.
 7) Check case where JWT is expired, prompt the user to login again. 
+8) Check cross tab sync as well.

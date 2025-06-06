@@ -44,29 +44,29 @@ export const signUpSchema = yup.object({
         })
         .nullable()
         .required('Location is required'),
-    coachingPlanId: yup
-        .number()
-        .transform((value, originalValue) => {
-            return originalValue === "" ? null : value;
-        })
-        .nullable()
-        .required('Coaching Plan is required'),
-    planStartDate: yup
-        .date()
-        .transform((value, originalValue) => {
-            if (typeof originalValue === 'string' && originalValue === "") {
-                return null;
-            }
-            if (typeof originalValue === 'string') {
-                 const [year, month, day] = originalValue.split('-').map(Number);
-                 return new Date(Date.UTC(year, month - 1, day));
-            }
-            return value;
-        })
-        .nullable()
-        .required('Plan start date is required')
-        .min(oneYearAgo, `Plan start date cannot be more than one year in the past`)
-        .max(oneYearFuture, `Plan start date cannot be more than one year in the future`),
+    // coachingPlanId: yup
+    //     .number()
+    //     .transform((value, originalValue) => {
+    //         return originalValue === "" ? null : value;
+    //     })
+    //     .nullable()
+    //     .required('Coaching Plan is required'),
+    // planStartDate: yup
+    //     .date()
+    //     .transform((value, originalValue) => {
+    //         if (typeof originalValue === 'string' && originalValue === "") {
+    //             return null;
+    //         }
+    //         if (typeof originalValue === 'string') {
+    //              const [year, month, day] = originalValue.split('-').map(Number);
+    //              return new Date(Date.UTC(year, month - 1, day));
+    //         }
+    //         return value;
+    //     })
+    //     .nullable()
+    //     .required('Plan start date is required')
+    //     .min(oneYearAgo, `Plan start date cannot be more than one year in the past`)
+    //     .max(oneYearFuture, `Plan start date cannot be more than one year in the future`),
     password: yup
         .string()
         .min(4, 'Password must be at least 4 characters')
@@ -93,7 +93,7 @@ export const loginSchema = yup.object({
         .required('Password is required'),
 })
 
-export const forgotPasswordSchema = yup.object({
+export const emailVerificationSchema = yup.object({
     email: yup 
         .string()
         .email('Invalid email format')
@@ -116,6 +116,18 @@ export const verificationSchema = yup.object({
         .matches(/^[0-9]+$/, 'OTP must contain only digits')
         .required('OTP is required')
 })
+
+// export const emailVerificationSchema = yup.object({
+//     email: yup
+//         .string()
+//         .email('Invalid email format')
+//         .required('Email is required'),
+//     otp: yup
+//         .string()
+//         .length(6, 'OTP must be 6 digits')
+//         .matches(/^[0-9]+$/, 'OTP must contain only digits')
+//         .required('OTP is required')
+// })
 
 export const scheduleSchema = yup.object({
     batch: yup

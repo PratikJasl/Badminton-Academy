@@ -1,7 +1,7 @@
 import { Roles, User } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
 import { ERROR_MESSAGES } from "../common/messages";
-import { gender, existingUserCheckResult, existingUserParams, userDataType, updateResetOtpParams, updatePasswordParams } from "../common/interface";
+import { gender, existingUserCheckResult, existingUserParams, userDataType, updateResetOtpParams, updatePasswordParams, updateUserVerificationStatusParams, updateUserVerificationOtpParams } from "../common/interface";
 
 const prisma = new PrismaClient();
 
@@ -13,10 +13,10 @@ export async function addNewUser(
     gender :gender, 
     dob :Date, 
     locationId :number, 
-    coachingPlanId :number,
+    // coachingPlanId :number,
     hashedPassword :string, 
-    planStartDate: Date,
-    planEndDate: Date | null,
+    // planStartDate: Date,
+    // planEndDate: Date | null,
     role :Roles,
     isKid :boolean
 ): Promise<User>{
@@ -61,7 +61,10 @@ export async function checkExistingUser(params: existingUserParams):Promise<exis
                 userId: true,
                 fullName: true,
                 otpResetCode: true,
-                otpResetExpiry: true
+                otpResetExpiry: true,
+                isVerified: true,
+                otpVerificationCode: true,
+                otpVerificationExpiry: true
             }
         });
 
@@ -195,5 +198,44 @@ export async function updatePassword(params: updatePasswordParams): Promise<User
     } catch (error) {
        console.error(ERROR_MESSAGES.SERVER_ERROR, error);
         return null; 
+    }
+}
+
+export async function updateUserVerificationOtp(params: updateUserVerificationOtpParams): Promise<User | null> {
+    try {
+        const { email, Otp, otpExpiry } = params;
+        const user = await prisma.user.update({
+            where: {
+                email: email
+            },
+            data: {
+                otpVerificationCode: Otp,
+                otpVerificationExpiry: otpExpiry
+            }
+        });
+        return user;
+    } catch (error) {
+        console.error(ERROR_MESSAGES.SERVER_ERROR, error);
+        return null;
+    }
+}
+
+export async function updateUserVerificationStatus(params: updateUserVerificationStatusParams): Promise<User | null> {
+    try {
+        const { email, isVerified, otpVerificationExpiry, otpVerificationCode } = params;
+        const user = await prisma.user.update({
+            where: {
+                email: email
+            },
+            data: {
+                isVerified: isVerified,
+                otpVerificationExpiry: otpVerificationExpiry,
+                otpVerificationCode: otpVerificationCode
+            }
+        });
+        return user;
+    } catch (error) {
+        console.error(ERROR_MESSAGES.SERVER_ERROR, error);
+        return null;
     }
 }

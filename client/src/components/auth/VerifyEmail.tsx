@@ -7,24 +7,24 @@ import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ArrowLeftIcon} from "@heroicons/react/24/outline";
-import { forgotPasswordSchema } from "../../schema/userSchema";
-import { sendVerifyOtp } from "../../services/authService";
+import { emailVerificationSchema } from "../../schema/userSchema";
+import { sendEmailVerificationOtp } from "../../services/authService";
 
-export type forgotPasswordData = InferType <typeof forgotPasswordSchema>
+export type emailVerificationData = InferType <typeof emailVerificationSchema>
 
-function ForgotPassword(){
+function VerifyEmail(){
     const [ isLoading, setIsLoading ] = useState(false);
     const [ redirect, setRedirect ] = useState(false);
     const { register, handleSubmit, formState: {errors}, reset } = useForm({
-        resolver: yupResolver(forgotPasswordSchema),
+        resolver: yupResolver(emailVerificationSchema),
     });
 
-    async function onSubmit(data: forgotPasswordData){
+    async function onSubmit(data: emailVerificationData){
         setIsLoading(true);
         localStorage.setItem("email", JSON.stringify(data.email));
         console.log("Data Received from form:", data);
         try {
-            let response = await sendVerifyOtp(data);
+            let response = await sendEmailVerificationOtp(data);
             console.log(response);
             if(response.status === 200){
                 setRedirect(true);
@@ -46,14 +46,14 @@ function ForgotPassword(){
     }
 
     if(redirect){
-        return <Navigate to={'/Verification'} />
+        return <Navigate to={'/'} />
     }
 
     return(
         <>
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center gap-3 lg:w-96 w-74 bg-black shadow-white shadow-lg p-10 rounded-2xl">
                 <div>
-                    <h1 className="md:text-3xl text-xl font-bold text-green-400 mb-2">Forgot Password</h1>
+                    <h1 className="md:text-3xl text-xl font-bold text-green-400 mb-2">Verify Email</h1>
                 </div>
 
                 <div className="flex flex-col gap-5">
@@ -87,14 +87,14 @@ function ForgotPassword(){
                 </div>
                 
                 <Link 
-                    to="/Login" 
+                    to="/" 
                     className="flex flex-row items-center justify-center gap-1 text-white hover:text-green-500"
                 > 
-                    <ArrowLeftIcon className="h-5 w-5" />Back
+                    <ArrowLeftIcon className="h-5 w-5" />Home
                 </Link>
             </form>
         </>
     )
 }
 
-export default ForgotPassword;
+export default VerifyEmail;

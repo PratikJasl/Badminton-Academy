@@ -20,6 +20,9 @@ export interface existingUserCheckResult {
     fullName: string;
     otpResetCode: string;
     otpResetExpiry: Date;
+    isVerified: boolean;
+    otpVerificationCode: string,
+    otpVerificationExpiry: Date
 }
 
 export interface validLocationCheckResult {
@@ -53,6 +56,19 @@ export interface updatePasswordParams {
     email: string;
     otpResetExpiry: Date;
     newPassword: string
+}
+
+export interface updateUserVerificationOtpParams {
+    email: string;
+    Otp: string;
+    otpExpiry: Date;
+}
+
+export interface updateUserVerificationStatusParams {
+    email: string;
+    isVerified: boolean;
+    otpVerificationCode: string;
+    otpVerificationExpiry: Date;
 }
 
 export interface userDataType {

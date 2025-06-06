@@ -1,6 +1,6 @@
 import {atom} from 'recoil';
 
-export const emailAtom = atom({
-    key: 'emailAtom',
+export const forgotPasswordEmailState = atom({
+    key: 'forgotPasswordEmailState',
     default: '',
 });
