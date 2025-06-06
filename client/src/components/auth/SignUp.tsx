@@ -4,7 +4,7 @@ import { signUpSchema } from "../../schema/userSchema";
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useEffect, useState } from "react";
 import { getLocation } from "../../services/locationService";
-import { getCoachingPlan } from "../../services/coachingPlanService";
+//import { getCoachingPlan } from "../../services/coachingPlanService";
 import { Navigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 import { InferType } from 'yup';
@@ -15,7 +15,7 @@ export type SignUpFormData = InferType<typeof signUpSchema>;
 
 function SignUp(){
     const [locations, setLocations] = useState<{locationId: number; name: string }[]>([]);
-    const [coachingPlan, setCoachingPlan] = useState<{coachingPlanId: number; name: string}[]>([]);
+    //const [coachingPlan, setCoachingPlan] = useState<{coachingPlanId: number; name: string}[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [redirect, setRedirect] = useState(false);
     const { register, handleSubmit, formState: {errors}, reset } = useForm({
@@ -34,17 +34,17 @@ function SignUp(){
             }
         };
 
-        const fetchCoachingPlan = async () =>{
-            try {
-                const data = await getCoachingPlan();
-                setCoachingPlan(data);
-            } catch (error) {
-                console.error("Error fetching Coaching Plans:", error);
-            }
-        }
+        // const fetchCoachingPlan = async () =>{
+        //     try {
+        //         const data = await getCoachingPlan();
+        //         setCoachingPlan(data);
+        //     } catch (error) {
+        //         console.error("Error fetching Coaching Plans:", error);
+        //     }
+        // }
 
         fetchLocation();
-        fetchCoachingPlan();
+        //fetchCoachingPlan();
     }, [])
 
     //@dev Function to register new user.
@@ -81,14 +81,14 @@ function SignUp(){
     }
 
     return(
-        <form onSubmit={handleSubmit(registerUser)} className="lg:w-full w-72 max-w-2xl max-h-screen mt-20 mb-10 lg:mt-10 lg:p-8 p-5 overflow-auto rounded-2xl shadow-lg shadow-white">
-    
-            <h1 className="text-3xl font-bold text-green-500 mb-6 text-center ">Welcome 😊</h1>
+        <form onSubmit={handleSubmit(registerUser)} className="lg:w-full w-72 max-w-2xl max-h-screen mt-20 mb-10 lg:mb-2 lg:mt-10 lg:p-8 p-5 overflow-auto rounded-2xl shadow-lg shadow-white">
+            <h1 className="text-3xl font-bold text-green-500 mb-5 text-center ">SignUp</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* First Column */}
                 <div>
-                    <div className="">
+                    <div className="flex flex-col gap-1">
+                        <label htmlFor="fullName">Full Name</label>
                         <input
                         id="fullName"
                         disabled={isLoading}
@@ -105,13 +105,14 @@ function SignUp(){
                         )}
                     </div>
 
-                    <div className="mt-4">
+                    <div className="flex flex-col gap-1 mt-4">
+                        <label htmlFor="email">Email</label>
                         <input
                         id="email"
                         disabled={isLoading}
                         type="email"
                         autoComplete="email"
-                        placeholder="Email"
+                        placeholder="Example@gmail.com"
                         {...register("email")}
                         className="w-full shadow-lg p-3 rounded-lg bg-white text-black"
                         />
@@ -122,7 +123,8 @@ function SignUp(){
                         )}
                     </div>
 
-                    <div className="mt-4">
+                    <div className="flex flex-col gap-1 mt-4">
+                        <label htmlFor="phone">Phone Number</label>
                         <input
                         id="phone"
                         disabled={isLoading}
@@ -139,7 +141,8 @@ function SignUp(){
                         )}
                     </div>
 
-                    <div className="mt-4">
+                    <div className="flex flex-col gap-1 mt-4">
+                        <label htmlFor="gender">Gender</label>
                         <select
                         id="gender"
                         disabled={isLoading}
@@ -158,7 +161,12 @@ function SignUp(){
                         )}
                     </div>
 
-                    <div className="mt-4">
+                </div>
+
+                {/* Second Column */}
+                <div> 
+                    <div className="flex flex-col gap-1">
+                        <label htmlFor="dob">Date of Birth</label>
                         <input
                         id="dob"
                         disabled={isLoading}
@@ -175,11 +183,9 @@ function SignUp(){
                         </p>
                         )}
                     </div>
-                </div>
 
-                {/* Second Column */}
-                <div> 
-                    <div className="">
+                    <div className="flex flex-col gap-1 mt-4">
+                        <label htmlFor="locationId">Location</label>
                         <select
                             id="locationId"
                             disabled={isLoading}
@@ -200,7 +206,7 @@ function SignUp(){
                         )}
                     </div>
 
-                    <div className="mt-4">
+                    {/* <div className="mt-4">
                         <select
                             id="coachingPlanId"
                             disabled={isLoading}
@@ -222,9 +228,9 @@ function SignUp(){
                             {errors.coachingPlanId?.message}
                         </p>
                         )}
-                    </div>
+                    </div> */}
 
-                    <div className="mt-4">
+                    {/* <div className="mt-4">
                         <input
                         id="planStartDate"
                         disabled={isLoading}
@@ -239,14 +245,15 @@ function SignUp(){
                             {errors.dob?.message}
                         </p>
                         )}
-                    </div>
+                    </div> */}
 
-                    <div className="mt-4">
+                    <div className="flex flex-col gap-1 mt-4">
+                        <label htmlFor="password">Password</label>
                         <input
                         id="password"
                         disabled={isLoading}
                         type="password"
-                        placeholder="Password"
+                        placeholder="******"
                         {...register("password")}
                         autoComplete="true"
                         className="w-full shadow-lg p-3 rounded-lg bg-white text-black"
@@ -258,7 +265,8 @@ function SignUp(){
                         )}
                     </div>
 
-                    <div className="mt-4">
+                    <div className="flex flex-col gap-1 mt-4">
+                        <label htmlFor="confirmPassword">Confirm Password</label>
                         <input
                         id="confirmPassword"
                         disabled={isLoading}
@@ -276,6 +284,7 @@ function SignUp(){
                     </div>
                 </div>      
             </div>
+
             <button
                 type="submit"
                 disabled={isLoading}

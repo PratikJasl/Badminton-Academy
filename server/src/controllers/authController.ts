@@ -2,14 +2,14 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { checkAge, calculateEndDate} from "../common/helperFunctions";
 import { Request, Response } from "express";
-import { membershipStatus, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import transporter from "../config/nodeMailer";
 import { checkValidLocation, getLocationById } from "../repository/locationRepo";
-import { addNewUser, checkExistingUser, getUserByEmail, updatePassword, updateResetOtp } from "../repository/userRepo";
+import { addNewUser, checkExistingUser, getUserByEmail, updatePassword, updateResetOtp, updateUserVerificationOtp, updateUserVerificationStatus } from "../repository/userRepo";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 import { errorResponse, successResponse } from "../common/apiResponse";
-import { checkValidCoachingPlan, getCoachingPlanById } from "../repository/coachingPlanRepo";
-import { getLocation } from "./coachController";
+// import { checkValidCoachingPlan, getCoachingPlanById } from "../repository/coachingPlanRepo";
+// import { getLocation } from "./coachController";
 
 const prisma = new PrismaClient();
 // let bcrypt:any;
@@ -24,8 +24,6 @@ export async function signUp(req: Request, res: Response): Promise<void> {
         gender, 
         dob, 
         locationId, 
-        coachingPlanId,
-        planStartDate,
         password,
         role,   
     } = req.body;
@@ -47,22 +45,13 @@ export async function signUp(req: Request, res: Response): Promise<void> {
             return;
         }
 
-        //@dev: Check for valid coaching plan.
-        let validCoachingPlan = await checkValidCoachingPlan(coachingPlanId);
-        if(!validCoachingPlan){
-            res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_COACHING_PLAN_ID));
-            return;
-        }
-
-        //@dev Check user is kid or adult.
+        //@dev: Check user is kid or adult.
         let isKid = checkAge(dob);
 
-        let planEndDate = await calculateEndDate(planStartDate, coachingPlanId);
-
-        //@dev Hash password.
+        //@dev: Hash password.
         let hashedPassword = await bcrypt.hash(password, 10);
 
-        //@dev Store new user in DB.
+        //@dev: Store new user in DB.
         let newUser = await addNewUser
         (
             fullName,
@@ -71,10 +60,7 @@ export async function signUp(req: Request, res: Response): Promise<void> {
             gender, 
             dob, 
             locationId, 
-            coachingPlanId,
             hashedPassword,
-            planStartDate,
-            planEndDate,
             role,
             isKid
         )
@@ -94,11 +80,6 @@ export async function logIn(req: Request, res: Response): Promise<void> {
     let {email, password} = req.body;
     console.log('received body in Login:', req.body);
 
-    if(!email || !password){
-        res.status(400).json({success: "false", message: ERROR_MESSAGES.MISSING_FIELD});
-        return
-    }
-
     try {
         //@dev: Check existing user.
         let user = await getUserByEmail(email);
@@ -107,13 +88,10 @@ export async function logIn(req: Request, res: Response): Promise<void> {
             return
         }
 
-        //@dev: Get coaching plan name.
-        let coachingPlan = await getCoachingPlanById(user.coachingPlanId);
-
         //@dev: Get Location name.
         let locationName = await getLocationById(user.locationId);
 
-        //@dev Compare Password, and generate JWT token, and send it in cookies.
+        //@dev: Compare Password, and generate JWT token, and send it in cookies.
         if(user){
             const isMatch = await bcrypt.compare(password, user.password);
             if(!isMatch){
@@ -125,13 +103,11 @@ export async function logIn(req: Request, res: Response): Promise<void> {
             const data = {
                 userId: user.userId,
                 fullName: user.fullName,
+                email: user.email,
+                phone: user.phone,
+                dob: user.dob,
                 role: user.role, 
-                gender: user.gender, 
-                planStartDate: user.planStartDate, 
-                planEndDate: user.planEndDate, 
-                coachingPlanName: coachingPlan?.name,
-                coachingPlanId: user.coachingPlanId,
-                planDuration: coachingPlan?.planDuration, 
+                gender: user.gender,  
                 locationName: locationName?.name,
                 locationId: user.locationId,
                 membershipStatus: user.membershipStatus
@@ -168,96 +144,73 @@ export async function logOut(req: Request, res: Response): Promise<void> {
     }
 }
 
-
-///-------------------Have to refactor the auth fields-------------------------
-//Verify email routes:
-export async function sendVerifyOTP(req: Request, res: Response): Promise<void> {
-    console.log("------Send Verify OTP Route------");
-    const { userId } = req.body;
-
-    if (!userId) {
-        res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_USER));
-        return;
-    }
+//@dev: Send Email Verification OTP
+export async function sendEmailVerificationOTP(req: Request, res: Response): Promise<void> {
+    console.log("------Send Email Verification OTP Route------");
+    const { email } = req.body;
 
     try{
-        //Check if the user exists.
-        const user = await prisma.user.findUnique({
-            where:{
-                userId: userId
-            }
-        });
-        
+        //@dev: Check if user exists.
+        const user = await checkExistingUser({email: email});
         if(!user){
             res.status(404).json(errorResponse(ERROR_MESSAGES.USER_NOT_FOUND));
             return;
         }
-    
+        
+        //@dev: Check if the user is already verified.
         if(user.isVerified){
             res.status(204).json(successResponse(SUCCESS_MESSAGES.ACCOUNT_ALREADY_VERIFIED));
             return;
         }
 
-        //Generate OTP and OTP expiry and update in DB.
-        const OTP = String(Math.floor(100000 + Math.random() * 900000));
+        //@dev: Generate OTP along with its expiry and update it in DB.
+        const Otp = String(Math.floor(100000 + Math.random() * 900000)); //@dev: 6-digit OTP.
         const otpExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
         
-        await prisma.user.update({
-            where:{
-                userId: userId,
-            },
-            data:{
-                otpVerificationCode: OTP,
-                otpVerificationExpiry: otpExpiry,
-            }
-        });
+        let updatedUser = await updateUserVerificationOtp({ email: email, Otp, otpExpiry });
+        if(!updatedUser){
+            res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
+            return;
+        }
 
-        //Mail the generated OTP to user.
+        //@dev: Send email verification OTP over the mail.
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
-            to: user.email,
+            to: email,
             subject: 'Account Verification OTP',
             text: 
-            `Hi ${user.fullName}👋, 
-             Your account verification OTP is: ${OTP}.
+            `Hi ${user.fullName},
+             Your Email verification OTP is: ${Otp}
             
              Best Regards
              Pratik Jussal`
         }
 
         await transporter.sendMail(mailOptions);
-
         res.status(200).json(successResponse(SUCCESS_MESSAGES.VERIFICATION_EMAIL_SEND));
         return;
     }catch(error){
-        console.log(error);
+        console.log(ERROR_MESSAGES.SERVER_ERROR, error);
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return;
     }
 }
 
+//@dev: Validate OTP and verify user account
 export async function verifyEmail(req: Request, res: Response): Promise<void> {
     console.log("-----Verify Email Route------");
-    const {userId, OTP} = req.body;
-
-    if(!userId || !OTP){
-        res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
-        return;
-    }
+    const {email, otp} = req.body;
 
     try {
-        const user = await prisma.user.findUnique({
-            where:{
-                userId: userId,
-            }
-        });
-
+        //@dev: Check if user exists.
+        const user = await checkExistingUser({email: email});
         if(!user){
-            res.status(204).json(successResponse(SUCCESS_MESSAGES.USER_NOT_FOUND));
+            res.status(404).json(errorResponse(ERROR_MESSAGES.USER_NOT_FOUND));
             return;
         }
 
-        if(user.otpVerificationCode === '' || user.otpVerificationCode !== OTP){
+        //@dev: Check if OTP is valid and not expired
+        if(user.otpVerificationCode === '' || user.otpVerificationCode !== otp){
             res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_OTP));
             return;
         }
@@ -267,17 +220,13 @@ export async function verifyEmail(req: Request, res: Response): Promise<void> {
             return;
         }
 
+        //@dev: Update user verification status.
         const date = new Date (Date.now());
-        await prisma.user.update({
-            where:{
-                userId: userId,
-            },
-            data:{
-                isVerified: true,
-                otpVerificationCode: '',
-                otpVerificationExpiry: date,
-            }
-        });
+        let updatedUser = await updateUserVerificationStatus({ email: email, isVerified: true, otpVerificationCode: '', otpVerificationExpiry: date });
+        if(!updatedUser){
+            res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
+            return;
+        }
 
         res.status(200).json(successResponse(SUCCESS_MESSAGES.EMAIL_VERIFIED));
         return;
@@ -288,7 +237,7 @@ export async function verifyEmail(req: Request, res: Response): Promise<void> {
     }
 }
 
-//------------------------Reset password routes-----------------------------
+//@dev: Send Reset Password OTP
 export async function sendResetPasswordOTP(req: Request, res: Response): Promise<void> {
     console.log("------Send Reset Password OTP Route------");
     try{
@@ -338,15 +287,11 @@ export async function sendResetPasswordOTP(req: Request, res: Response): Promise
     }
 }
 
+//@dev: Validate OTP and reset password
 export async function resetPassword(req: Request, res: Response): Promise<void> {
     console.log("------Reset Password Route------");
     console.log(" The Request Body Received is:", req.body);
     const {email, otp, password} = req.body;
-
-    if(!email || !otp || !password){
-        res.status(400).json(errorResponse(ERROR_MESSAGES.MISSING_FIELD));
-        return;
-    }
 
     try {
         //@dev: Check if the user exists.

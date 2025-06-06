@@ -1,18 +1,17 @@
 import { Router } from "express";
 import { userAuth } from "../middlewares/userAuth";
-import { userDataValidation } from "../middlewares/userDataValidation";
-import { logIn, logOut, signUp, sendVerifyOTP, verifyEmail, sendResetPasswordOTP, resetPassword } from "../controllers/authController";
-
+import { logIn, logOut, signUp, sendEmailVerificationOTP, verifyEmail, sendResetPasswordOTP, resetPassword } from "../controllers/authController";
+import { emailDataValidation, logInDataValidation, signUpDataValidation, verifyEmailDataValidation, resetPasswordDataValidation } from "../middlewares/authRouteDataValidation";
 
 const authRouter = Router();
 
-//@dev Authentication routes.
-authRouter.post('/auth/signup',userDataValidation, signUp);
-authRouter.post('/auth/login', logIn);
-authRouter.post('/auth/logout',userAuth, logOut);
-authRouter.post('/auth/verify-otp', userAuth, sendVerifyOTP);
-authRouter.post('/auth/verify-email', userAuth, verifyEmail);
-authRouter.post('/auth/send-reset-otp', sendResetPasswordOTP);
-authRouter.post('/auth/reset-password', resetPassword);
+//@dev: Authentication routes
+authRouter.post('/auth/signup', signUpDataValidation, signUp);
+authRouter.post('/auth/login', logInDataValidation, logIn);
+authRouter.post('/auth/logout', userAuth, logOut);
+authRouter.post('/auth/verify-otp', emailDataValidation, sendEmailVerificationOTP);
+authRouter.post('/auth/verify-email', verifyEmailDataValidation, verifyEmail);
+authRouter.post('/auth/send-reset-otp', emailDataValidation, sendResetPasswordOTP);
+authRouter.post('/auth/reset-password', resetPasswordDataValidation, resetPassword);
 
-export {authRouter}
+export { authRouter };

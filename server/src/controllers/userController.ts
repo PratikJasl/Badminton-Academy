@@ -27,7 +27,7 @@ export async function getUserDetailById(req: Request, res: Response ): Promise<v
         }
 
         //@dev: Get coaching plan name.
-        let coachingPlan = await getCoachingPlanById(user.coachingPlanId);
+        // let coachingPlan = await getCoachingPlanById(user.coachingPlanId);
 
         //@dev: Get Location name.
         let locationName = await getLocationById(user.locationId);
@@ -41,11 +41,6 @@ export async function getUserDetailById(req: Request, res: Response ): Promise<v
             dob: user.dob,
             role: user.role, 
             gender: user.gender, 
-            planStartDate: user.planStartDate, 
-            planEndDate: user.planEndDate, 
-            coachingPlanName: coachingPlan?.name,
-            coachingPlanId: user.coachingPlanId,
-            planDuration: coachingPlan?.planDuration, 
             locationName: locationName?.name,
             locationId: user.locationId,
             membershipStatus: user.membershipStatus

@@ -20,6 +20,9 @@ export interface existingUserCheckResult {
     fullName: string;
     otpResetCode: string;
     otpResetExpiry: Date;
+    isVerified: boolean;
+    otpVerificationCode: string,
+    otpVerificationExpiry: Date
 }
 
 export interface validLocationCheckResult {
@@ -55,6 +58,19 @@ export interface updatePasswordParams {
     newPassword: string
 }
 
+export interface updateUserVerificationOtpParams {
+    email: string;
+    Otp: string;
+    otpExpiry: Date;
+}
+
+export interface updateUserVerificationStatusParams {
+    email: string;
+    isVerified: boolean;
+    otpVerificationCode: string;
+    otpVerificationExpiry: Date;
+}
+
 export interface userDataType {
     fullName: string;
     email: string;
@@ -62,8 +78,6 @@ export interface userDataType {
     gender: 'male' | 'female' | 'other' | null;
     dob: Date;
     locationId: number;
-    coachingPlanId: number;
-    planStartDate: Date | null
 }
 
 export interface UpdateUserRequestBody {
