@@ -17,6 +17,7 @@ const UserPayment = lazy(() => import('./components/features/payment/UserPayment
 const UserDetails = lazy(() => import('./components/features/user/UserDetails'));
 const UserAttendance = lazy(() => import('./components/features/attendance/UserAttendance'));
 const VerifyEmail = lazy(() => import('./components/auth/VerifyEmail'));
+const VerifyEmailOtp = lazy(() => import('./components/auth/VerifyEmailOtp'));
 
 function App() {
     return (
@@ -37,6 +38,7 @@ function App() {
                 <Route path='/ForgotPassword' element={<ForgotPassword/>} />
                 <Route path='/Verification' element={<VerifyResetPasswordOTP/>} />
                 <Route path='/VerifyEmail' element={<VerifyEmail/>} />
+                <Route path='/VerifyEmailOtp' element={<VerifyEmailOtp/>} />
             </Routes>
 
             <ToastContainer

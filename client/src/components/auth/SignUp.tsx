@@ -77,7 +77,7 @@ function SignUp(){
     };
 
     if(redirect){
-        return <Navigate to={'/Login'} />
+        return <Navigate to={'/VerifyEmail'} />
     }
 
     return(

@@ -17,14 +17,14 @@ export type forgotPasswordData = InferType <typeof emailVerificationSchema>
 function ForgotPassword(){
     const [ isLoading, setIsLoading ] = useState(false);
     const [ redirect, setRedirect ] = useState(false);
-    const setForgetPasswordEmailState = useSetRecoilState(forgotPasswordEmailState);
+    const emailFromRecoil = useSetRecoilState(forgotPasswordEmailState);
     const { register, handleSubmit, formState: {errors}, reset } = useForm({
         resolver: yupResolver(emailVerificationSchema),
     });
 
     async function onSubmit(data: forgotPasswordData){
         setIsLoading(true);
-        setForgetPasswordEmailState(data.email);
+        emailFromRecoil(data.email);
         console.log("Data Received from form:", data);
         try {
             let response = await sendVerifyOtp(data);
@@ -67,7 +67,6 @@ function ForgotPassword(){
                             placeholder="example@gmail.com"
                             autoComplete="email"
                             {...register("email")}
-
                             disabled = {isLoading}
                             className="shadow-lg p-2 rounded-lg bg-white text-black min-w-64 mb-1"
                         />

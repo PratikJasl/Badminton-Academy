@@ -9,19 +9,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ArrowLeftIcon} from "@heroicons/react/24/outline";
 import { emailVerificationSchema } from "../../schema/userSchema";
 import { sendEmailVerificationOtp } from "../../services/authService";
+import { useSetRecoilState } from "recoil";
+import { VerifyEmailState } from "../../atom/emailAtom";
 
 export type emailVerificationData = InferType <typeof emailVerificationSchema>
 
 function VerifyEmail(){
     const [ isLoading, setIsLoading ] = useState(false);
     const [ redirect, setRedirect ] = useState(false);
+    const emailFromRecoil = useSetRecoilState(VerifyEmailState);
     const { register, handleSubmit, formState: {errors}, reset } = useForm({
         resolver: yupResolver(emailVerificationSchema),
     });
 
     async function onSubmit(data: emailVerificationData){
         setIsLoading(true);
-        localStorage.setItem("email", JSON.stringify(data.email));
+        emailFromRecoil(data.email);
         console.log("Data Received from form:", data);
         try {
             let response = await sendEmailVerificationOtp(data);
@@ -46,7 +49,7 @@ function VerifyEmail(){
     }
 
     if(redirect){
-        return <Navigate to={'/'} />
+        return <Navigate to={'/VerifyEmailOtp'} />
     }
 
     return(
