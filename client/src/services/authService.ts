@@ -96,9 +96,26 @@ export async function sendEmailVerificationOtp(data: emailVerificationData){
 //@dev: Function for changing password.
 export async function changePassword(data: verificationData, email: string){
     try {
-        let payload = {password: data.password,email: email, otp: data.otp};
+        let payload = {password: data.password, email: email, otp: data.otp};
         let response = await axios.post("http://localhost:3000/api/auth/reset-password",
         payload,
+        {
+            headers: {
+            "Content-Type": "application/json",
+            },
+            withCredentials: true,
+        });
+        return response;
+    } catch (error) {
+        console.error("Error Logging In", error);
+        throw error
+    }
+}
+
+export async function verifyEmail(data: {email: string, otp: string}){
+    try {
+        let response = await axios.post("http://localhost:3000/api/auth/verify-email",
+        data,
         {
             headers: {
             "Content-Type": "application/json",

@@ -7,24 +7,24 @@ import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ArrowLeftIcon} from "@heroicons/react/24/outline";
-import { resetPasswordVerificationSchema } from "../../schema/userSchema";
-import { forgotPasswordEmailState } from "../../atom/emailAtom";
-import { changePassword } from "../../services/authService";
-import { sendVerifyOtp } from "../../services/authService";
+import { EmailVerificationSchema } from "../../schema/userSchema";
+import { VerifyEmailState } from "../../atom/emailAtom";
+import { verifyEmail } from "../../services/authService";
+import { sendEmailVerificationOtp } from "../../services/authService";
 import { useRecoilValue } from "recoil";
 
-export type verificationData = InferType < typeof resetPasswordVerificationSchema>
+export type verificationData = InferType < typeof EmailVerificationSchema>
 
-function VerifyResetPasswordOTP(){
+function VerifyEmailOTP(){
     const [ isLoading, setIsLoading ] = useState(false);
     const [ redirect, setRedirect ] = useState(false);
     const [ isResending, setIsResending ] = useState(false);
     const [coolDownTimer, setCoolDownTimer] = useState(0);
-    const emailFromRecoil = useRecoilValue(forgotPasswordEmailState);
+    const emailFromRecoil = useRecoilValue(VerifyEmailState);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
     const navigate = useNavigate();
     const { register, handleSubmit, formState: {errors}, reset } = useForm({
-        resolver: yupResolver(resetPasswordVerificationSchema),
+        resolver: yupResolver(EmailVerificationSchema),
     });
 
     //@dev: useEffect for handling the countdown logic
@@ -64,9 +64,7 @@ function VerifyResetPasswordOTP(){
             return;
         }
 
-        //const emailStr = localStorage.getItem("email");
-        const emailStr = emailFromRecoil;
-        const email = emailStr ? JSON.parse(emailStr) : null;
+        const email = emailFromRecoil;
         if (!email) {
             toast.error("Email not found. Please go back to reset password.");
             setIsResending(false);
@@ -79,7 +77,7 @@ function VerifyResetPasswordOTP(){
         setCoolDownTimer(30);
 
         try {
-            let response = await sendVerifyOtp({email: email});
+            let response = await sendEmailVerificationOtp({email: email});
             if(response.status === 200){
                 toast.success("OTP has been send");
             }else{
@@ -98,7 +96,6 @@ function VerifyResetPasswordOTP(){
     async function onSubmit(data: verificationData){
         setIsLoading(true);
         const email = emailFromRecoil;
-        //const email = emailStr ? JSON.parse(emailStr) : null;
         console.log("Email Received from recoil is:", email)
         console.log("Data Received from form:", data);
         console.log("Email In verify:", email);
@@ -108,14 +105,13 @@ function VerifyResetPasswordOTP(){
                 setIsLoading(false);
                 return;
             }
-            let response = await changePassword(data, email);
+            let response = await verifyEmail({email: email, otp: data.otp});
             if(response.status === 200){
                 setRedirect(true);
-                toast.success("Password Changed Successfully");
-                localStorage.removeItem("email");
+                toast.success("Email Verified Successfully");
                 reset();
             }else{
-                toast.error(response.data.message || "Password reset failed. Please try again.");
+                toast.error(response.data.message || "Email verification failed. Please try again.");
             }
         } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
@@ -144,38 +140,6 @@ function VerifyResetPasswordOTP(){
                 </div>
 
                 <div className="flex flex-col gap-5">
-                    <div className="flex flex-col gap-1">
-                        <label htmlFor="">Enter New Password</label>
-                        <input 
-                            type="text"
-                            placeholder="At least 6 digits"
-                            id="password"
-                            {...register("password")}
-                            disabled = {isLoading}
-                            className="shadow-lg p-2 rounded-lg bg-white text-black min-w-64 mb-1"
-                        />
-                        {errors.password && (
-                            <p className="text-sm text-red-700 bg-red-100 p-2 rounded-md mt-1 left-0 w-full">
-                                {typeof errors.password?.message === "string" ? errors.password.message : ""}
-                            </p>
-                        )}
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <label htmlFor="">Confirm Password</label>
-                        <input 
-                            type="text"
-                            placeholder="******"
-                            id="confirmPassword"
-                            {...register("confirmPassword")}
-                            disabled = {isLoading}
-                            className="shadow-lg p-2 rounded-lg bg-white text-black min-w-64 mb-1"
-                        />
-                        {errors.confirmPassword && (
-                            <p className="text-sm text-red-700 bg-red-100 p-2 rounded-md mt-1 left-0 w-full">
-                                {typeof errors.confirmPassword?.message === "string" ? errors.confirmPassword.message : ""}
-                            </p>
-                        )}
-                    </div>
                     <div className="flex flex-col gap-1">
                         <label htmlFor="">Enter verification Otp</label>
                         <input 
@@ -219,7 +183,7 @@ function VerifyResetPasswordOTP(){
                 </div>
                 
                 <Link 
-                    to="/Login" 
+                    to="/VerifyEmail" 
                     className="flex flex-row md:mt-2 mt-1 items-center justify-center gap-1 text-green-500 hover:text-green-300"
                 > 
                     <ArrowLeftIcon className="h-5 w-5" />Back
@@ -229,4 +193,4 @@ function VerifyResetPasswordOTP(){
     )
 }
 
-export default VerifyResetPasswordOTP
+export default VerifyEmailOTP
