@@ -4,3 +4,38 @@
 @theme{
     --font-poppins: 'Poppins', sans-serif;
 }
+
+/* Enable smooth scrolling */
+html {
+
+  scroll-behavior: smooth;
+  
+}
+
+@layer utilities {
+  .scrollbar-custom {
+    scrollbar-width: thin;
+    scrollbar-color: #4b5563 #060606;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar {
+    height: 5px;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background-color: #4b5563;
+    border-radius: 5px;
+    border: 2px solid #f3f4f6;
+  }
+
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background-color: #f3f4f6;
+    border-radius: 5px;
+  }
+}
+
+
