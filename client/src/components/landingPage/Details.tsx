@@ -53,12 +53,12 @@ function Details(){
                         <img 
                             src={profileImage} 
                             alt="Profile"
-                            className="lg:h-110 h-75 object-cover"
+                            className="lg:h-110 h-65 object-cover"
                         />
                     </div>
                     <div className="flex flex-col lg:gap-8 gap-5 lg:w-110 w-74">
-                        <div className="lg:text-8xl text-4xl">
-                            <h1 className="font-bold">Who are <span className="text-green-400">we</span> ? </h1>
+                        <div className="lg:text-8xl text-5xl">
+                            <h1 className="font-bold">Who are <span className="text-green-400">we</span>? </h1>
                         </div>
 
                         <p className="lg:text-2xl text-xl">
@@ -70,7 +70,7 @@ function Details(){
 
                 <div className="flex lg:flex-row flex-col lg:gap-45 gap-15 items-center justify-center w-full p-5">
                     <div className="flex flex-col order-2 lg:order-none lg:gap-5 gap-1 lg:w-110 w-74 items-center justify-center lg:text-start text-center">
-                        <p className="lg:text-8xl text-4xl font-bold">
+                        <p className="lg:text-8xl text-5xl font-bold">
                             From <span className="text-green-400">street</span> to <span className="text-green-400">state</span> !!
                         </p>
                         <p className="mt-5 lg:text-2xl text-xl">
@@ -82,7 +82,7 @@ function Details(){
                         <img 
                             src={profileImage} 
                             alt="Profile"
-                            className="lg:h-110 h-75 object-cover"
+                            className="lg:h-110 h-65 object-cover"
                         />
                     </div>
                 </div>
