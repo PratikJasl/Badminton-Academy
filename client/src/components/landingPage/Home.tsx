@@ -6,6 +6,7 @@ const Contact = lazy(() => import("./Contact"));
 const Details = lazy(() => import("./Details"));
 // const Introduce = lazy(() => import("./Intro"));
 const WhyUs = lazy(() => import("./WhyUs"));
+const Testimonials = lazy(() => import("./Testimonials"));
 
 function LandingPage(){
     return(
@@ -16,6 +17,7 @@ function LandingPage(){
                 <About/>
                 <Details/>
                 <WhyUs/>
+                <Testimonials/>
                 {/* <Service/> */}
                 <Contact/>
             </div>
