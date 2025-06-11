@@ -7,9 +7,9 @@ import whyUs6 from "../../assets/whyus6.png";
 
 function WhyUS(){
     return(
-        <section id="why-us" className="w-full lg:mt-235 mt-380 p-25">
+        <section id="why-us" className="lg:w-full lg:mt-235 mt-380 p-25">
             <div className="flex flex-col items-center justify-center lg:gap-8 gap-2">
-                <div className="flex flex-col items-center justify-center lg:gap-8 gap-5">
+                <div className="flex flex-col items-center justify-center lg:gap-8 lg:w-full w-86 gap-5">
                     <h1 className="lg:text-8xl text-6xl font-bold">Why <span className="text-green-400">Us</span> ?</h1>
                     <p className="lg:text-2xl text-xl text-center">
                         What makes us unique is our unwavering commitment to <span className="text-green-400">excellence. </span>
