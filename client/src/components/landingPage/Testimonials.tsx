@@ -47,17 +47,16 @@ function Testimonials() {
         },
     ];
 
-    // Function to calculate and update scrollability of buttons
+    //@dev: Function to calculate and update scrollability of buttons
     const updateScrollability = () => {
         if (scrollContainerRef.current) {
             const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current;
             setCanScrollLeft(scrollLeft > 0);
-            // Allow a small tolerance for floating point errors in scrollWidth vs clientWidth
             setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 5);
         }
     };
 
-    // Use useEffect to update scrollability on mount and resize
+    //@dev: Use useEffect to update scrollability on mount and resize
     useEffect(() => {
         updateScrollability();
         const container = scrollContainerRef.current;
@@ -77,7 +76,7 @@ function Testimonials() {
         if (!scrollContainerRef.current) return;
 
         const container = scrollContainerRef.current;
-        const isDesktop = window.innerWidth >= 1024; // Tailwind's lg breakpoint
+        const isDesktop = window.innerWidth >= 1024;
         const cardWidth = isDesktop ? 520 : 256; // lg:w-130 (520px), min-w-64 (256px)
         const gapWidth = 30; // gap-10 (30px)
         const scrollAmount = cardWidth + gapWidth;
@@ -94,14 +93,14 @@ function Testimonials() {
     };
 
     return (
-        <section id="testimonials" className="bg-gray-900 w-full mb-20 flex flex-col items-center gap-5 p-10 relative">
+        <section id="testimonials" className="w-full mb-20 flex flex-col items-center gap-15 p-10 relative">
 
             <div className="flex flex-col items-center gap-5">
                 <h1 className="lg:text-8xl text-5xl font-bold"><span className="bg-gradient-to-t from-white to-green-500 text-transparent bg-clip-text">Testimonials</span> </h1>
                 <h2 className="lg:text-4xl text-3xl"> what our <span className="text-green-500 lg:text-4xl text-3xl italic">players say</span></h2>
             </div>
 
-            <div className="relative w-full flex items-center justify-center px-4 md:px-0">
+            <div className="relative lg:w-full w-70 flex items-center justify-center">
                 <button
                     onClick={() => slide('left')}
                     className={`absolute left-0 z-10 p-2 rounded-full bg-gray-800 text-white shadow-lg
