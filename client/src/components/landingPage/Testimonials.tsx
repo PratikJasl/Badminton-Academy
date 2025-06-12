@@ -31,20 +31,20 @@ function Testimonials() {
             batch: "Juniors Batch",
             quote: "I love coming here! The coaches are fun and teach us so many new techniques. My smashes are much stronger now!"
         },
-        // {
-        //     image: Testimonial1,
-        //     name: "Dr. Anjali Verma",
-        //     title: "Physician @Apollo Hospitals",
-        //     batch: "Morning Batch",
-        //     quote: "A fantastic way to stay active and learn. The flexible timings and friendly environment make it perfect for busy professionals."
-        // },
-        // {
-        //     image: Testimonial1,
-        //     name: "Coach David Lee",
-        //     title: "Ex-Pro Player",
-        //     batch: "Pro Training",
-        //     quote: "As a former pro, I'm impressed by the structured training and dedication. They develop true champions."
-        // },
+        {
+            image: Testimonial1,
+            name: "Dr. Anjali Verma",
+            title: "Physician @Apollo Hospitals",
+            batch: "Morning Batch",
+            quote: "A fantastic way to stay active and learn. The flexible timings and friendly environment make it perfect for busy professionals."
+        },
+        {
+            image: Testimonial1,
+            name: "Coach David Lee",
+            title: "Ex-Pro Player",
+            batch: "Pro Training",
+            quote: "As a former pro, I'm impressed by the structured training and dedication. They develop true champions."
+        },
     ];
 
     //@dev: Function to calculate and update scrollability of buttons
@@ -93,7 +93,7 @@ function Testimonials() {
     };
 
     return (
-        <section id="testimonials" className="bg-gray-900 w-full mb-20 flex flex-col items-center lg:gap-5 gap-15 p-10 relative">
+        <section id="testimonials" className="w-full mb-20 flex flex-col items-center gap-15 p-10 relative">
 
             <div className="flex flex-col items-center gap-5">
                 <h1 className="lg:text-8xl text-5xl font-bold"><span className="bg-gradient-to-t from-white to-green-500 text-transparent bg-clip-text">Testimonials</span> </h1>

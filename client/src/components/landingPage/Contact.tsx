@@ -2,20 +2,22 @@ import { PhoneIcon } from "@heroicons/react/24/outline";
 
 function Contact(){
     return(
-        <section id="contacts" className="bg-black lg:p-5 p-25 w-full text-center lg:mt-50 mt-10">
+        <section id="contacts" className="lg:p-5 p-25 w-full text-center lg:mt-15 mt-10">
             <div className="flex flex-col gap-8 items-center">
-                <h1 className="md:text-5xl text-3xl text-yellow-500">Reach out to us</h1>
-                <p className="text-center lg:text-xl text-lg">🏸 Our mission is to nurture talent and develop players capable of competing at state and national levels. We 
-                    are commited to our mission and continiously strive for excilence. We are a team of humble and dedicated coaches, here to turn you into a badminton champ.
-                </p>
-                <button 
-                    className="w-fit bg-yellow-500 text-white text-xl p-2 mt-5 rounded-lg hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out">
-                    <a 
-                        href="" 
-                        target="blank">
-                        Book a Demo Class
-                    </a>
-                </button>
+                <div className="flex flex-col gap-10 items-center justify-center">
+                    <h1 className="md:text-8xl text-3xl font-bold text-green-500">Contact us</h1>
+                    <p className="text-center lg:text-xl text-lg">🏸 Our mission is to nurture talent and develop players capable of competing at state and national levels. We 
+                        are commited to our mission and continiously strive for excilence. We are a team of humble and dedicated coaches, here to turn you into a badminton champ.
+                    </p>
+                    <button 
+                        className="w-fit bg-green-500 text-white text-xl p-2 mt-5 rounded-lg hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out">
+                        <a 
+                            href="" 
+                            target="blank">
+                            Book a Demo Class
+                        </a>
+                    </button>
+                </div>
 
                 <div className="flex md:flex-row flex-wrap gap-5 w-full justify-center">
                     <a href="" target="blank">
