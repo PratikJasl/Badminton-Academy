@@ -46,14 +46,19 @@ function Carousel() {
   };
 
   return (
-    <section id="carousel" className="mt-15">
+    <section id="carousel" className="flex flex-col gap-10 items-center justify-center mt-5">
+      <div className="flex flex-col items-center justify-center lg:gap-8 lg:w-full w-86 gap-5">
+        <h1 className="lg:text-8xl text-6xl font-bold text-center bg-gradient-to-t from-white to-green-500 text-transparent bg-clip-text">Simple Carousel</h1>
+        <h2 className="lg:text-2xl text-xl">5x interactive images</h2>
+      </div>
+
       <div className="flex flex-row justify-center items-center relative">
         {imageLinks.length > 0 && (
           <div className="flex flex-col justify-center relative">
             <img
               src={imageLinks[currentIndex]}
               alt="carousel"
-              className={`w-screen h-72 md:h-150 object-cover transition-opacity duration-1000 ease-in-out ${
+              className={`md:w-180 w-80 h-72 md:h-90 object-cover transition-opacity duration-1000 ease-in-out rounded-4xl ${
                 isFading ? "opacity-0" : "opacity-100"
               }`}
               key={currentIndex}
