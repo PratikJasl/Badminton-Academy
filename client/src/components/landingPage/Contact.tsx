@@ -1,44 +1,42 @@
 import { PhoneIcon } from "@heroicons/react/24/outline";
+import { MapPinIcon } from "@heroicons/react/24/outline";
 
-function Contact(){
+function Contact(){ 
     return(
-        <section id="contacts" className="lg:p-5 p-25 w-full text-center lg:mt-15 mt-10">
+        <section id="contacts" className="md:px-25 p-10 px-30 w-full text-center">
             <div className="flex flex-col gap-8 items-center">
-                <div className="flex flex-col gap-10 items-center justify-center">
-                    <h1 className="md:text-8xl text-3xl font-bold">Contact <span className="text-green-500">Us</span></h1>
-                    <p className="text-center lg:text-xl text-lg">🏸 Our mission is to nurture talent and develop players capable of competing at state and national levels. We 
-                        are commited to our mission and continiously strive for excilence. We are a team of humble and dedicated coaches, here to turn you into a badminton champ.
+                <div className="flex flex-col gap-5 items-center justify-center">
+                    <h1 className="md:text-6xl text-5xl font-bold">Contact <span className="text-green-500">Us</span></h1>
+                    <p className="md:text-center text-justify lg:text-xl text-lg">
+                        Have questions, feedback, or just want to say hello? Just reach us through our contact details below. We'd love to hear from you!
+                        You can expect a call back shortly!
                     </p>
-                    <button 
-                        className="w-fit bg-green-500 text-white text-xl p-2 mt-5 rounded-lg hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out">
-                        <a 
-                            href="" 
-                            target="blank">
-                            Book a Demo Class
-                        </a>
-                    </button>
                 </div>
+                
+                <div className="flex flex-col gap-5 w-full items-center justify-center">
+                    <div className="flex items-center justify-center gap-2 hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out">
+                        <MapPinIcon className="h-8 w-8 text-red-500" />
+                        <h3 className="text-lg">Bangalore, Karnataka, India</h3>
+                    </div>
 
-                <div className="flex md:flex-row flex-wrap gap-5 w-full justify-center">
-                    <a href="" target="blank">
-                        <i className="fab fa-instagram text-3xl text-red-500 hover:scale-150 active:scale-150 transition transform duration-500 ease-in-out"></i>
-                    </a>
-                    <a href="" target="blank">
-                        <i className="fab fa-linkedin text-3xl text-blue-500 hover:scale-150 active:scale-150 transition transform duration-500 ease-in-out"></i>
-                    </a>
-                    <a href="" target="blank">
-                        <i className="fab fa-youtube text-3xl text-red-500 hover:scale-150 active:scale-150 transition transform duration-500 ease-in-out"></i>
-                    </a>
-
-                    <div className="flex items-center gap-2 hover:scale-115 active:scale-120 transition transform duration-500 ease-in-out">
+                    <div className="flex items-center justify-center gap-2 hover:scale-115 active:scale-120 transition transform duration-500 ease-in-out">
                         <i className="fa-regular fa-envelope text-3xl text-blue-500 hover:scale-150 active:scale-150 transition transform duration-500 ease-in-out"></i>
                         <h3 className="text-lg">ranjit.subra@gmail.com</h3>
                     </div>
-                    
-                    <div className="flex items-center gap-2 hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out">
+
+                    <div className="flex items-center justify-center gap-2 hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out">
                         <PhoneIcon className="h-6 w-6 text-blue-600" />
                         <h3 className="text-lg">8870018565</h3>
                     </div>
+                    <button 
+                        className="w-fit bg-green-600 text-white text-xl p-2 rounded-lg hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out">
+                        <a 
+                            href="" 
+                            target="blank">
+                            Get in Touch!
+                        </a>
+                    </button>
+                    
                 </div>
 
                 <h1>Made with ❤️ by <a href="https://pratikjasl.github.io/Portfolio-Website/" target="blank" className="hover:text-red-700 ">Pratik Jussal</a></h1>
@@ -47,4 +45,4 @@ function Contact(){
     )
 }
 
-export default Contact
+export default Contact;
