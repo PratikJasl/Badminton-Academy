@@ -96,3 +96,10 @@ export interface updateAttendanceInterface{
     attendanceDate: Date,
     isStatus: boolean,
 }
+
+export interface userPlanData{
+    userId:number,
+    coachingPlanId:number,
+    planStartDate:Date,
+    amount:number
+}

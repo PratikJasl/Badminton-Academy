@@ -66,8 +66,8 @@ model CoachingPlan {
   coachingPlanId          Int @id @default(autoincrement())
   name                    String @unique
   description             String
-  planDuration            String 
-  price                   Decimal
+  planDuration            Int
+  price                   Decimal @db.Decimal(6,2)
   UserPlanInfo UserPlanInfo[]
 }
 

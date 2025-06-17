@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { checkAge, calculateEndDate} from "../common/helperFunctions";
+import { checkAge} from "../common/helperFunctions";
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import transporter from "../config/nodeMailer";
@@ -47,8 +47,11 @@ export async function signUp(req: Request, res: Response): Promise<void> {
 
         //@dev: Check user is kid or adult.
         let isKid = checkAge(dob);
+        
+        //@pratik jussal: 
+        // let planEndDate = await calculateEndDate(planStartDate, coachingPlanId);
 
-        //@dev: Hash password.
+        //@dev Hash password.
         let hashedPassword = await bcrypt.hash(password, 10);
 
         //@dev: Store new user in DB.

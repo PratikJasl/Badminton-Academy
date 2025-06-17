@@ -1,4 +1,3 @@
-
 import { PrismaClient } from "@prisma/client";
 import cron from "node-cron"
 import { getTodaysDate } from "../common/helperFunctions";
@@ -18,6 +17,10 @@ async function scheduledtask(): Promise<boolean> {
         let users = await getAllActiveUserIds();
         console.log("UserIds: ", users);
         console.log("Total No. of Users: ", users.length);
+        if(users===null){
+            console.log("Users data not available...");
+            return false;
+        }
         const result = await insertUsersDataForAttendance(users);
         console.log("Task Executed successfully");
         return true;
