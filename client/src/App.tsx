@@ -5,8 +5,8 @@ import { Route, Routes } from 'react-router-dom';
 const LogIn = lazy(() => import("./components/auth/Login"));
 const SignUp = lazy(() => import('./components/auth/SignUp'));
 import Navbar from './components/navbar/Navbar';
-import ForgotPassword from './components/auth/Password';
-import VerifyOTP from './components/auth/VerifyOtp';
+import ForgotPassword from './components/auth/ForgotPassword';
+import VerifyResetPasswordOTP from './components/auth/VerifyResetPasswordOtp';
 const Home = lazy(() => import('./components/landingPage/Home'));
 const UserPlan = lazy(() => import('./components/features/user/UserPlan'));
 const Location = lazy(() => import('./components/features/location/Location'));
@@ -16,6 +16,8 @@ const AddSchedule = lazy(() => import('./components/features/schedule/AddSchedul
 const UserPayment = lazy(() => import('./components/features/payment/UserPayment'));
 const UserDetails = lazy(() => import('./components/features/user/UserDetails'));
 const UserAttendance = lazy(() => import('./components/features/attendance/UserAttendance'));
+const VerifyEmail = lazy(() => import('./components/auth/VerifyEmail'));
+const VerifyEmailOtp = lazy(() => import('./components/auth/VerifyEmailOtp'));
 
 function App() {
     return (
@@ -34,7 +36,9 @@ function App() {
                 <Route path='/Payments' element={<UserPayment />} />
                 <Route path='/Attendance' element={<UserAttendance />} />
                 <Route path='/ForgotPassword' element={<ForgotPassword/>} />
-                <Route path='/Verification' element={<VerifyOTP/>} />
+                <Route path='/Verification' element={<VerifyResetPasswordOTP/>} />
+                <Route path='/VerifyEmail' element={<VerifyEmail/>} />
+                <Route path='/VerifyEmailOtp' element={<VerifyEmailOtp/>} />
             </Routes>
 
             <ToastContainer

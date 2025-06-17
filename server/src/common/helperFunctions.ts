@@ -15,7 +15,7 @@ export function checkAge(dob: Date): boolean {
     return age < adultAge;
 }
 
-// //@dev: Function to calculate Plan End Date.
+ //@dev: Function to calculate Plan End Date.
 // export async function calculateEndDate(planStartDate: Date, coachingPlanId: number): Promise<Date | null> {
 //     try {
 //         //@dev: Fetch the coaching plan details
@@ -27,7 +27,10 @@ export function checkAge(dob: Date): boolean {
 
 //         //@dev: Find the plan duration.
 //         let duration = coachingPlan.planDuration;
-//         let durationParts = duration;
+
+//         //@raj: manual change needed to fix by @pratik jussal.
+
+//         let durationParts = duration.toString();
 //         if (durationParts.length !== 2) {
 //             console.error(`Invalid plan duration format: ${duration}`);
 //             return null;

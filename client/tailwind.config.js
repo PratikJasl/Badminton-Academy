@@ -1,3 +1,5 @@
+import scrollbar from 'tailwind-scrollbar';
+
 module.exports = {
     content: [
       "./src/**/*.{js,jsx,ts,tsx}",
@@ -13,5 +15,7 @@ module.exports = {
           poppins: ['Poppins', 'sans-serif'],
       },
     },
-    plugins: [],
-  };
+    plugins: [
+      scrollbar
+    ],
+};

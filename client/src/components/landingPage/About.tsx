@@ -7,9 +7,9 @@ function About(){
             <div className="flex lg:flex-row flex-col items-center justify-center lg:gap-10 gap-5">
                 <div className="flex flex-col order-2 lg:order-none gap-5">
                     <div className="flex flex-col md:gap-8 gap-5 sm:items-center lg:items-start lg:text-left text-center">
-                        <div className=" flex flex-col lg:items-start items-center md:gap-5 gap-2">
+                        <div className=" flex flex-col lg:items-start items-center md:gap-5 gap-1">
                             <p className="lg:text-4xl text-2xl">Meet</p>
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col md:gap-1">
                                 <p className="lg:text-7xl text-4xl font-semibold">Ranjit </p>
                                 <p className="lg:text-7xl text-4xl font-semibold">Subramaniyam</p>
                             </div>
@@ -52,7 +52,7 @@ function About(){
                     <img 
                         src={profileImage}
                         alt="profile-pic" 
-                        className="lg:h-full lg:w-full h-70 object-cover hover:scale-110 active:scale-110 transition-transform duration-800 ease-in-out" 
+                        className="lg:h-full lg:w-full h-60 object-cover hover:scale-110 active:scale-110 transition-transform duration-800 ease-in-out" 
                     />
                 </div>
             </div>

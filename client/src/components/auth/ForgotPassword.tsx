@@ -7,21 +7,24 @@ import { useForm } from "react-hook-form";
 import { Navigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ArrowLeftIcon} from "@heroicons/react/24/outline";
-import { forgotPasswordSchema } from "../../schema/userSchema";
+import { emailVerificationSchema } from "../../schema/userSchema";
+import { forgotPasswordEmailState } from "../../atom/emailAtom";
 import { sendVerifyOtp } from "../../services/authService";
+import { useSetRecoilState } from "recoil";
 
-export type forgotPasswordData = InferType <typeof forgotPasswordSchema>
+export type forgotPasswordData = InferType <typeof emailVerificationSchema>
 
 function ForgotPassword(){
     const [ isLoading, setIsLoading ] = useState(false);
     const [ redirect, setRedirect ] = useState(false);
+    const emailFromRecoil = useSetRecoilState(forgotPasswordEmailState);
     const { register, handleSubmit, formState: {errors}, reset } = useForm({
-        resolver: yupResolver(forgotPasswordSchema),
+        resolver: yupResolver(emailVerificationSchema),
     });
 
     async function onSubmit(data: forgotPasswordData){
         setIsLoading(true);
-        localStorage.setItem("email", JSON.stringify(data.email));
+        emailFromRecoil(data.email);
         console.log("Data Received from form:", data);
         try {
             let response = await sendVerifyOtp(data);
@@ -64,7 +67,6 @@ function ForgotPassword(){
                             placeholder="example@gmail.com"
                             autoComplete="email"
                             {...register("email")}
-
                             disabled = {isLoading}
                             className="shadow-lg p-2 rounded-lg bg-white text-black min-w-64 mb-1"
                         />
