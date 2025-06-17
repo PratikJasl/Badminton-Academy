@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 import { addNewLocation, checkValidLocation, getAllLocations, checkExistingLocation, removeLocation } from "../repository/locationRepo";
 import { addNewCoachingPlan, getAllCoachingPlan, getAllCoachingPlanName } from "../repository/coachingPlanRepo";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
@@ -7,10 +7,13 @@ import { errorResponse, successResponse } from "../common/apiResponse";
 import { getAllUsersAttendanceDetails, updateUserAttendance } from "../service/attendanceService";
 import { isValidCoachingSchedule } from "../service/ScheduleService";
 import { isSchedulesDatesValid } from "../service/ScheduleService";
-import { coachingScheduleInterface, fetchAttendanceInterface, scheduleResponseInterface, updateAttendanceInterface } from "../common/interface";
+import { coachingScheduleInterface, fetchAttendanceInterface, scheduleResponseInterface, updateAttendanceInterface, userPlanData } from "../common/interface";
 import { addNewCoachingSchedule, getAllCoachingSchedule, removeSchedule, ValidCoachingSchedule } from "../repository/coachingScheduleRepo";
 import { addSchedularExecEntry, isSchedularTriggeredToday } from "../repository/schedularLogRepo";
 import { checkSchedule } from "../tasks/attendanceDataInsertions";
+import { getUserById } from "../repository/userRepo";
+import { addUserPlanInfo } from "../service/userPlanService";
+import { UserExceptions } from "../exceptions/userExceptions";
 
 const prisma = new PrismaClient();
 
@@ -43,7 +46,7 @@ export async function addLocation(req: Request, res: Response): Promise<void>{
 
 //@dev: Add a new coaching plan to the database.
 export async function addCoachingPlan(req: Request, res: Response): Promise<void>{
-    console.log("------Add Coaching Plan Route------");
+    
     const { name, 
             description, 
             planDuration, 
@@ -365,5 +368,43 @@ export async function deleteSchedule(req:Request, res: Response): Promise<void> 
         res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR));
         return; 
     }
+}
+
+
+export async function addUserPlan(req:Request,res:Response):Promise<void>{
+    const{userId,coachingPlanId,planStartDate,amount}=req.body;
+    console.log("Body: ",req.body);
+    
+    let planData:userPlanData={
+        userId:userId,
+        coachingPlanId:coachingPlanId,
+        planStartDate:planStartDate,
+        amount:amount
+
+    }
+    console.log("DATA_RECEIEVED: ",planData);
+    
+           try {         
+               
+                const user= await addUserPlanInfo(planData);
+                console.log("User: ",user);   
+                res.status(201).json(successResponse("User Plan created"));
+                return;
+
+           } catch (error) {
+            if(error instanceof UserExceptions){
+                    console.error("Catched: ",error.name);
+                    res.status(403).json(errorResponse(error.message));
+                    return;
+            }else{
+                    console.log("Else_Catch: ",error);
+                    res.status(406).json(errorResponse("Something went wrong."));
+                    
+                    return;
+            }
+            
+            
+           }
+           
 }
 

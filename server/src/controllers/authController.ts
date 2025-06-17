@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { checkAge, calculateEndDate} from "../common/helperFunctions";
+import { checkAge,} from "../common/helperFunctions";
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import transporter from "../config/nodeMailer";
@@ -9,7 +9,7 @@ import { addNewUser, checkExistingUser, getUserByEmail, updatePassword, updateRe
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 import { errorResponse, successResponse } from "../common/apiResponse";
 import { checkValidCoachingPlan, getCoachingPlanById } from "../repository/coachingPlanRepo";
-import { getLocation } from "./coachController";
+// import { getLocation } from "./coachController";
 
 const prisma = new PrismaClient();
 // let bcrypt:any;
@@ -57,7 +57,9 @@ export async function signUp(req: Request, res: Response): Promise<void> {
         //@dev Check user is kid or adult.
         let isKid = checkAge(dob);
 
-        let planEndDate = await calculateEndDate(planStartDate, coachingPlanId);
+
+        //@raj: temp build fix:  plan to remove plan end date from the Authorization.
+        let planEndDate = new Date(Date.UTC(2025,10,1));
 
         //@dev Hash password.
         let hashedPassword = await bcrypt.hash(password, 10);

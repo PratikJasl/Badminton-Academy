@@ -88,7 +88,7 @@ export async function getUserByEmail(email:string):Promise<User | null>{
 }
 
 //@dev: Function to fetch all users.
-export async function getUsersById(userId: number){
+export async function getUserById(userId: number){
     try {
             let user = await prisma.user.findUnique({
                 where:{

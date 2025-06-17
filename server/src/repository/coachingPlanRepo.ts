@@ -8,14 +8,14 @@ const prisma = new PrismaClient();
 export async function addNewCoachingPlan(
     name: string, 
     description: string,
-    planDuration: string,
+    planDuration: number,
     price: number): Promise<CoachingPlan | null>{
     try {
         let newCoachingPlan = await prisma.coachingPlan.create({
             data: {
                 name: name.trim(),
                 description: description.trim(),
-                planDuration: planDuration.trim(),
+                planDuration: planDuration,
                 price: price
             }
         });
@@ -38,7 +38,7 @@ export async function getAllCoachingPlan(): Promise<CoachingPlan[]| null>{
 }
 
 //@dev: Function to fetch coaching plans by ID.
-export async function getCoachingPlanById(coachingPlanId: number): Promise<{ name: string; planDuration: string } | null> {
+export async function getCoachingPlanById(coachingPlanId: number): Promise<{ name: string; planDuration: number } | null> {
     try {
         let coachingPlan = await prisma.coachingPlan.findFirst({
             where: {
