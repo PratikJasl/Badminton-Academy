@@ -130,6 +130,9 @@ ALTER TABLE "UserPlanInfo" ADD CONSTRAINT "UserPlanInfo_userId_fkey" FOREIGN KEY
 ALTER TABLE "UserPlanInfo" ADD CONSTRAINT "UserPlanInfo_coachingPlanId_fkey" FOREIGN KEY ("coachingPlanId") REFERENCES "CoachingPlan"("coachingPlanId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "UserPlanInfo" ADD CONSTRAINT "UserPlanInfo_paymentId_fkey" FOREIGN KEY ("paymentId") REFERENCES "Payment"("paymentId") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "CoachingSchedule" ADD CONSTRAINT "CoachingSchedule_locationId_fkey" FOREIGN KEY ("locationId") REFERENCES "Location"("locationId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey

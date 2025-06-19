@@ -1,4 +1,5 @@
 import { PrismaClient, UserPlanInfo } from "@prisma/client";
+import { addUserPlanInfoData} from "../common/interface";
 
 
 const prisma =new PrismaClient();
