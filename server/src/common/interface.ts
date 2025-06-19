@@ -103,3 +103,13 @@ export interface userPlanData{
     planStartDate:Date,
     amount:number
 }
+
+export interface addUserPlanInfoData{
+    userId:number,
+    coachingPlanId:number,
+    planStartDate:Date,
+    planEndDate:Date,
+    paymentDate:Date,
+    amount:number
+}
+
