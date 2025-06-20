@@ -93,11 +93,11 @@ function Testimonials() {
     };
 
     return (
-        <section id="testimonials" className="w-full mt-20 mb-20 flex flex-col items-center gap-15 p-10 relative">
+        <section id="testimonials" className="w-full 2xl:mt-30 mt-20 mb-20 flex flex-col items-center gap-15 p-10 relative">
 
             <div className="flex flex-col items-center gap-5">
-                <h1 className="lg:text-8xl text-5xl font-bold"><span className="bg-gradient-to-t from-white to-green-500 text-transparent bg-clip-text">Testimonials</span> </h1>
-                <h2 className="lg:text-4xl text-3xl"> what our <span className="text-green-500 lg:text-4xl text-3xl italic">players say</span></h2>
+                <h1 className="2xl:text-9xl md:text-8xl text-5xl font-bold"><span className="bg-gradient-to-t from-white to-green-500 text-transparent bg-clip-text">Testimonials</span> </h1>
+                <h2 className="md:text-4xl text-3xl"> what our <span className="text-green-500 lg:text-4xl text-3xl italic">players say</span></h2>
             </div>
 
             <div className="relative lg:w-full w-70 flex items-center justify-center">
@@ -114,16 +114,17 @@ function Testimonials() {
                 <div
                     ref={scrollContainerRef}
                     className="flex flex-row items-center justify-start gap-5 p-2 overflow-x-hidden scrollbar-hide
-                                w-[calc(256px + 40px)] lg:w-[calc(2*520px+40px)]"
+                                w-[calc(256px + 40px)] lg:w-[calc(2*520px+40px)] 2xl:w-[101rem]"
                 >
                     {testimonialsData.map((testimonial, index) => (
                         <div
                             key={index}
-                            className="flex lg:flex-row flex-col gap-5 lg:justify-start justify-center items-center min-w-[256px] lg:flex-shrink-0 lg:w-[520px] lg:h-60 h-90 relative p-5 bg-white rounded-xl text-center"
+                            className="flex md:flex-row flex-col gap-5 lg:justify-start justify-center items-center min-w-[256px] lg:flex-shrink-0 2xl:h-70 md:w-[520px] md:h-60 h-90 relative p-5 bg-white rounded-xl text-center"
                         >
                             <div>
-                                <img src={testimonial.image} alt="person" className="lg:h-45 h-30 lg:w-60 w-15"/>
+                                <img src={testimonial.image} alt="person" className="md:h-45 h-30 md:w-60 w-15"/>
                             </div>
+
                             <div className="flex flex-col items-center lg:gap-5 gap-2">
                                 <div className="text-black">
                                     <h1 className="lg:text-xl text-md font-bold text-black italic">{testimonial.name}</h1>

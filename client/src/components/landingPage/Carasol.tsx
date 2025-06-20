@@ -50,10 +50,10 @@ function Carousel() {
   const nextIndex = (currentIndex + 1) % imageLinks.length;
   
   return (
-    <section id="carousel" className="flex flex-col gap-10 items-center justify-center mt-5">
-      <div className="flex flex-col items-center justify-center lg:gap-8 lg:w-full w-86 gap-5">
-        <h1 className="lg:text-8xl text-6xl font-bold text-center bg-gradient-to-t from-white to-green-500 text-transparent bg-clip-text">Simple Carousel</h1>
-        <h2 className="lg:text-2xl text-xl">5x interactive images</h2>
+    <section id="carousel" className="flex flex-col gap-10 items-center justify-center 2xl:mt-15 mt-5">
+      <div className="flex flex-col items-center justify-center 2xl:gap-8 md:gap-5 md:w-full w-86 gap-5">
+        <h1 className="2xl:text-9xl md:text-8xl text-6xl font-bold text-center bg-gradient-to-t from-white to-green-500 text-transparent bg-clip-text">Gallery</h1>
+        <h2 className="2xl:text-3xl md:text-2xl text-xl">Meet our champions !!</h2>
       </div>
 
       <div className="flex flex-row justify-center items-center relative">
@@ -63,7 +63,7 @@ function Carousel() {
             <img
               src={imageLinks[prevIndex]}
               alt="previous carousel slide"
-              className="w-48 h-64 md:w-64 md:h-80 object-cover rounded-2xl shadow-lg cursor-pointer
+              className="w-48 h-64 md:w-64 md:h-80 2xl:w-100 2xl:h-110 object-cover rounded-2xl shadow-lg cursor-pointer
                          transform scale-90 opacity-70 transition-all duration-500 ease-in-out
                          hover:scale-95 hover:opacity-85 z-10"
               onClick={previousImage}
@@ -72,7 +72,7 @@ function Carousel() {
             <img
               src={imageLinks[currentIndex]}
               alt="current carousel slide"
-              className={`w-64 h-80 md:w-80 md:h-90 object-cover transition-opacity duration-1000 ease-in-out rounded-4xl ${
+              className={`w-64 h-80 md:w-80 md:h-90 2xl:w-150 2xl:h-120 object-cover transition-opacity duration-1000 ease-in-out rounded-4xl ${
                 isFading ? "opacity-0" : "opacity-100"
               }`}
               key={currentIndex}
@@ -82,7 +82,7 @@ function Carousel() {
             <img
               src={imageLinks[nextIndex]}
               alt="next carousel slide"
-              className="w-48 h-64 md:w-64 md:h-80 object-cover rounded-2xl shadow-lg cursor-pointer
+              className="w-48 h-64 md:w-64 md:h-80 2xl:w-100 2xl:h-110 object-cover rounded-2xl shadow-lg cursor-pointer
                          transform scale-90 opacity-70 transition-all duration-500 ease-in-out
                          hover:scale-95 hover:opacity-85 z-10"
               onClick={nextImage}
