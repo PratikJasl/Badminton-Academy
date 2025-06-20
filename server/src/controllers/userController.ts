@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { checkExistingUser, getUsersById, updateUser } from "../repository/userRepo";
+import { checkExistingUser, getUserById, updateUser } from "../repository/userRepo";
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 import { errorResponse, successResponse } from "../common/apiResponse";
 import { Prisma } from "@prisma/client";
@@ -20,7 +20,7 @@ export async function getUserDetailById(req: Request, res: Response ): Promise<v
         }
 
         //@dev: Get user details.
-        let user = await getUsersById(userId);
+        let user = await getUserById(userId);
         if(!user) {
             res.status(204).json(successResponse(SUCCESS_MESSAGES.NO_DATA_FOUND));
             return;

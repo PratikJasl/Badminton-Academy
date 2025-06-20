@@ -43,13 +43,14 @@ model SchedularLog{
 }
 
 model UserPlanInfo {
-  userPlanId              Int @id @default(autoincrement())
+  userPlanInfoId              Int @id @default(autoincrement())
   userId                  Int
   user                    User @relation(fields: [userId], references: [userId])
   coachingPlanId          Int
   coachingPlan            CoachingPlan @relation(fields: [coachingPlanId],references: [coachingPlanId])
-  planStatus              Boolean
-  paymentId               Int
+  planStatus              Boolean @default(true)
+  payment                 Payment @relation(fields: [paymentId],references: [paymentId])
+  paymentId               Int @unique
   planStartDate           DateTime
   planEndDate             DateTime
 }
@@ -66,8 +67,8 @@ model CoachingPlan {
   coachingPlanId          Int @id @default(autoincrement())
   name                    String @unique
   description             String
-  planDuration            String 
-  price                   Decimal
+  planDuration            Int
+  price                   Decimal @db.Decimal(60,2)
   UserPlanInfo UserPlanInfo[]
 }
 
@@ -77,7 +78,7 @@ model CoachingSchedule {
   coachingDays            String
   startTime               String
   endTime                 String
-  location                Location? @relation(fields: [locationId], references: [locationId])
+  location                Location @relation(fields: [locationId], references: [locationId])
   locationId              Int
 }
 
@@ -95,7 +96,8 @@ model Payment {
   paymentDate             DateTime
   paymentAmount           Int
   paymentStatus           Boolean @default(true)
-  transactionDetails      String
+  transactionDetails      String?
+  userPlanInfo            UserPlanInfo?
 }
 
 enum Roles {

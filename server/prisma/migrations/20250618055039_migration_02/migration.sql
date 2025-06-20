@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "CoachingPlan" ALTER COLUMN "price" SET DATA TYPE DECIMAL(60,2);
