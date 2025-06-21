@@ -18,9 +18,11 @@ const UserDetails = lazy(() => import('./components/features/user/UserDetails'))
 const UserAttendance = lazy(() => import('./components/features/attendance/UserAttendance'));
 const VerifyEmail = lazy(() => import('./components/auth/VerifyEmail'));
 const VerifyEmailOtp = lazy(() => import('./components/auth/VerifyEmailOtp'));
+import ObserverProvider from './services/ObserverProvider';
 
 function App() {
     return (
+        <ObserverProvider>
         <div className='h-screen flex flex-col items-center justify-center overflow-auto scroll-smooth [scrollbar-width:none]'>
             <Navbar />
             <Routes>
@@ -54,6 +56,7 @@ function App() {
                 theme="dark"
             />
         </div>
+        </ObserverProvider>
     );
 }
 
