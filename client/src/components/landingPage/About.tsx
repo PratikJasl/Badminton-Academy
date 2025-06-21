@@ -17,7 +17,7 @@ function About(){
                         
                         <p className="2xl:text-2xl md:text-xl text-xl">National Level Player and International Certified Badminton Coach</p>
 
-                        <div className="md:mt-5 flex md:flex-row flex-col 2xl:gap-8 gap-5 w-full items-center">
+                        <div className="md:mt-5 flex md:flex-row flex-col 2xl:gap-8 gap-5 w-full items-center animate-fadeInLeft">
                             <div>
                                  <button 
                                     className="w-fit font-semibold bg-green-600 text-white 2xl:text-2xl md:text-xl text-md p-2 px-4 lg:px-5  rounded-3xl hover:scale-120 active:scale-120 transition transform duration-500 ease-in-out">
@@ -29,7 +29,7 @@ function About(){
                                 </button>
                             </div>
                            
-                           <div className="flex flex-row md:gap-5 gap-3 md:justify-start justify-center items-center">
+                           <div className="flex flex-row md:gap-5 gap-3 md:justify-start justify-center items-center ">
                                 <a href="" target="blank">
                                     <i className="fab fa-instagram 2xl:text-4xl md:text-3xl text-xl text-red-500 hover:scale-150 active:scale-150 transition transform duration-500 ease-in-out"></i>
                                 </a>
@@ -48,7 +48,7 @@ function About(){
                     </div>
                 </div>
 
-                <div className="2xl:h-140 2xl:w-160 md:h-120 md:w-150 order-1 lg:order-none">
+                <div className="2xl:h-140 2xl:w-160 md:h-120 md:w-150 order-1 md:order-none">
                     <img 
                         src={profileImage}
                         alt="profile-pic" 
