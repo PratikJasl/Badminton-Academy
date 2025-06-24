@@ -15,9 +15,8 @@ export class UserExceptions extends Error{
     cause:any;
    }){
        super();
-       this.name=name;
-       this.message=message;
+       this.name = name;
+       this.message = message;
        this.cause="caused by: "+cause;
-
    }
 }

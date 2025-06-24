@@ -373,41 +373,39 @@ export async function deleteSchedule(req:Request, res: Response): Promise<void> 
 
 
 export async function addUserPlan(req:Request,res:Response):Promise<void>{
-    const{userId,coachingPlanId,planStartDate,amount}=req.body;
-    let planData:userPlanData={
+    const{userId, coachingPlanId, planStartDate, amount} = req.body;
+
+    let planData:userPlanData = {
         userId:userId,
         coachingPlanId:coachingPlanId,
         planStartDate:new Date(planStartDate),
         amount:amount
-
     }
+
     // console.log("---------",planData.planStartDate);
     
-           try {         
-                const paymentPlanData= await addUserPlanInfo(planData);
-                console.log("Added data: ",paymentPlanData);   
-                res.status(201).json(successResponse("User plan added"));
-                return;
-
-           } 
-           catch (error) {
-            if(error instanceof UserExceptions){
-                    console.error("Catched: ",error.name);
-                    res.status(403).json(errorResponse(error.message));
-                    return;
-            }
-            else if(error instanceof UserPlanExceptions){
-                    console.error("ERROR: ",error.name);
-                    res.status(403).json(errorResponse(error.message));
-                    return;
-                    
-            }
-            else{
-                    console.error("Else_Catch: ",error);
-                    res.status(406).json(errorResponse("Something went wrong."));
-                    return;
-            }
-           }
-           
+    try {         
+        const paymentPlanData = await addUserPlanInfo(planData);
+        console.log("Added data: ", paymentPlanData); 
+        res.status(201).json(successResponse(SUCCESS_MESSAGES.USER_PLAN_DATA_CREATED));
+        return;
+    } 
+    catch (error) {
+        if(error instanceof UserExceptions){
+            console.error("Catched: ",error.name);
+            res.status(404).json(errorResponse(error.message));
+            return;
+        }
+        else if(error instanceof UserPlanExceptions){
+            console.error("ERROR: ",error.name);
+            res.status(403).json(errorResponse(error.message));
+            return;    
+        }
+        else{
+            console.error("Else_Catch: ",error);
+            res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR, error));
+            return;
+        }
+    }    
 }
 

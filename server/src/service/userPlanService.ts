@@ -5,36 +5,36 @@ import { getAllActivePlansByUserId } from "../repository/userPlanInfoRepo";
 import { getUserById } from "../repository/userRepo";
 import { getCoachingPlanById } from "../repository/coachingPlanRepo";
 import { addPaymentAndUserPlanInfo } from "../repository/paymentRepo";
-
-
+import { ERROR_MESSAGES } from "../common/messages";
 
 // @raj: Add User Plan
 export async function addUserPlanInfo(planData:userPlanData){
     try {
-        const user=await getUserById(planData.userId);
-        if(user===null){
+        const user = await getUserById(planData.userId);
+        if(user === null){
             throw new UserExceptions({
                 name:"USER_NOT_EXIST",
-                message:"User not found.",
+                message:ERROR_MESSAGES.USER_NOT_FOUND,
                 cause:"user does not exists."
             })
         }
-        else if(user.membershipStatus===false){
+        else if(user.membershipStatus === false){
             throw new UserExceptions({
                 name:"USER_INACTIVE",
                 message:"Inactive user",
                 cause:"found user is not active."
             });
-            
         }
-        else if(user.isVerified===false){
+        else if(user.isVerified === false){
             throw new UserExceptions({
                 name:"USER_NOT_VERIFIED",
                 message:"User not verified",
                 cause:"found not verified user."
             });
         }
-        const isPlanActive:boolean=await checkActivePlan(planData.userId,planData.planStartDate);
+
+        const isPlanActive:boolean = await checkActivePlan(planData.userId,planData.planStartDate);
+
         if(isPlanActive){
             throw new UserPlanExceptions({
                 name:"ACTIVE_PLAN_EXISTS",
@@ -43,12 +43,13 @@ export async function addUserPlanInfo(planData:userPlanData){
             });
         }
 
-        const planDetails=await getCoachingPlanById(planData.coachingPlanId);
+        const planDetails = await getCoachingPlanById(planData.coachingPlanId);
         console.log("Plan_Details: ",planDetails);
-        if(planDetails!=null){
-            let calulatedEndDate=calculateEndDate(planDetails.planDuration,new Date(planData.planStartDate));
-            let currentUTCDate=getCurrentUTCDate();
-            let newPlanObj:addUserPlanInfoData={
+
+        if(planDetails!= null){
+            let calulatedEndDate = calculateEndDate(planDetails.planDuration, new Date(planData.planStartDate));
+            let currentUTCDate = getCurrentUTCDate();
+            let newPlanObj:addUserPlanInfoData = {
                 userId:planData.userId,
                 coachingPlanId:planData.coachingPlanId,
                 planStartDate:planData.planStartDate,
@@ -56,7 +57,7 @@ export async function addUserPlanInfo(planData:userPlanData){
                 paymentDate:currentUTCDate,
                 amount:planData.amount
             }
-            const paymentPlanData=addPaymentAndUserPlanInfo(newPlanObj);
+            const paymentPlanData = addPaymentAndUserPlanInfo(newPlanObj);
             return paymentPlanData;
         }
         else{
@@ -70,14 +71,14 @@ export async function addUserPlanInfo(planData:userPlanData){
 
 
 //@raj: check active plan
-const checkActivePlan=async (userId:number,planStartDate:Date):Promise<boolean>=> {
-    const userPlans=await getAllActivePlansByUserId(userId);
+const checkActivePlan = async (userId:number, planStartDate:Date):Promise<boolean>=> {
+    const userPlans = await getAllActivePlansByUserId(userId);
     console.log("User Plans: ",userPlans);
     for(const element of userPlans){
         console.log("checking plans",element.planEndDate);
         if(element.planEndDate>=planStartDate){
             console.log("Active Plan......");
-           return true;
+            return true;
         }
     }
     return false;
@@ -92,17 +93,17 @@ const calculateEndDate = (planDuration: number, planStartDate: Date): Date => {
 
     let currentMonth = planStartDate.getMonth();
     let currentYear = planStartDate.getFullYear();
-    let nextMonth = currentMonth+(planDuration-1);
-    let endYear = currentYear+Math.floor(nextMonth/12);
+    let nextMonth = currentMonth + (planDuration-1);
+    let endYear = currentYear + Math.floor(nextMonth/12);
     let endMonth = nextMonth % 12;
-    let endDate = new Date(Date.UTC(endYear,endMonth+1,0));
+    let endDate = new Date(Date.UTC(endYear, endMonth+1, 0));
     endDate.setUTCHours(23, 59, 59, 999);
     return endDate;
 }
 
 
 const getCurrentUTCDate=()=>{
-    let now=new Date();
-    let currentUTCDate=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth(),now.getUTCDate(),0,0,0,0));
+    let now = new Date();
+    let currentUTCDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(),0,0,0,0));
     return currentUTCDate;
 }

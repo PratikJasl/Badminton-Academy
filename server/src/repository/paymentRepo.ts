@@ -4,7 +4,7 @@ const prisma =new PrismaClient();
 
 export async function addPaymentAndUserPlanInfo(newPlanObj:addUserPlanInfoData){
     try {
-        const addedPaymentAndPlanData=await prisma.payment.create({
+        const addedPaymentAndPlanData = await prisma.payment.create({
             data:{
                 paymentDate:newPlanObj.paymentDate,
                 paymentAmount:newPlanObj.amount,
@@ -19,8 +19,8 @@ export async function addPaymentAndUserPlanInfo(newPlanObj:addUserPlanInfoData){
             },
             include:{userPlanInfo:true},
         });
-        console.log("Payment and UserPlanInfo created: ",addPaymentAndUserPlanInfo);
-        return addPaymentAndUserPlanInfo;
+        console.log("Payment and UserPlanInfo created: ", addedPaymentAndPlanData);
+        return addedPaymentAndPlanData;
     } catch (error) {
         console.error('Error creating Payment and UserPlanInfo:', error);
         throw error;

@@ -36,8 +36,8 @@ html {
 }
 
 @theme {
-  --animate-fadeInRight: fadeInRight 2s ease-in-out forwards;
-  --animate-fadeInLeft: fadeInLeft 2s ease-in-out forwards;
+  --animate-fadeInRight: fadeInRight 1s ease-in-out forwards;
+  --animate-fadeInLeft: fadeInLeft 1s ease-in-out forwards;
   
   @keyframes fadeInRight {
     0%{

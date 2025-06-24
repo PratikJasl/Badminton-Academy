@@ -32,6 +32,7 @@ export const ERROR_MESSAGES = {
     USER_LOGOUT: 'User loged out successfully',
     USER_NOT_FOUND: 'User not found.',
     USER_DATA_UPDATED: 'User data updated successfully',
+    USER_PLAN_DATA_CREATED: 'User Plan data has been successfully created',
     LOCATION_ADDED: "New location added successfully",
     COACHING_PLAN_ADDED: "New coaching plan added successfully",
     COACHING_SCHEDULE_ADDED: "New coaching schedule added successfully",

@@ -106,8 +106,6 @@ enum Roles {
   coach
 }
 
-
-
 enum Gender {
   male
   female
