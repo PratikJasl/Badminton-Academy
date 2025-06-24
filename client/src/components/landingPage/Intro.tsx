@@ -3,7 +3,7 @@ import smash from '../../assets/smash.png';
 function Introduce(){
     return(
         <section id='introduce' className="w-screen text-start mt-15 p-5">
-            <div className="flex lg:flex-row flex-col items-center 2xl:gap-120 md:gap-70 gap-5 font-poppins">
+            <div className="flex lg:flex-row flex-col items-center 2xl:gap-150 md:gap-70 gap-5 font-poppins">
                 <div className="flex flex-col lg:order-1 order-2 md:gap-15 gap-2 md:pt-15 md:p-15 pt-5">
                     <div className="flex flex-col md:items-start items-center 2xl:gap-2">
                         <h1 className="2xl:text-6xl md:text-5xl text-2xl md:pl-2 mt-0 md:mb-[-1rem]">Any Body Can</h1>
