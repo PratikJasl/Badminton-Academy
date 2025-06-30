@@ -6,7 +6,7 @@ import { ERROR_MESSAGES } from "../common/messages";
 
 const prisma=new PrismaClient();
 
-//@dev: Function to check schedule does not overlap with existing schedules.
+//@raj: Function to check schedule does not overlap with existing schedules.
 export async function isValidCoachingSchedule(data:coachingScheduleInterface): Promise<scheduleResponseInterface>{
     try {
         const startTime:number = timeToMinutes(data.startTime);
@@ -26,6 +26,7 @@ export async function isValidCoachingSchedule(data:coachingScheduleInterface): P
                 message:"No existing Schedules"
             }
         }
+        
         
         for(let i:number = 0; i<existingSchedule.length; i++){
             if(startTime < timeToMinutes(existingSchedule[i].endTime) && endTime > timeToMinutes(existingSchedule[i].startTime)){
@@ -52,8 +53,8 @@ export async function isValidCoachingSchedule(data:coachingScheduleInterface): P
     }  
 }
 
-//@dev: Function to check valid Dates.
-export function isSchedulesDatesValid(newDays:string){
+//@raj: Function to check valid Dates.
+export function isScheduleDatesValid(newDays:string){
     const validDate:string=DAYS_CODE.VALID_DAYS;
     let seenDays:Set<string>=new Set();
 
@@ -70,7 +71,7 @@ export function isSchedulesDatesValid(newDays:string){
     return true;
 }
 
-//@dev: Helper function for checking days conflict.
+//@raj: Helper function for checking days conflict.
 function checkForDaysConflict(newCoachingDays:string,existingCoachingDays:string):scheduleResponseInterface{
     for(let i:number=0;i<newCoachingDays.length;i++){
         if(existingCoachingDays.includes(newCoachingDays[i])){
@@ -86,7 +87,7 @@ function checkForDaysConflict(newCoachingDays:string,existingCoachingDays:string
     }
 }
 
-//@dev: Helper function for converting time to minutes.
+//@raj: Helper function for converting time to minutes.
 function timeToMinutes(timeStr:string):number {
     const [hours, minutes] = timeStr.split(':').map(Number);
     return hours * 60 + minutes;

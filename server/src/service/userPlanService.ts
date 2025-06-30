@@ -21,33 +21,56 @@ export async function addUserPlanInfo(planData:userPlanData){
         else if(user.membershipStatus === false){
             throw new UserExceptions({
                 name:"USER_INACTIVE",
-                message:"Inactive user",
+                message:ERROR_MESSAGES.INACTIVE_USER,
                 cause:"found user is not active."
             });
         }
         else if(user.isVerified === false){
             throw new UserExceptions({
                 name:"USER_NOT_VERIFIED",
-                message:"User not verified",
+                message:ERROR_MESSAGES.USER_NOT_VERIFIED,
                 cause:"found not verified user."
             });
         }
 
-        const isPlanActive:boolean = await checkActivePlan(planData.userId,planData.planStartDate);
+       
 
-        if(isPlanActive){
+        const planDetails = await getCoachingPlanById(planData.coachingPlanId);
+        if(planDetails==null){
+            throw "no plans found!!!"
+        }
+        console.log("Plan_Details: ",planDetails);
+
+        let activePlandetails:{isActivePlan:boolean,message:string}={
+            isActivePlan:true,
+            message:""
+        };
+
+        let calulatedEndDate:Date=new Date(Date.UTC(0,0,0,0));
+        if(planDetails != null){
+            calulatedEndDate = calculateEndDate(planDetails.planDuration, new Date(planData.planStartDate)); 
+            activePlandetails = await checkActivePlan(planData.userId,planData.planStartDate,calulatedEndDate,planDetails.planDuration);
+            console.log("activePlanDetails:---",activePlandetails.message);
+            
+        }
+        if(activePlandetails.isActivePlan){
             throw new UserPlanExceptions({
                 name:"ACTIVE_PLAN_EXISTS",
-                message:"Active plan on selected date",
+                message:activePlandetails.message,
                 cause:"found already an active plan on the selected start date"
             });
         }
-
-        const planDetails = await getCoachingPlanById(planData.coachingPlanId);
-        console.log("Plan_Details: ",planDetails);
-
+        if(calulatedEndDate<new Date(planData.planStartDate)){
+            // to be continued...
+            throw new UserPlanExceptions({
+                name:"INVALID_PLAN_END_DATE",
+                message:"Plan end date is less than plan start date",
+                cause:"calculated planEnd date is less then than the given planStart date"
+            });
+        }
+        console.log("End_DATE: ",calulatedEndDate);
+        
         if(planDetails!= null){
-            let calulatedEndDate = calculateEndDate(planDetails.planDuration, new Date(planData.planStartDate));
             let currentUTCDate = getCurrentUTCDate();
             let newPlanObj:addUserPlanInfoData = {
                 userId:planData.userId,
@@ -71,17 +94,23 @@ export async function addUserPlanInfo(planData:userPlanData){
 
 
 //@raj: check active plan
-const checkActivePlan = async (userId:number, planStartDate:Date):Promise<boolean>=> {
+const checkActivePlan = async (userId:number, planStartDate:Date,planEndDate:Date,planDuration:number)
+                                                    : Promise<{ isActivePlan: boolean, message: string }> => {
     const userPlans = await getAllActivePlansByUserId(userId);
     console.log("User Plans: ",userPlans);
     for(const element of userPlans){
-        console.log("checking plans",element.planEndDate);
-        if(element.planEndDate>=planStartDate){
-            console.log("Active Plan......");
-            return true;
+        if(planStartDate<=element.planEndDate && planEndDate>=element.planStartDate){
+            console.log("Active Plan found!!!");
+            return {
+                isActivePlan:true,
+                message:`conflicted with active plan having start date and end date as ${element.planStartDate.toISOString()} to ${element.planEndDate.toISOString()}`
+            }
         }
     }
-    return false;
+    return {
+        isActivePlan:false,
+        message:"no active plan found..."
+    };
 }
 
 
