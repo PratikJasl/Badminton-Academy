@@ -23,9 +23,17 @@ const scheduleSchema = Joi.object({
   locationId: Joi.number().required(),
 });
 
+const userPlanSchema=Joi.object({
+  userId:Joi.number().required(),
+  coachingPlanId:Joi.number().required(),
+  planStartDate:Joi.string().required(),
+  amount:Joi.number().required()
+});
+
 // Export all schemas under the name 'coachingSchema'
 export const coachingSchema = {
   location: locationSchema,
   plan: planSchema,
   schedule: scheduleSchema,
+  userPlan:userPlanSchema
 };

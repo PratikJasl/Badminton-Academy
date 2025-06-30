@@ -5,8 +5,7 @@ import { addNewCoachingPlan, getAllCoachingPlan, getAllCoachingPlanName } from "
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from "../common/messages";
 import { errorResponse, successResponse } from "../common/apiResponse";
 import { getAllUsersAttendanceDetails, updateUserAttendance } from "../service/attendanceService";
-import { isValidCoachingSchedule } from "../service/ScheduleService";
-import { isSchedulesDatesValid } from "../service/ScheduleService";
+import { isScheduleDatesValid, isValidCoachingSchedule } from "../service/ScheduleService";
 import { coachingScheduleInterface, fetchAttendanceInterface, scheduleResponseInterface, updateAttendanceInterface, userPlanData } from "../common/interface";
 import { addNewCoachingSchedule, getAllCoachingSchedule, removeSchedule, ValidCoachingSchedule } from "../repository/coachingScheduleRepo";
 import { addSchedularExecEntry, isSchedularTriggeredToday } from "../repository/schedularLogRepo";
@@ -93,7 +92,7 @@ export async function addCoachingSchedule(req: Request, res: Response): Promise<
         }
 
         //@dev: Check if the schedule dates are valid.
-        if(!isSchedulesDatesValid(data.coachingDays)){
+        if(!isScheduleDatesValid(data.coachingDays)){
             console.log(ERROR_MESSAGES.INVALID_DAYS);
             res.status(400).json(errorResponse(ERROR_MESSAGES.INVALID_DAYS));
             return;  
@@ -403,7 +402,7 @@ export async function addUserPlan(req:Request,res:Response):Promise<void>{
         }
         else{
             console.error("Else_Catch: ",error);
-            res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR, error));
+            res.status(500).json(errorResponse(ERROR_MESSAGES.SERVER_ERROR+"ERROR: "+error));
             return;
         }
     }    

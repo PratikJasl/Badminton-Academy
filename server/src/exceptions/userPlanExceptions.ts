@@ -1,4 +1,4 @@
-type EXCEPTION_NAME=|"ACTIVE_PLAN_EXISTS";
+type EXCEPTION_NAME=|"ACTIVE_PLAN_EXISTS"|"INVALID_PLAN_END_DATE";
 
 export class UserPlanExceptions extends Error{
     name:EXCEPTION_NAME;

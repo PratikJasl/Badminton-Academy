@@ -1,6 +1,6 @@
 export const ERROR_MESSAGES = {
     MISSING_FIELD: "Missing required fields",
-    VALIDATION_FAILED: "Validation Failed",
+    VALIDATION_FAILED: "Schema Data Validation Failed",
     SERVER_ERROR: 'Something went wrong, please try again later.',
     INCORRECT_PASSWORD: 'Incorrect Password',
     ACCOUNT_ALREADY_VERIFIED: 'Account already verified',
@@ -18,12 +18,14 @@ export const ERROR_MESSAGES = {
     INVALID_COACHING_SCHEDULE_ID: 'Invalid Coaching Schedule ID',
     INVALID_OTP: 'Invalid OTP',
     INVALID_DAYS: `Selected Days are Invalid, Please select from 'MTWTFSS'`,
+    INACTIVE_USER:"User status is not active",
     OTP_EXPIRED: 'OTP Expired',
     NO_DATA_FOUND: 'No data found',
     DATA_NOT_INSERTED:'Data Insertion Failed',
     EXISTING_LOCATION: 'Location with same name already exists',
     NOT_ABLE_TO_FETCH_USERS_ATTENDANCE_DATA:'Not able to fetch users data for attendance ',
-    UPDATION_FAILED:'Upadation Failed...., try again.'
+    UPDATION_FAILED:'Upadation Failed...., try again.',
+    USER_NOT_VERIFIED:"User is not verified"
   };
 
   export const SUCCESS_MESSAGES = {
